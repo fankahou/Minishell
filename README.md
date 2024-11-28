@@ -4,7 +4,11 @@
 
 # Instructions
 
+Instructions to complete the project (copied from the subject)
+
 ## Required features
+
+These features are required for the mandatory part
 
 ### General requirements:
 - Display a **prompt** when waiting for a new command.
@@ -17,10 +21,10 @@
 
 ### Implement redirections:
 - < should redirect input.
-- > should redirect output.
+- \> should redirect output.
 - << should be given a delimiter, then read the input until a line containing the
 delimiter is seen. However, it doesn’t have to update the history!
-- >> should redirect output in append mode.
+- \>\> should redirect output in append mode.
 
 - Implement **pipes** (| character). The output of each command in the pipeline is connected to the input of the next command via a pipe.
 - Handle **environment variables** (`$` followed by a sequence of characters) which should expand to their values.
@@ -37,7 +41,7 @@ Required commands:
 - `env` with no options or arguments
 - `exit` with no options
 
-## Additional infos
+### Additional infos
 
 The readline() function can cause memory leaks. You don’t have to fix them. But that doesn’t mean your own code, yes the code you wrote, can have memory leaks.
 
