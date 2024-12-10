@@ -6,6 +6,65 @@
 
 Instructions to complete the project (copied from the subject)
 
+## Allowed functions
+
+The following functions are able to be used freely in the project.
+- readline
+- rl_clear_history
+- rl_on_new_line
+- rl_replace_line
+- rl_redisplay
+- add_history
+- printf
+- malloc
+- free
+- write
+- access
+- open
+- read,
+- close
+- fork
+- wait
+- waitpid
+- wait3
+- wait4
+- signal
+- sigaction
+- sigemptyset
+- sigaddset
+- kill
+- exit
+- getcwd
+- chdir
+- stat
+- lstat
+- fstat
+- unlink
+- execve
+- dup
+- dup2
+- pipe
+- opendir
+- readdir
+- closedir
+- strerror
+- perror
+- isatty
+- ttyname
+- ttyslot
+- ioctl
+- getenv
+- tcsetattr
+- tcgetattr
+- tgetent
+- tgetflag
+- tgetnum
+- tgetstr
+- tgoto
+- tputs
+
+Additionally, the use of libft is authorized.
+
 ## Required features
 
 These features are required for the mandatory part
@@ -50,3 +109,42 @@ The readline() function can cause memory leaks. You don’t have to fix them. Bu
 Your program has to implement:
 - `&&` and `||` with parenthesis for priorities.
 - Wildcards `*` should work for the current working directory.
+
+# Development notes
+
+This is just a section to put thoughts and info on how we want the code to look (basically our own norm).
+
+\> kmautner
+
+I suggest we have a file structure along the lines of "{repo root}/feature_name/feature.c".
+Also, since I have a tendency to write spaghetti code, I'll do my best to add documentation to everything.
+
+If an error occurs, I propose we don't exit the program immediately, but instead pass the error code up
+the call stack until we reach a significant function and exit there. This allows it so that each of the
+called functions can print their own error message, giving us a simple stack trace.
+For example: If the call stack looks like this...
+```c
+main()
+    init()
+        load_configs()
+            get_config_file()
+                read_data()
+                    readline()
+```
+... and `readline()` fails, an error code would be passed up all the way to `init()` or `main()`,
+each called function printing their own error message as they pass it along.
+The terminal ouput would then look something like this:
+```
+Error
+unable to read data
+unable to read config file
+unable to load configs
+failed to initialize configs
+init fail
+```
+`readline()` fails, making `read_data()` print "unable to read data" in the terminal and return an error code, prompting `get_config_file()` to print its own error message, etc. all the way up to the main
+function where the program exits.
+
+\> kfan
+
+
