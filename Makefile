@@ -1,3 +1,6 @@
+SRCDIR = .
+OBJDIR = obj
+
 SRC = main.c \
 	parse1_make_tree.c \
 	parse2_init.c \
@@ -15,37 +18,60 @@ SRC = main.c \
 	utils_ft_split_cmd.c \
 	utils_ft_split_pipe.c \
 	utils_ft_split_delimiter.c \
-	utils_count.c
-
-OBJ = $(SRC:.c=.o)
+	utils_count.c \
+	utils_history.c \
+	history.c 
+OBJ = $(patsubst %.c,$(OBJDIR)/%.o,$(SRC))
 
 NAME = minishell
+NAME_BONUS = minishell_bonus
+SUPRESSION_FILE = readline.supp
 
-LIBFT = libft/libft.a
+CFLAGS = -Wall -Wextra -Werror -g
+LIBFT = $(SRCDIR)/libft/libft.a
+LIBS = -lreadline
+RM = rm -f
 
-CC = cc
+HOSTNAME = $(shell "hostname")
 
-CFLAGS = -Wall -Werror -Wextra -g
+.DEFAULT_GOAL = all
+
+.PHONY: all bonus clean fclean re vg
 
 all: $(NAME)
+bonus: $(NAME_BONUS)
 
-$(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+$(NAME): obj $(OBJ)
+	cd $(SRCDIR)/libft && make
+	cc $(CFLAGS) $(OBJ) $(LIBFT) $(LIBS) -o $(NAME)
+	export HOSTNAME=$(HOSTNAME)
 
-$(OBJ): $(SRC)
-	$(CC) $(CFLAGS) $(SRC) -c
+$(NAME_BONUS): obj $(OBJ)
+	cd $(SRCDIR)/libft && make
+	cc $(CFLAGS) $(OBJ) $(LIBFT) $(LIBS) -o $(NAME_BONUS)
+	export HOSTNAME=$(HOSTNAME)
 
-$(LIBFT):
-	$(MAKE) -C ./libft
+$(OBJ): $(OBJDIR)/%.o : $(SRCDIR)/%.c
+	cc $(CFLAGS) -c $< -o $@
+
+obj:
+	mkdir -p $@
+
+vg: | $(SUPRESSION_FILE)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./minishell
+
+$(SUPRESSION_FILE):
+	printf "{\n\t<readline-stupidities>\n\tMemcheck:Leak\n\t...\n\tfun:readline\n}\n{\n\t<history-stupoidities>\n\tMemcheck:Leak\n\t...\n\tfun:add_history\n}" | cat > readline.supp
 
 clean:
-	rm -f $(OBJ)
-	$(MAKE) -C ./libft clean
+	cd src/libft && make clean
+	$(RM)r obj
+	$(RM) $(SUPRESSION_FILE)
 
-fclean: clean
-	rm -f $(NAME)
-	$(MAKE) -C ./libft fclean
+fclean:
+	cd src/libft && make fclean
+	$(RM)r obj
+	$(RM) $(SUPRESSION_FILE)
+	$(RM) $(NAME) $(NAME_BONUS)
 
 re: fclean all
-
-.PHONY: all clean fclean re

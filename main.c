@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/24 15:23:50 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/26 16:46:59 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,21 @@ char	**copy_array(char **input)
 	}
 	return (temp);
 }
-
+/**
+ * @brief Main function of the program
+ *
+ * This is the main function and entry point of the program.
+ * As a wise man once said: "This is where the magic happens!"
+ * 
+ * @param argc Argument count
+ * @param argv Argument vector
+ * @param envp Environment
+ * @return int 
+ */
 int main(int argc, char **argv, char**envp)
 {
-    int i;
     t_data data;
+    t_history history;
 
     (void) argc;
     (void) argv;
@@ -104,32 +114,22 @@ int main(int argc, char **argv, char**envp)
     data.fd[0] = 0;
     data.fd[1] = 1;
     data.envp = copy_array(envp);
-    write(data.fd[1], "minishell> ", 11);
-    while(1)
+    init_history(&history);
+    while (1)
     {
-        i = 0;
-        data.str = get_next_line(data.fd[0]); // fd 0 will not be STD_IN anymore!
-        if (!data.str)
-            continue ;
-        if (data.str[0] == '\n')
+        data.str = readline("minishell>");
+        if (data.str[0] == '\0')
             break ;
-        while (data.str[i] != '\n')
-            i++;
-        data.str[i] = '\0';
-        make_tree(&data); //from here Ka Hou's code begins
-        free(data.str); //to be freeed by Koloman?
+        debug(data.str);
+        history_add(&history, data.str);
+        make_tree(&data); // from here Ka Hou's code begins
         data.str = NULL;
-        get_next_line(-1);
-        wait(0);
-        write(data.fd[1], "minishell> ", 11); // use write instead of printf? otherwise all printf afterwards will end in wrong fd?
     }
     if (data.fd[0] != 0) // make sure Koloman close!!!
         close(data.fd[0]);
     if (data.fd[1] != 1)
         close(data.fd[1]);
-    if (data.str)
-        free(data.str);
     ft_free_split(data.envp); //  make sure Koloman free!!!
-    get_next_line(-1);
+    destroy_history(&history);
     return (data.exit_code);
 }
