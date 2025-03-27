@@ -3,15 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/24 13:22:56 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/27 12:40:31 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Append a character to a string.
+ * 
+ * This function joins a character to the end of a string.
+ * The result is stored as a new malloc'd string and returned.
+ *
+ * @param s1 String to join to
+ * @param s2 Character to join
+ * @return char *
+ * @retval ptr Malloc'd result string
+ *
+ * @author kfan
+ */
 char	*ft_charjoin(char *s1, char *s2)
 {
 	char	*ptr;

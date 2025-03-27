@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 13:06:39 by kmautner          #+#    #+#             */
-/*   Updated: 2025/03/26 17:18:46 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/03/27 12:40:11 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
  *
  * @param str1 first string
  * @param str2 second string
- * @return 0 if the strings are equal, 1 otherwise.
+ * @return int
+ * @retval success 0 if the strings are equal, 1 otherwise.
  *
  * @author kmautner
  */

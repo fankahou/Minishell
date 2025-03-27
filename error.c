@@ -6,12 +6,24 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/26 16:32:41 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/03/27 12:51:11 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Indicates a syntax error.
+ * 
+ * This function indicates a syntax error in the
+ * token that is currently being processed and
+ * stops the processing of this token.
+ *
+ * @param str debug feature, unused
+ * @param token token in which the error occurred
+ *
+ * @author kfan
+ */
 void	syntax_error(char *str, t_token *token)
 {
 	// ft_printf("minishell: syntax error near unexpected token '%s'\n", str);
@@ -24,6 +36,18 @@ void	syntax_error(char *str, t_token *token)
 	}
 }
 
+/**
+ * @brief Indicates an open error.
+ * 
+ * This function indicates an open error in the
+ * token that is currently being processed and
+ * stops the processing of this token.
+ *
+ * @param str debug feature, unused
+ * @param token token in which the error occurred.
+ *
+ * @author kfan
+ */
 void	open_error(char *str, t_token *token)
 {
 	// ft_printf("minishell: %s: open failed", str);
@@ -44,7 +68,8 @@ void	open_error(char *str, t_token *token)
  * "\033[1;41m ERROR \033[22;0m -> ". Uses perror to print the message.
  *
  * @param msg message to print, may be NULL
- * @return always returns 1
+ * @return int
+ * @retval return always returns 1
  *
  * @author kmautner
  */

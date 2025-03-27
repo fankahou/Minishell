@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 13:09:49 by kmautner          #+#    #+#             */
-/*   Updated: 2025/03/26 17:46:46 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/03/27 12:44:45 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
  *
  * @param history history struct
  * @param command entry to add to history
- * @return 0 on success, 1 otherwise.
+ * @return int
+ * @retval success 0 on success, 1 otherwise.
  *
  * @author kmautner
  */
@@ -55,7 +56,8 @@ int	history_add(t_history *history, char *command)
  *
  * @param history history struct
  * @param fd file descriptor of the opened history file
- * @return 0 on success, 1 on error.
+ * @return int
+ * @retval success 0 on success, 1 on error.
  *
  * @author kmautner
  */
@@ -88,7 +90,8 @@ int	read_history_file(t_history *history, int fd)
  * the history.
  *
  * @param history history struct pointer
- * @return 0 on success, 1 otherwise.
+ * @return int
+ * @retval siccess 0 on success, 1 otherwise.
  *
  * @author kmautner
  */
@@ -118,7 +121,8 @@ int	init_history(t_history *history)
  * lead to a corrupted file.
  *
  * @param history history struct
- * @return 0 on success, 1 otherwise.
+ * @return int
+ * @retval success 0 on success, 1 otherwise.
  *
  * @author kmautner
  */

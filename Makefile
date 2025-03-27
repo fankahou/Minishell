@@ -28,8 +28,7 @@ NAME_BONUS = minishell_bonus
 SUPRESSION_FILE = readline.supp
 
 CFLAGS = -Wall -Wextra -Werror -g
-LIBFT = $(SRCDIR)/libft/libft.a
-LIBS = -lreadline
+LIBS = $(SRCDIR)/libft/libft.a -lreadline
 RM = rm -f
 
 HOSTNAME = $(shell "hostname")
@@ -43,12 +42,12 @@ bonus: $(NAME_BONUS)
 
 $(NAME): obj $(OBJ)
 	cd $(SRCDIR)/libft && make
-	cc $(CFLAGS) $(OBJ) $(LIBFT) $(LIBS) -o $(NAME)
+	cc $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 	export HOSTNAME=$(HOSTNAME)
 
 $(NAME_BONUS): obj $(OBJ)
 	cd $(SRCDIR)/libft && make
-	cc $(CFLAGS) $(OBJ) $(LIBFT) $(LIBS) -o $(NAME_BONUS)
+	cc $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME_BONUS)
 	export HOSTNAME=$(HOSTNAME)
 
 $(OBJ): $(OBJDIR)/%.o : $(SRCDIR)/%.c

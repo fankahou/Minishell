@@ -3,16 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   parse1_make_tree.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/24 13:09:18 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/27 17:18:55 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // echo 123 >out1 | echo 456 >>out 2 | echo 789 >> out3 | >out4 | echo 678 ; <out1 cat | cat > out; << EOF cat | cat >> out4
+/**
+ * @brief I have no idea what this does.
+ * 
+ * Please write some Documentation here, Ka Hou. 
+ *
+ * @param temp (description of temp)
+ * @param error_count (description of error_count)
+ * @return int 
+ * @retval k (description of k)
+ */
 static int check_temp(char **temp, int error_count)
 {
     int i;
@@ -42,6 +52,22 @@ static int check_temp(char **temp, int error_count)
     return (k);
 }
 
+/**
+ * @brief Creates a token.
+ * 
+ * Tbh I have no clue what exactly happens here...
+ *
+ * @param temp 
+ * @param token Array of tokens
+ * @param data data struct pointer
+ * @return t_token** 
+ * @retval token new token or NULL on error
+ *
+ * @ref t_token
+ * @ref t_data
+ *
+ * @author kfan
+ */
 static t_token **make_token(char **temp, t_token **token, t_data *data)
 {
     int i;
@@ -58,6 +84,24 @@ static t_token **make_token(char **temp, t_token **token, t_data *data)
     return (token);
 }
 
+/**
+ * @brief Executes tokens.
+ * 
+ * This function executes a list of tokens. This function
+ * is also a breaking point for execution, should something
+ * go wrong inside it.
+ *
+ * @param token Array of tokens to execute
+ * @param data Data struct containing needed information
+ * @param fd Array od duplicated file descriptors
+ * @return int 
+ * @retval success always returns 0
+ *
+ * @ref t_token
+ * @ref t_data
+ *
+ * @author kfan
+ */
 static int execute(t_token **token, t_data *data, int *fd)
 {
     int i;
@@ -79,6 +123,20 @@ static int execute(t_token **token, t_data *data, int *fd)
     return (0);
 }
 
+/**
+ * @brief Initializes the data for token processing.
+ *
+ * This function initializes the tree creation process.
+ * It duplicates STDIN and STDOUT using dup() and writes
+ * them into fd[0] and fd[1] respectively.
+ * 
+ * @param data pointer to data struct
+ * @param fd pointer to duplicate file descriptors into
+ * @return int 
+ * @retval success 0 on success, 1 otherwise.
+ *
+ * @author kfan 
+ */
 static int init_tree(t_data *data, int *fd)
 {
     fd[0] = dup(data->fd[0]);
@@ -93,10 +151,26 @@ static int init_tree(t_data *data, int *fd)
     return (0);
 }
 
-// store STDIN and STDOUT for recovery after each pipex
-// error != 0 will not excute
-// split input by delimiters ; && ||
-// make array of struct token
+/**
+ * @brief Creates the tree of tokens to be processed.
+ *
+ * Splits the input string into an array of tokens
+ * to be processed and starts the execution.
+ * The string is plit on the following delimiters:
+ * - ;
+ * - &&
+ * - ||
+ * STDIN and STDOUT are cached for easy recovery after each
+ * call to pipex.
+ * If data->error is not 0, it will not execute the token. 
+ * 
+ * @param data 
+ *
+ * @ref t_token token struct
+ * @ref pipex pipex function
+ * 
+ * @author kfan
+ */
 void make_tree(t_data *data)
 {
     char **temp;

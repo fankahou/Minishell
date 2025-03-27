@@ -6,13 +6,21 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/26 16:46:59 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/03/27 13:05:04 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// for debugging 
+/**
+ * @brief Debug function to print an array of strings.
+ *
+ * Debug function to print an array of strings.
+ * 
+ * @param temp String array to print
+ *
+ * @author kfan
+ */
 void print_array(char **temp)
 {
     int i;
@@ -25,7 +33,16 @@ void print_array(char **temp)
     }
 }
 
-// for debugging 
+/**
+ * @brief Debug function to print tokens.
+ * 
+ * Debug funciton that prints the contents
+ * of each token in an array of tokens.
+ * 
+ * @param token token array to print
+ *
+ * @author kfan
+ */
 void print_token(t_token **token)
 {
     int i;
@@ -65,6 +82,19 @@ void print_token(t_token **token)
     }
 }
 
+/**
+ * @brief Copies an array of strings.
+ *
+ * Copies an array of strings and returns
+ * the malloc'd copy.
+ * Currently only used to copy envp.
+ * 
+ * @param input 
+ * @return char** 
+ * @retval temp Malloc'd copy of the array.
+ *
+ * @author kfan
+ */
 char	**copy_array(char **input)
 {
 	char	**temp;
@@ -101,7 +131,8 @@ char	**copy_array(char **input)
  * @param argc Argument count
  * @param argv Argument vector
  * @param envp Environment
- * @return int 
+ * @return int
+ * @retval exit_code Exit code of the program.
  */
 int main(int argc, char **argv, char**envp)
 {

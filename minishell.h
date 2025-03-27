@@ -6,13 +6,14 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/26 15:47:18 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/03/27 17:17:28 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * @file minshell.h
  * @brief Minishell header file.
+ * 
  * Contains all the tools and utilities for minishell.
  */
 
@@ -20,6 +21,17 @@
 # define MINISHELL_H
 
 # ifndef DEBUG
+/**
+ * @def DEBUG 
+ * @brief Debug status
+ *
+ * Indicates if minishell is in debug mode.
+ * By default (if not defined) this will be set to 0.
+ * Use the debug rule in the make file to compile
+ * minishell with debug mode enabled.
+ *
+ * @author kmautner 
+ */
 #  define DEBUG 0
 # endif // DEBUG
 
@@ -34,15 +46,19 @@
 /**
  * @def HISTORY_MAX_SIZE
  * @brief Max size for history.
+ * 
  * This macro defines the max size of the history. Default is 100 commands.
+ * 
  * @author kmautner
  */
 # define HISTORY_MAX_SIZE 100
 /**
  * @def HISTORY_FILE
  * @brief Location and name of the history file.
+ * 
  * This macro defines the location and name of the file where the history
  * is saved inbetween sessions.
+ * 
  * @author kmautner
  */
 # define HISTORY_FILE ".minishell_history"
@@ -78,15 +94,22 @@ typedef struct s_clean
  * @brief Input data struct.
  *
  * This struct contains all the necessary data to receive and process
- * user input. 
+ * user input.
  *
- * @param str (Malloc'd) String input of the user
- * @param fd_in temp for gnl
- * @param fd_out for write in heredoc
- * @param fd File descriptors for stdin and stdout (may not be 0 & 1!)
- * @param exit_code exit code of the program
- * @param error Errno? (will be init by kfan)
- * @param envp Array of environment variables
+ * @var t_data::str
+ *		(Malloc'd) String input of the user
+ * @var t_data::fd_in
+ *		temp for gnl
+ * @var t_data::fd_out
+ *		for write in heredoc
+ * @var t_data::fd
+ *		File descriptors for stdin and stdout (may not be 0 & 1!)
+ * @var t_data::exit_code
+ *		exit code of the program
+ * @var t_data::error
+ *		Errno? (will be init by kfan)
+ * @var t_data::envp
+ *		Array of environment variables
  *
  * @author kfan
  */
@@ -102,6 +125,38 @@ typedef struct s_data
 	// pid for waiting?
 }				t_data;
 
+/**
+ * @struct t_token
+ * @brief Struct containing a token.
+ *
+ * This struct contains all data of a single token.
+ * I need to get Ka Hou to give a more detailed explanation
+ * of what a token is for this description because I
+ * don't quite understand his code (yet).
+ * 
+ * @var t_token::cmds
+ *		(unknown)
+ * @var t_token::fd_in
+ *		File descriptor for STDIN
+ * @var t_token::fd_out
+ *		File descriptor for STDOUT
+ * @var t_token::delimiter
+ *		Delimiter after this token
+ * @var t_token::nmb_of_cmd
+ *		(unknown)
+ * @var t_token::exit_code
+ *		exit code of the command in this token
+ * @var t_token::error
+ *		Error status (1 if an error occurred, 0 otherwise)
+ * @var t_token::envp
+ *		environment variables
+ * @var t_token::data
+ *		data struct
+ *
+ * @ref t_data
+ *
+ * @author kfan
+ */
 typedef struct s_token
 {
 	t_cmds		**cmds;
@@ -121,9 +176,10 @@ typedef struct s_token
  * This struct saves all needed data for the history.
  * It's currently just a fancy array, but it may evolve in the future.
  *
- * @param list List of all commands in the history.
- * @param length Amount of commands in history.
- *
+ * @var t_history::list
+ *		List of all commands in the history.
+ * @var t_history::length
+ *		Amount of commands in history.
  * @author kmautner
  */
 typedef struct s_history
@@ -133,15 +189,20 @@ typedef struct s_history
 }				t_history;
 
 /**
+ * @deprecated
  * @struct t_signal
  * @brief Struct to store a received signal.
  * @deprecated Will be replaced because of subject/norm.
  *
- * @param signal number of the signal
- * @param siginfo info about the signal sender (see siginfo_t)
- * @param context Currently not used for anything.
- * @param check See if the sgnal has been processed.
- *      Set to 0 after processing the signal.
+ * @var t_signal::signal
+ *		number of the signal
+ * @var t_signal::siginfo
+ *		info about the signal sender (see siginfo_t)
+ * @var t_signal::context
+ *		Not used for anything.
+ * @var t_signal::check
+ *		See if the sgnal has been processed.
+ *		Set to 0 after processing the signal.
  *
  * @author kmautner
  */
@@ -206,6 +267,7 @@ void			warn(char *msg);
 void			debug(char *msg);
 
 // HISTORY.C
+extern int		sigrecv;
 int				history_add(t_history *history, char *command);
 int				init_history(t_history *history);
 void			destroy_history(t_history *history);
