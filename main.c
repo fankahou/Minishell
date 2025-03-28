@@ -3,35 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/27 13:05:04 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/03/28 19:06:32 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * @brief Debug function to print an array of strings.
- *
- * Debug function to print an array of strings.
- * 
- * @param temp String array to print
- *
- * @author kfan
- */
-void print_array(char **temp)
-{
-    int i;
-
-    i = 0;
-    while (temp[i])
-    {
-        ft_printf("%s\n", temp[i]);
-        i++;
-    }
-}
 
 /**
  * @brief Debug function to print tokens.
@@ -83,46 +62,6 @@ void print_token(t_token **token)
 }
 
 /**
- * @brief Copies an array of strings.
- *
- * Copies an array of strings and returns
- * the malloc'd copy.
- * Currently only used to copy envp.
- * 
- * @param input 
- * @return char** 
- * @retval temp Malloc'd copy of the array.
- *
- * @author kfan
- */
-char	**copy_array(char **input)
-{
-	char	**temp;
-	int		y;
-    int     i;
-
-    y = 0;
-    while (input[y])
-        y++;
-    temp = malloc(sizeof(char *) * (y + 1));
-	if (!temp)
-		return (perror("malloc failed"), NULL);
-    temp[y] = NULL;
-	i = 0;
-	while (i < y)
-	{
-		temp[i] = ft_strdup(input[i]);
-		if (!temp[i])
-        {
-            while (i > 0)
-                free(input[--i]);
-            return (perror("ft_strdup failed"), NULL);
-        }
-		i++;
-	}
-	return (temp);
-}
-/**
  * @brief Main function of the program
  *
  * This is the main function and entry point of the program.
@@ -146,6 +85,8 @@ int main(int argc, char **argv, char**envp)
     data.fd[1] = 1;
     data.envp = copy_array(envp);
     init_history(&history);
+    data.envp_export = copy_array_prefix(envp, 0 , 0, 0); // new!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    sort_array(data.envp_export); // new!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     while (1)
     {
         data.str = readline("minishell>");
@@ -161,6 +102,7 @@ int main(int argc, char **argv, char**envp)
     if (data.fd[1] != 1)
         close(data.fd[1]);
     ft_free_split(data.envp); //  make sure Koloman free!!!
+    ft_free_split(data.envp_export); //  make sure Koloman free!!!
     destroy_history(&history);
     return (data.exit_code);
 }

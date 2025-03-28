@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse1_make_tree.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/27 17:18:55 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/03/28 18:56:50 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// echo 123 >out1 | echo 456 >>out 2 | echo 789 >> out3 | >out4 | echo 678 ; <out1 cat | cat > out; << EOF cat | cat >> out4
 // echo 123 >out1 | echo 456 >>out 2 | echo 789 >> out3 | >out4 | echo 678 ; <out1 cat | cat > out; << EOF cat | cat >> out4
 /**
  * @brief I have no idea what this does.
@@ -84,6 +85,7 @@ static t_token **make_token(char **temp, t_token **token, t_data *data)
     return (token);
 }
 
+// update envp after each pipex
 /**
  * @brief Executes tokens.
  * 
@@ -109,6 +111,10 @@ static int execute(t_token **token, t_data *data, int *fd)
     i = 0;
     while(token[i])
     {
+        token[i]->envp = data->envp;
+        token[i]->envp_export = data->envp_export;
+        if (clean_and_expand(token[i]))
+            return (data->error = 1, 1);
         if (token[i]->nmb_of_cmd > 0)
             pipex(token[i]);
         if (token[i]->delimiter == 2 && token[i]->exit_code[0] != 0)
@@ -120,6 +126,7 @@ static int execute(t_token **token, t_data *data, int *fd)
         restore_fd(data, fd); // reset after each pipe???
         i++;
     }
+    //update envp "echo $_"???
     return (0);
 }
 
@@ -147,10 +154,14 @@ static int init_tree(t_data *data, int *fd)
         return(close(fd[0]), perror("dup failed"), 1);
     data->fd_in = fd[0];
     data->fd_out = fd[1];
-    data->error = 0;
+    data->error = 0; // fresh restart
     return (0);
 }
 
+// store STDIN and STDOUT for recovery after each pipex
+// error != 0 will not excute
+// split input by delimiters ; && ||
+// make array of struct token
 /**
  * @brief Creates the tree of tokens to be processed.
  *

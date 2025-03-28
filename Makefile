@@ -6,15 +6,24 @@ SRC = main.c \
 	parse2_init.c \
 	parse3_make_cmd_list.c \
 	parse4_redir.c \
-	parse5_clean_name.c \
-	parse6_expand_envp.c \
+	parse5_clean_and_expand.c \
+	parse6_clean_name.c \
+	parse7_expand_envp.c \
 	pipex.c \
 	pipex_input.c \
 	pipex_utils.c \
+	builtins1.c \
+	builtins2.c \
+	builtins3.c \
+	builtins_pipes.c \
 	error.c \
 	utils.c \
+	utils_array1.c \
+	utils_array2.c \
 	utils_free.c \
 	utils_is.c \
+	utils_join_split.c \
+	utils_ft_split_space.c \
 	utils_ft_split_cmd.c \
 	utils_ft_split_pipe.c \
 	utils_ft_split_delimiter.c \
@@ -63,12 +72,12 @@ $(SUPRESSION_FILE):
 	printf "{\n\t<readline-stupidities>\n\tMemcheck:Leak\n\t...\n\tfun:readline\n}\n{\n\t<history-stupoidities>\n\tMemcheck:Leak\n\t...\n\tfun:add_history\n}" | cat > readline.supp
 
 clean:
-	cd src/libft && make clean
+	cd libft && make clean
 	$(RM)r obj
 	$(RM) $(SUPRESSION_FILE)
 
 fclean:
-	cd src/libft && make fclean
+	cd libft && make fclean
 	$(RM)r obj
 	$(RM) $(SUPRESSION_FILE)
 	$(RM) $(NAME) $(NAME_BONUS)

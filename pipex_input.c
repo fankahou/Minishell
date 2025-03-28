@@ -6,11 +6,36 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/24 15:27:40 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/28 18:58:25 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+// exit code will not change if exit() is not executed
+static int check_builtins(t_cmds *cmds, t_token *token, int *fd)
+{
+	if (builtins_pipe_fd_out(cmds, fd))
+		return (1);
+	if ((!ft_strncmp(cmds->cmd[0], "echo", 4) && ft_strlen(cmds->cmd[0]) == 4))
+		token->exit_code[0] = builtins_echo(&cmds->cmd[1]);
+	else if ((!ft_strncmp(cmds->cmd[0], "cd", 2) && ft_strlen(cmds->cmd[0]) == 2))
+		token->exit_code[0] = builtins_cd(&cmds->cmd[1], token->envp, token);
+	else if ((!ft_strncmp(cmds->cmd[0], "pwd", 3) && ft_strlen(cmds->cmd[0]) == 3))
+		token->exit_code[0] = builtins_pwd(token->envp);
+	else if ((!ft_strncmp(cmds->cmd[0], "export", 6) && ft_strlen(cmds->cmd[0]) == 6))
+		token->exit_code[0] = builtins_export(&cmds->cmd[1], token, 0, 0);
+	else if ((!ft_strncmp(cmds->cmd[0], "unset", 5) && ft_strlen(cmds->cmd[0]) == 5))
+		token->exit_code[0] = builtins_unset(&cmds->cmd[1], token->envp, token, 0);
+	else if ((!ft_strncmp(cmds->cmd[0], "env", 3) && ft_strlen(cmds->cmd[0]) == 3))
+		token->exit_code[0] = builtins_env(token->envp);
+	else if ((!ft_strncmp(cmds->cmd[0], "exit", 4) && ft_strlen(cmds->cmd[0]) == 4))
+		builtins_exit(&cmds->cmd[1], token);
+	else
+		return (0);
+	if (builtins_pipe_fd_in(cmds, fd))
+		return (1);
+	return (1);
+}
 
 static void	child(int *fd, t_cmds *cmds, t_token *token, char *path)
 {
@@ -36,7 +61,8 @@ static void	child(int *fd, t_cmds *cmds, t_token *token, char *path)
 			exit (126);
 		}
 		perror("minishell: command not found");
-		exit (127);
+		token->error[0] = 2;
+		token->exit_code[0] = 127;
 	}
 }
 
@@ -61,7 +87,7 @@ static void	parent(int *fd, t_cmds *cmds, int pid, t_token *token)
 		{
 			close(fd[0]);
 			perror("dup2 failed");
-			exit(1);
+			return ;
 		}
 		close(fd[0]);
 	}
@@ -69,48 +95,16 @@ static void	parent(int *fd, t_cmds *cmds, int pid, t_token *token)
 		// if statement for the one terminated by signal also?
 }
 
-/* // new: not neccesary in pipex but in minishell!
-static int replace_arg(char *cmd, char **temp)
-{
-	int i;
-	char *new_arg;
-
-	i = 0;
-	while (cmd[i] != ' ' && cmd[i] != '\0')
-		i++;
-	if (cmd[i] == '\0')
-		return (0);
-	i++;
-	// check for flags?
-	new_arg = ft_strdup(&cmd[i]);
-	printf("new = %s\n", new_arg);
-	if (!new_arg)
-		return(perror("ft_strdup failed"), 1);
-	if (temp[1])
-		free(temp[1]);
-	temp[1] = new_arg;
-	i = 2;
-	while(temp[i])
-	{
-		free(temp[i]);
-		temp[i] = NULL;
-		i++;
-	}
-	return(0);
-} */
-
 int	input(t_cmds *cmds, t_token *token)
 {
 	int		pid;
 	int		fd[2];
 	char *path;
 
-	//check for build ins!
 	if (pipe(fd) == -1)
 		return(perror("pipe failed"), 1);
-	// handle flags??? eg."       ls         -l     -a"
-/* 	if (temp[1] && temp[1][0] != '\0' && replace_arg(cmd, temp))  // only for echo??? otherwise will kill those flags?
-		return (1); */
+	if (check_builtins(cmds, token, fd))
+		return (0);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -120,7 +114,7 @@ int	input(t_cmds *cmds, t_token *token)
 	}
 	path = get_path(cmds->cmd, token->envp);
 	if (!path)
-		return (1);
+		return (perror("get_path failed"), 1);
 	if (pid == 0)
 		child(fd, cmds, token, path);
 	else
@@ -134,7 +128,8 @@ int	last_input(t_cmds *cmds, t_token *token)
 	int		pid;
 	char *path;
 
-	//check for build ins!
+	if (check_builtins(cmds, token, NULL))
+		return (0);
 /* 	if (temp[1] && temp[1][0] != '\0' && replace_arg(cmd, temp)) // only for echo??? echo    "test        321"
 		return (1); */
 	pid = fork();

@@ -6,35 +6,43 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/24 12:45:23 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/28 18:57:32 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//return (1) for skipping the $ sign
-static int ft_cmd(char *temp, t_token *token, int k, int count)
+// new split
+static char **ft_cmd(char *temp, t_token *token, char **old)//, int i)
 {
-    char *file;
+    //char *file;
+    char **cmd;
 
-    file = ft_calloc(1, 1);
-    if (!file)
-        return (perror("ft_calloc failed"), token->error[0] = 1, -1);
-    file = clean_name(temp, token, 0, file);
-    if (!file)
-        return (token->error[0] = 1, -1);
-    //printf("file = %s---\n", file);
-    if (count > 0)
-        token->cmds[k]->cmd[0] = join_cmd(token->cmds[k]->cmd[0], file);
-    else
+    cmd = ft_split_space(temp); // need custom split! need to check?
+    if (!cmd)
+        return (perror("ft_split failed"), token->error[0] = 1, NULL);
+/*     while (cmd[i])
     {
-        if (token->cmds[k]->cmd[0])
-            free(token->cmds[k]->cmd[0]);
-        token->cmds[k]->cmd[0] = file;
-    }
-    //if (!token->cmds[k]->cmd[0])
-    return (1);
+        // get rid of this for expand in excute?
+        file = ft_calloc(1, 1);
+        if (!file)
+            return (ft_free_split(cmd), perror("ft_calloc failed"), token->error[0] = 1, NULL);
+        file = clean_name(cmd[i], token, 0, file);
+        if (!file)
+            return (ft_free_split(cmd), token->error[0] = 1, NULL);
+        free(cmd[i]);
+        cmd[i] = file;
+        i++;
+    } */
+    if (old)
+        old = join_split(&old, &cmd, 0, 0);
+    else
+        old = cmd;
+    if (!old)
+        return (token->error[0] = 1, NULL);
+    return (old);
 }
+
 
 static int split_cmd(t_token *token, char **temp)
 {
@@ -57,41 +65,14 @@ static int split_cmd(t_token *token, char **temp)
     return (0);
 }
 
-static char **replace_cmd(char **temp)
-{
-    char **new;
-    int i;
-
-    new = malloc(sizeof(char *) * 3);
-    if (!new)
-        return (perror("malloc failed"), ft_free_split(temp), NULL);
-    new[1] = NULL;
-    new[2] = NULL;
-    i = 0;
-    while (temp[0][i] && temp[0][i] != ' ')
-        i++;
-    new[0] = ft_substr(temp[0], 0, i);
-    if (!new[0])
-        return (free(new), perror("ft_substr failed"), ft_free_split(temp), NULL);
-    if (temp[0][i] == ' ')
-    {
-        new[1] = ft_substr(temp[0], i + 1, ft_strlen(&temp[0][i + 1]));
-        if (!new[1])
-            return(free(new[0]), free(new), perror("ft_substr failed"), ft_free_split(temp), NULL);
-    }
-    ft_free_split(temp);
-    return (new);
-}
-
-static int scan_pipe(char **temp, t_token *token, int k)
+//new with cmd for split
+static int scan_pipe(char **temp, t_token *token, int k, char **cmd)
 {
     int i;
     int j;
-    int count;
     
-    i = 0;
-    count = 0;
-    while(temp[i])
+    i = -1;
+    while(temp[++i])
     {
         j = 0;
         while (is_space(temp[i][j]))
@@ -99,17 +80,19 @@ static int scan_pipe(char **temp, t_token *token, int k)
         if (temp[i][j] && is_sym(temp[i][j], temp[i][j + 1]) > 2)
             j = redir(&temp[i][j], token, k);
         else if (temp[i][j])
-            count = ft_cmd(&temp[i][j], token, k, count);
+        {
+            cmd = ft_cmd(&temp[i][j], token, cmd);//, 0);
+            if (!cmd)
+                return (token->error[0] = 1, 1);
+        }
         if (j == -1)
-        return (token->error[0] = 1, 1);
-        //return (ft_free_split(token->cmds[k]->cmd), token->nmb_of_cmd = j, 1);
-        i++;
+            return (token->error[0] = 1, 1);
     }
-    if (is_sym(token->cmds[k]->cmd[0][0], token->cmds[k]->cmd[0][1]))
+    if (is_sym(token->cmds[k]->cmd[0][0], token->cmds[k]->cmd[0][1]) && cmd == NULL) // need to check! && cmd = NULL?
         return(ft_free_split(token->cmds[k]->cmd), token->cmds[k]->cmd = NULL, 0);
-    token->cmds[k]->cmd = replace_cmd(token->cmds[k]->cmd);
-    if (!token->cmds[k]->cmd)
-        return (token->error[0] = 1, 1);
+    ft_free_split(token->cmds[k]->cmd);
+    token->cmds[k]->cmd = cmd;
+    //print_array(cmd);
     return (0);
 }
 
@@ -122,7 +105,7 @@ int make_cmd_list(char **temp, t_token *token)
         return(1);
     while (token->cmds[k])
     {
-        if (scan_pipe(token->cmds[k]->cmd, token, k))
+        if (scan_pipe(token->cmds[k]->cmd, token, k, NULL))
             return (1);
         k++;
     }

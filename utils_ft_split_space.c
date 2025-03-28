@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_ft_split_cmd.c                               :+:      :+:    :+:   */
+/*   utils_ft_split_space.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 19:00:01 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/21 15:11:45 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ static size_t	ft_count(char *s)
 	i = 0;
 	count = 0;
 	quote = 0;
-	if (s[i] != '\0' && !is_sym(s[i],s[i + 1]))
+	if (s[i] != '\0' && !is_space(s[i]))
 		count++;
 	while (s[i])
 	{
 		quote = inside_quote(s[i], quote);
-		if (is_sym(s[i],s[i + 1]) && quote == 0)
+		if (is_space(s[i]) && quote == 0) //
 		{
-			count++;
-			i = i + sym_count(s[i],s[i + 1], &s[i]);
-			if (s[i] != '\0' && !is_sym(s[i],s[i + 1]))
+			while (is_space(s[i]))
+				i++;
+			if (s[i] != '\0' && !is_space(s[i]))
 				count++;
 		}
 		else
@@ -49,15 +49,15 @@ static char	*ft_newstring(char *s)
 
 	i = 0;
 	quote = 0;
-	while (s[i] && !is_sym(s[i],s[i + 1]))
+	while (s[i] && !is_space(s[i]))
 	{
 		quote = inside_quote(s[i], quote);
 		i++;
 		while (s[i] && quote != 0)
 			quote = inside_quote(s[i++], quote);
 	}
-	if (s[i] && is_sym(s[i],s[i + 1]) && i == 0)
-		i = i + sym_count(s[i],s[i + 1], &s[i]);
+	while (s[i] && is_space(s[i]))
+		i++;
 	str = malloc(i + 1);
 	if (!str)
 		return (NULL);
@@ -91,7 +91,7 @@ static char	**ft_array(char *s, char **array)
 	return (array);
 }
 
-char	**ft_split_cmd(char *s)
+char	**ft_split_space(char *s)
 {
 	char	**array;
 

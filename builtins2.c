@@ -1,0 +1,151 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins2.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
+/*   Updated: 2025/03/28 12:38:53 by kfan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+// if prefix == 11, will skip the prefix in envp_export
+static int unset_export(t_token *token, char *temp)
+{
+	int i;
+	int j;
+	int prefix;
+
+	i = 0;
+	prefix = 11;
+	while (token->envp_export[i])
+	{
+		j = 0;
+		while (token->envp_export[i][j + prefix] && token->envp_export[i][j + prefix] != '=')
+			j++;
+		if (!ft_strncmp(&token->envp_export[i][prefix], temp, j))
+		{
+			token->envp_export = remove_array(token->envp_export, i, 0, 0);
+			if (!token->envp_export)
+				return (perror("remove_array failed"), 1);
+			ft_free_split(token->data->envp_export);
+			token->data->envp_export = token->envp_export;
+			break ;
+		}
+		i++;
+	}
+	return (0);
+}
+
+static int add_envp_export(char *cmd, t_token *token)
+{
+	char *temp;
+	char *quote;
+	
+	if (unset_export(token, cmd))
+		return (1);
+	quote = attach_quote(cmd);
+	if (!quote)
+		return (perror("attach_quote failed"), 1);
+	temp = ft_strjoin("declare -x ", quote);
+	free(quote);
+	if (!temp)
+		return(perror("ft_strjoin failed"), 1);
+	token->envp_export = add_array(token->envp_export, temp, 0);
+	free(temp);
+	if (!token->envp_export)
+		return(perror("add_array failed"), 1);
+	ft_free_split(token->data->envp_export);
+	token->data->envp_export = token->envp_export;
+	sort_array(token->envp_export);
+	return (0);
+}
+
+int add_envp(char *cmd, t_token *token, int i, int j)
+{
+	while (token->envp[i])
+	{
+		j = 0;
+		while (token->envp[i][j] && token->envp[i][j] != '=')
+			j++;
+		if (!ft_strncmp(token->envp[i], cmd, j) && token->envp[i][j] == '=')
+		{
+			token->envp = remove_array(token->envp, i, 0, 0);
+			if (!token->envp)
+				return (perror("remove_array failed"), 1);
+			ft_free_split(token->data->envp);
+			token->data->envp = token->envp;
+			break ;
+		}
+		i++;
+	}
+	token->envp = add_array(token->envp, cmd, 0); // random??
+	if (!token->envp)
+		return(perror("add_array failed"), 1);
+	ft_free_split(token->data->envp);
+	token->data->envp = token->envp;
+	return (add_envp_export(cmd, token));
+}
+
+// check nmb of cmds!!!
+// check cmd[1], eg. "USER = 123"
+// check starting only with alphabats
+int builtins_export(char **cmd, t_token *token, int k, int i)
+{
+	if (!token->envp)
+		return (perror("envp not found"), 1);
+	while (cmd[k])
+	{
+		i = 0;
+		if (!ft_isalpha(cmd[k][i]))
+			return (perror("bash: export: not a valid identifier"), 1);
+		while (cmd[k][i])
+		{
+			if (!ft_isalpha(cmd[k][0]) && !ft_isalnum(cmd[k][i]) && cmd[k][i] != '_' && cmd[k][i] != '=')
+				return (perror("bash: export: not a valid identifier"), 1);
+			if (cmd[k][i] == '=')
+				break ;
+			i++;
+		}
+		if (cmd[k][i] == '=' && token->nmb_of_cmd == 1)
+			add_envp(cmd[k], token, 0, 0);
+		else if (token->nmb_of_cmd == 1)
+			add_envp_export(cmd[k], token);
+		k++;
+	}
+	if (k == 0)
+		print_array(token->envp_export);
+	return (0);
+}
+
+int builtins_unset(char **cmd, char **envp, t_token *token, int k)
+{
+	int		i;
+
+	i = 0;
+	if (!envp)
+		return(perror("envp not found"), 1);
+	while (cmd[k] && token->nmb_of_cmd == 1)
+	{
+		while (envp[i])
+		{
+			if (!ft_strncmp(envp[i], cmd[k], ft_strlen(cmd[k])) && envp[i][ft_strlen(cmd[k])] == '=')
+			{
+				envp = remove_array(envp, i, 0, 0);
+				if (!envp)
+					return (perror("remove_array failed"), 1);
+				ft_free_split(token->data->envp);
+				token->data->envp = envp;
+				break ;
+			}
+			i++;
+		}
+		if (unset_export(token, cmd[k]))
+			return (1);
+		k++;
+	}
+	return (0);
+}

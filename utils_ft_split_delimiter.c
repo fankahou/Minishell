@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/20 11:54:20 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/28 19:00:08 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,24 +116,3 @@ char	**ft_split_delimiter(char const *s)
 	array = ft_array(s, array);
 	return (array);
 }
-
-/*
-#include <stdio.h>
-
-int	main(int argc, char **argv)
-{
-	char	**ptr;
-	size_t		i;
-
-	(void)argc;
-	ptr = ft_split(argv[1], argv[2][0]);
-	i = 0;
-	//printf("%zu\n", ft_count(argv[1], argv[2][0]));
-	while (i < ft_count(argv[1], argv[2][0]))
-	{
-		printf("%s\n", ptr[i]);
-		i++;
-	}
-	return (0);
-}
-*/

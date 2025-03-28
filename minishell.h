@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/27 17:17:28 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/03/28 18:54:51 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ typedef struct s_data
 	int			exit_code;
 	int			error;
 	char		**envp;
+	char    **envp_export; // new!!!!!
 	// pid for waiting?
 }				t_data;
 
@@ -167,6 +168,7 @@ typedef struct s_token
 	int			*exit_code;
 	int			*error;
 	char		**envp;
+	char    **envp_export; // new!!!!!
 	t_data		*data;
 }				t_token;
 
@@ -214,52 +216,72 @@ typedef struct s_signal
 	char		check;
 }				t_signal;
 
-void	print_array(char **temp);     // for debugging
-void	print_token(t_token **token); // for debugging'
+void print_token(t_token **token);  // for debugging'
 
-void			make_tree(t_data *data);
-int				init_token(char **temp, t_token **token, t_data *data, int i);
-int				make_cmd_list(char **temp, t_token *token);
-int				redir(char *temp, t_token *token, int k);
-char			*clean_name(char *temp, t_token *token, int count, char *file);
-char			*expand_envp(char *temp, t_token *token, char *new,
-					t_clean *clean);
-int				check_envp_count(char *temp);
+void make_tree(t_data *data);
+int init_token(char **temp, t_token **token, t_data *data, int i);
+int make_cmd_list(char **temp, t_token *token);
+int redir(char *temp, t_token *token, int k);
+int clean_and_expand(t_token *token);
+char *clean_name(char *temp, t_token *token, int count, char *file);
+char *expand_envp(char *temp, t_token *token, char *new, t_clean *clean);
+int check_envp_count(char *temp);
 
-// error
-void			syntax_error(char *str, t_token *token);
-void			open_error(char *str, t_token *token);
+//error
+void syntax_error(char *str, t_token *token);
+void open_error(char *str, t_token *token);
 
 // from pipex
-int				pipex(t_token *token);
-// void	ft_free_pipex(char **array);
-// void	error_pipex(char *message, char **temp);
-char			*find_bin(char **cmd, char **paths, int i);
-char			*get_path(char **cmd, char **envp);
-int				input(t_cmds *cmds, t_token *token);
-int				last_input(t_cmds *cmds, t_token *token);
-// void	execve_error(char *message, char **temp, int fd);
+int     pipex(t_token *token);
+//void	ft_free_pipex(char **array);
+//void	error_pipex(char *message, char **temp);
+char	*find_bin(char **cmd, char **paths, int i);
+char	*get_path(char **cmd, char **envp);
+int	input(t_cmds *cmds, t_token *token);
+int	last_input(t_cmds *cmds, t_token *token);
+//void	execve_error(char *message, char **temp, int fd);
 
-// all utils
-char			*ft_charjoin(char *s1, char *s2);
-int				inside_quote(char c, int quote);
-void			close_unused_fd(t_token **token, int i);
-void			restore_fd(t_data *data, int *fd);
-char			*join_cmd(char *src, char *new);
-char			**ft_split_cmd(char *s);
-char			**ft_split_delimiter(char const *s);
-char			**ft_split_pipe(char *s);
-void			ft_free(char **array, int i);
-void			ft_free_split(char **array);
-void			ft_free_token(t_token **token);
-void			small_free(t_token **token, int i);
-int				is_delimiter(char c1, char c2);
-int				is_sym(char c1, char c2);
-int				is_quote(char c);
-int				is_space(char c);
-int				is_pipe(char c);
-int				sym_count(char c1, char c2, char *pin);
-int				delimiter_count(char c1, char c2);
+//all utils
+char	*ft_charjoin(char *s1, char *s2);
+int inside_quote(char c, int quote);
+void close_unused_fd(t_token **token, int i);
+void restore_fd(t_data *data, int *fd);
+char *join_cmd(char *src, char *new);
+void sort_array(char **input);
+char *attach_quote(char *temp);
+char	**copy_array_prefix(char **input, int y, int i, int j);
+char	**copy_array(char **input);
+char	**remove_array(char **input, int index, int y, int j);
+char	**add_array(char **input, char *entry, int y);
+void print_array(char **temp);
+char	**ft_split_space(char *s);
+char	**ft_split_cmd(char *s);
+char	**ft_split_delimiter(char const *s);
+char	**ft_split_pipe(char *s);
+void	ft_free(char **array, int i);
+void	ft_free_split(char **array);
+void	ft_free_token(t_token **token);
+void    small_free(t_token **token, int i);
+int is_delimiter(char c1, char c2);
+int is_sym(char c1, char c2);
+int is_quote(char c);
+int is_space(char c);
+int is_pipe(char c);
+int sym_count(char c1, char c2, char *pin);
+int delimiter_count(char c1, char c2);
+char **join_split(char ***old, char ***cmd, int i, int j);
+
+//builtins
+int builtins_echo(char **cmd);
+int builtins_cd(char **cmd, char **envp, t_token *token);
+int builtins_pwd(char **envp);
+int builtins_export(char **cmd, t_token *token, int k, int i);
+int builtins_unset(char **cmd, char **envp, t_token *token, int k);
+int builtins_env(char **envp);
+int builtins_exit(char **cmd, t_token *token);
+int add_envp(char *cmd, t_token *token, int i, int j);
+int builtins_pipe_fd_out(t_cmds *cmds, int *fd);
+int builtins_pipe_fd_in(t_cmds *cmds, int *fd);
 
 // ERROR.C
 int				error(char *msg);

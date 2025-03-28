@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/24 13:08:19 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/28 18:58:40 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	 pipex(t_token *token)
 	if (open_fd(token))
 		return (1);
 	i = 0;
-	while (i < token->nmb_of_cmd - 1)
+	while (i < token->nmb_of_cmd - 1 && token->error[0] == 0)
 	{ 	
 		if (replace_fd(token, i))
 			return (perror("dup2 failed"), 1);
@@ -116,7 +116,7 @@ int	 pipex(t_token *token)
 				return (1);
 		i++;
 	}
-	if (token->cmds[i])
+	if (token->cmds[i] && token->error[0] == 0)
 	{
 		if (replace_fd(token, i))
 			return (perror("dup2 failed"), 1);

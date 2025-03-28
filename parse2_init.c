@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/24 16:33:08 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/28 18:57:22 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ static int check_and_malloc(char **temp, t_token *token)
         i++;
     }
     token->cmds[i] = NULL;
-    //token->nmb_of_cmd = 0;
     return (0);
 }
 
@@ -126,7 +125,9 @@ int init_token(char **temp, t_token **token, t_data *data, int i)
         if (!token[i])
             return (small_free(token, i), perror("malloc failed"), 1);
         token[i]->cmds = NULL;
+        //check if !envp?
         token[i]->envp = data->envp;
+        token[i]->envp_export = data->envp_export;
         token[i]->exit_code = &data->exit_code;
         token[i]->fd_in = data->fd_in;
         token[i]->fd_out = data->fd_out;

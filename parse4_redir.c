@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/23 17:31:45 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/28 18:57:42 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,21 @@ int redir(char *temp, t_token *token, int k)
     return_val = 0;
     type = is_sym(temp[0], temp[1]);
     count = sym_count(temp[0], temp[1], NULL);
-    file = ft_calloc(1, 1);
+    // check if empty > syntax error?
+    while (temp[count] && is_space(temp[count]))
+        count++;
+    if (temp[count] == '\0')
+        return (syntax_error(temp, token), -1);
+    file = ft_strdup(&temp[count]);
+    // get rid of this for expand in excute?
+/*     file = ft_calloc(1, 1);
     if (!file)
         return (ft_printf("ft_calloc failed\n"), -1);
     file = clean_name(temp, token, count, file);
     if (!file)
         return (syntax_error(&temp[0], token), -1);
+    if (file[0] == '\0')
+        return (syntax_error(&temp[0], token), -1);  *///$FAKE: ambiguous redirect
     if (type == 3 || type == 4)
         return_val = ft_redir_in(token, type, file, k);
     else if (type == 5 || type == 6)

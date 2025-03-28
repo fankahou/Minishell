@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/24 12:24:38 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/28 18:58:33 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ char	*get_path(char **cmd, char **envp)
 		i++;
 	}
 	if (ft_strncmp(envp[i], "PATH=", 5))
-		return (perror("path not found"), NULL);
-	temp = ft_split(&envp[i][5], ':'); //
+		return (ft_strdup(cmd[0]));
+	temp = ft_split(&envp[i][5], ':');
 	if (!temp)
 		return (perror("ft_split failed"), NULL);
 	path = find_bin(cmd, temp, 0);
