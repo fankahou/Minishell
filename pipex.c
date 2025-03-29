@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 18:58:40 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/29 15:22:21 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static int	outfile(t_token *token, int k)
 			return(perror("minishell: Permission denied"), token->exit_code[0] = 13, -1); // exitcode = 13???
 	}
 	if (token->cmds[k]->redir[1] == 6)
-		fd = open(token->cmds[k]->outfile, O_WRONLY  | O_CREAT | O_APPEND, 0644);
+		fd = open(token->cmds[k]->outfile, O_WRONLY  | O_CREAT | O_APPEND, 0664);
 	else
-		fd = open(token->cmds[k]->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open(token->cmds[k]->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	if (fd < 0)
 		open_error(token->cmds[k]->infile, token);
 	return (fd);

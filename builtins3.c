@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/29 11:46:58 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/29 14:03:00 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,13 @@ static int check_and_change_path(char **envp, char *path, t_token *token)
 	if (path && path[0] == '-' && path[1] == '\0')
 	{
 		i = 0;
-		while (envp[i])
+		while (envp && envp[i])
 		{
 			if (!ft_strncmp(envp[i], "OLDPWD=", 7))
 				return (check_and_change_path(envp, &envp[i][7], token));
 			i++;
 		}
-		if (ft_strncmp(envp[i], "OLDPWD=", 7))
-			return (perror("minishell: cd: OLDPWD not set"), 1);
+		return (perror("minishell: cd: OLDPWD not set"), 1);
 	}
 	if (!getcwd(oldpath, 1024))
 		 return(perror("minishell: getcwd failed"), 1);
@@ -78,14 +77,13 @@ static int change_dir(char *path, char **envp, t_token *token)
 	if (!path)
 	{
 		i = 0;
-		while (envp[i])
+		while (envp && envp[i])
 		{
 			if (!ft_strncmp(envp[i], "HOME=", 5))
 				return (check_and_change_path(envp, &envp[i][5], token));
 			i++;
 		}
-		if (ft_strncmp(envp[i], "HOME=", 5))
-			return (perror("minishell: cd: HOME not set"), 1);
+		return (perror("minishell: cd: HOME not set"), 1);
 	}
 	else
 		return (check_and_change_path(envp, path, token));
@@ -96,16 +94,17 @@ static int change_dir(char *path, char **envp, t_token *token)
 // opendir function to check for errors? error after a pipe??
 int builtins_cd(char **cmd, char **envp, t_token *token)
 {
-	if (!envp)
-		return(perror("envp not found"), 1);
+	DIR *dir;
+	
 	if (cmd[0] && cmd[1])
 		return(perror("bash: cd: too many arguments"), 1);
 	if (cmd[0])
 	{
-		//if (!opendir())
-		//perror("No such file or directory");
-		//closedir?
-		//return (1);
+		dir = opendir(cmd[0]);
+		if (!dir)
+			return (perror("No such file or directory"), 1);
+		// readdir() for Permission?
+		closedir(dir);
 	}
 	if (!cmd[0] && token->nmb_of_cmd == 1)
 		return (change_dir(NULL, envp, token));

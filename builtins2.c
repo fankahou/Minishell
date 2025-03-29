@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 12:38:53 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/29 13:59:53 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,24 +95,22 @@ int add_envp(char *cmd, t_token *token, int i, int j)
 // check starting only with alphabats
 int builtins_export(char **cmd, t_token *token, int k, int i)
 {
-	if (!token->envp)
-		return (perror("envp not found"), 1);
 	while (cmd[k])
 	{
 		i = 0;
-		if (!ft_isalpha(cmd[k][i]))
+		if (!ft_isalpha(cmd[k][i]) && cmd[k][i] != '_')
 			return (perror("bash: export: not a valid identifier"), 1);
 		while (cmd[k][i])
 		{
-			if (!ft_isalpha(cmd[k][0]) && !ft_isalnum(cmd[k][i]) && cmd[k][i] != '_' && cmd[k][i] != '=')
+			if (!ft_isalpha(cmd[k][i]) && !ft_isalnum(cmd[k][i]) && cmd[k][i] != '_' && cmd[k][i] != '=')
 				return (perror("bash: export: not a valid identifier"), 1);
 			if (cmd[k][i] == '=')
 				break ;
 			i++;
 		}
-		if (cmd[k][i] == '=' && token->nmb_of_cmd == 1)
+		if (token->envp && cmd[k][i] == '=' && token->nmb_of_cmd == 1)
 			add_envp(cmd[k], token, 0, 0);
-		else if (token->nmb_of_cmd == 1)
+		else if (token->envp && token->nmb_of_cmd == 1)
 			add_envp_export(cmd[k], token);
 		k++;
 	}
@@ -125,11 +123,11 @@ int builtins_unset(char **cmd, char **envp, t_token *token, int k)
 {
 	int		i;
 
-	i = 0;
 	if (!envp)
-		return(perror("envp not found"), 1);
+		return(0);
 	while (cmd[k] && token->nmb_of_cmd == 1)
 	{
+		i = 0;
 		while (envp[i])
 		{
 			if (!ft_strncmp(envp[i], cmd[k], ft_strlen(cmd[k])) && envp[i][ft_strlen(cmd[k])] == '=')

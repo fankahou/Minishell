@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 18:29:51 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/29 13:13:32 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char *expand_envp(char *temp, t_token *token, char *new, t_clean *clean)
     else if (temp[0] && !ft_isalpha(temp[0]) && temp[0] != '_' && temp[1])
         return(free(new), ft_strdup(&temp[1]));
     j = 0;
-    while (token->envp[j])
+    while (token->envp && token->envp[j])
     {
         if (!ft_strncmp(temp, token->envp[j], check_sys_envp_count(token->envp[j])) && token->envp[j][i] == '=')
             return (free(new), ft_strdup(&token->envp[j][i + 1]));

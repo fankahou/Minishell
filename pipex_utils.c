@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 18:58:33 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/29 13:43:13 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*get_path(char **cmd, char **envp)
 
 	i = 0;
 	if (!envp)
-		return (perror("envp not found"), NULL);
+		return (ft_strdup(cmd[0]));
 	while (envp[i])
 	{
 		if (!ft_strncmp(envp[i], "PATH=", 5))

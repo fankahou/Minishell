@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/29 11:28:54 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/29 13:51:53 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,16 @@ int main(int argc, char **argv, char**envp)
     data.error = 2;
     data.fd[0] = 0;
     data.fd[1] = 1;
-    data.envp = copy_array(envp);
+    //envp = NULL; // just to test
+    data.envp = NULL;
+    data.envp_export = NULL;
+    if (envp) // new: protection!
+    {
+        data.envp = copy_array(envp);
+        data.envp_export = copy_array_prefix(envp, 0 , 0, 0); // new!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        sort_array(data.envp_export); // new!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    }
     init_history(&history);
-    data.envp_export = copy_array_prefix(envp, 0 , 0, 0); // new!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    sort_array(data.envp_export); // new!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     while (1)
     {
         temp = readline("minishell> "); // new: one more space just for better read

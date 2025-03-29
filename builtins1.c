@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/29 10:39:07 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/29 15:35:34 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,15 @@ int	builtins_echo(char **cmd)
 		if (cmd[i])
 			write(1, cmd[i], ft_strlen(cmd[i]));
 		i++;
-		if (!cmd[i] && flag == 0)
-			return (write(1, "\n", 1), 0);
-		else if (!cmd[i] && flag == 1)
-			return (0);
+		if (!cmd[i])
+			break ;
 		// to fix "echo $NOT_A_VAR $NOT_A_VAR $NOT_A_VAR $USER" :???
 		//if (cmd[i + 1] && cmd[i][0] != '\0' && cmd[i + 1][0] != '\0')
+		//if (cmd[i][0] != '\0')
 		write(1, " ", 1);
 	}
+	if (flag == 0)
+		return (write(1, "\n", 1), 0);
 	return (0);
 }
 
@@ -78,28 +79,42 @@ int builtins_pwd(char **envp)
 
 
 // check arg > 2 ; bash: exit: too many arguments
+// exit 9223372036854775807 > ok
+// exit 9223372036854775808 > fail
+// exit -9223372036854775807 > ok but how to make it faster?
 int builtins_exit(char **cmd, t_token *token)
 {
 	int i;
+	long temp;
 
 	if (cmd[0] && cmd[1] && ft_isdigit(cmd[0][0]))
 		return (token->exit_code[0] = 1, perror("minishell: exit: too many arguments"), 1);
-	else// (token->nmb_of_cmd == 1)
+	else if (token->nmb_of_cmd == 1)
 	{
 		token->error[0] = 2;
 		//ft_printf("exit\n"); // no need to print?
 		token->exit_code[0] = 0; 
-		if (cmd[0])
-			token->exit_code[0] = ft_atoi(cmd[0]);
 	}
 	i = 0;
 	if (cmd[0])
 	{
+		temp = ft_atol(cmd[0]);
+		//check long overflow! return (token->exit_code[0] = 2, perror("minishell: exit: numeric argument required"), 0);
+/* 		while (temp < 0)
+			temp += 256; */
+		if (temp > 255)
+			token->exit_code[0] = 255;
+		else
+			token->exit_code[0] = (int)temp;
+		if (cmd[0][i] == '+' || cmd[0][i] == '-')
+			i++;
+		if (!cmd[0][i])
+			return (token->exit_code[0] = 2, perror("minishell: exit: numeric argument required"), 0);
 		while(cmd[0][i])
 		{
-			if (cmd[0][i] && !ft_isdigit(cmd[0][i]) && token->error[0] == 2)
+			if (cmd[0][i] && !is_space(cmd[0][i]) && !ft_isdigit(cmd[0][i]) && token->error[0] == 2)
 				return (token->exit_code[0] = 2, perror("minishell: exit: numeric argument required"), 0);
-			else if (cmd[0][i] && !ft_isdigit(cmd[0][i]))
+			else if (cmd[0][i] && !is_space(cmd[0][i]) && !ft_isdigit(cmd[0][i]))
 				return (perror("minishell: exit: numeric argument required"), 0);
 			i++;
 		}
