@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 12:44:30 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/29 11:46:58 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int builtins_cd(char **cmd, char **envp, t_token *token)
 		//if (!opendir())
 		//perror("No such file or directory");
 		//closedir?
+		//return (1);
 	}
 	if (!cmd[0] && token->nmb_of_cmd == 1)
 		return (change_dir(NULL, envp, token));

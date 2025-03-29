@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 19:06:32 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/29 11:28:54 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,12 @@ int main(int argc, char **argv, char**envp)
 {
     t_data data;
     t_history history;
+    char *temp;
 
     (void) argc;
     (void) argv;
     data.exit_code = 0;
+    data.error = 2;
     data.fd[0] = 0;
     data.fd[1] = 1;
     data.envp = copy_array(envp);
@@ -89,13 +91,20 @@ int main(int argc, char **argv, char**envp)
     sort_array(data.envp_export); // new!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     while (1)
     {
-        data.str = readline("minishell>");
-        if (data.str[0] == '\0')
+        temp = readline("minishell> "); // new: one more space just for better read
+        if (temp[0] == '\0')
             break ;
+        data.str = ft_calloc(ft_strlen(temp) + 2, 1); //new: copy one more \0 to imitate gnl to avoid invalid read in Ka Hou's code
+        if (!data.str)
+            break ;
+        ft_strlcpy(data.str, temp, ft_strlen(temp) + 1);
+        free(temp);
         debug(data.str);
-        history_add(&history, data.str);
         make_tree(&data); // from here Ka Hou's code begins
+        history_add(&history, data.str); // new: Ka Hou changed it to after make_tree instead of before otherwise Koloman frees the cmd before it goes into make_tree
         data.str = NULL;
+        if (data.error == 2)
+            break;
     }
     if (data.fd[0] != 0) // make sure Koloman close!!!
         close(data.fd[0]);

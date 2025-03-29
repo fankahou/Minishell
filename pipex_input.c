@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 18:58:25 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/29 10:38:47 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 // exit code will not change if exit() is not executed
 static int check_builtins(t_cmds *cmds, t_token *token, int *fd)
 {
+	//printf("cmd = %s----\n", cmds->cmd[0]);
 	if (builtins_pipe_fd_out(cmds, fd))
 		return (1);
 	if ((!ft_strncmp(cmds->cmd[0], "echo", 4) && ft_strlen(cmds->cmd[0]) == 4))

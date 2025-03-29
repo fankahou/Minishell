@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 18:33:44 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/29 10:39:07 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,15 @@ int builtins_exit(char **cmd, t_token *token)
 {
 	int i;
 
-	if (cmd[0] && cmd[1])
+	if (cmd[0] && cmd[1] && ft_isdigit(cmd[0][0]))
 		return (token->exit_code[0] = 1, perror("minishell: exit: too many arguments"), 1);
-	if (token->nmb_of_cmd == 1)
+	else// (token->nmb_of_cmd == 1)
 	{
 		token->error[0] = 2;
-		ft_printf("exit\n"); // no need to print?
+		//ft_printf("exit\n"); // no need to print?
 		token->exit_code[0] = 0; 
 		if (cmd[0])
-			token->exit_code[0] = ft_atoi(cmd[1]);
+			token->exit_code[0] = ft_atoi(cmd[0]);
 	}
 	i = 0;
 	if (cmd[0])
