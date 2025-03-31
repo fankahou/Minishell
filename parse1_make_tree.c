@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse1_make_tree.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 18:56:50 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/31 14:15:51 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,11 @@ static int check_temp(char **temp, int error_count)
 /**
  * @brief Creates a token.
  * 
- * Tbh I have no clue what exactly happens here...
+ * Creates an array of token structs and
+ * initialises them with the commands inside
+ * temp and the data inside data
  *
- * @param temp 
+ * @param temp command list
  * @param token Array of tokens
  * @param data data struct pointer
  * @return t_token** 
@@ -167,7 +169,7 @@ static int init_tree(t_data *data, int *fd)
  *
  * Splits the input string into an array of tokens
  * to be processed and starts the execution.
- * The string is plit on the following delimiters:
+ * The string is split on the following delimiters:
  * - ;
  * - &&
  * - ||

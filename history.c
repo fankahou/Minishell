@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 13:09:49 by kmautner          #+#    #+#             */
-/*   Updated: 2025/03/27 12:44:45 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/03/31 13:05:42 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,16 @@
  * This function adds a malloc'd string to the history.
  * If an equal string is already the latest entry in history,
  * it will get free'd and ignored.
+ * Note that the string does not get free'd by this function!
+ * Call destroy_history() at the end of the program to
+ * free the entire history!
  *
  * @param history history struct
  * @param command entry to add to history
  * @return int
  * @retval success 0 on success, 1 otherwise.
+ *
+ * @ref destroy_history
  *
  * @author kmautner
  */
@@ -91,7 +96,7 @@ int	read_history_file(t_history *history, int fd)
  *
  * @param history history struct pointer
  * @return int
- * @retval siccess 0 on success, 1 otherwise.
+ * @retval success 0 on success, 1 otherwise.
  *
  * @author kmautner
  */

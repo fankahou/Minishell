@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/29 14:03:00 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/31 14:10:39 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,21 @@ static int change_dir(char *path, char **envp, t_token *token)
 
 // check nmb of cmds >> if nmb > 1 it just skip! like in exit()!
 // opendir function to check for errors? error after a pipe??
+/**
+ * @brief Builtin "cd" command.
+ * 
+ * Handles the behaviour of the builtin cd command.
+ * Changes the current working directory to a given
+ * relative or absolute path.
+ * 
+ * @param cmd command arguments
+ * @param envp environment variables
+ * @param token command token
+ * @return int 
+ * @retval success 0 on success, 1 otherwise,
+ *
+ * @author kfan
+ */
 int builtins_cd(char **cmd, char **envp, t_token *token)
 {
 	DIR *dir;

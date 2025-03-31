@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/29 15:35:34 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/31 13:25:14 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,17 @@
 //echo -nnnnn -nnnnn -nnnna 32
 // echo $NOT_A_VAR $NOT_A_VAR $NOT_A_VAR $USER
 // echo $USER after export??? export USER=xxx ; echo $USER <<already expanded in parsing...
+/**
+ * @brief echo command flag check
+ *
+ * Checks if the echo command was called with a flag.
+ * 
+ * @param cmd command arguments
+ * @return int 
+ * @retval i Position of the first non-flag argument?
+ *
+ * @author kfan
+ */
 static int echo_flag(char **cmd)
 {
 	int i;
@@ -39,6 +50,19 @@ static int echo_flag(char **cmd)
 	return (0);
 }
 
+/**
+ * @brief Builtin "echo" command
+ *
+ * This function handles the behaviour of the echo command.
+ * Writes a string to stdout that can be piped to other
+ * commands.
+ * 
+ * @param cmd command arguments and flags of echo
+ * @return int 
+ * @retval success 0 on success, 1 otherwise.
+ *
+ * @author kfan
+ */
 int	builtins_echo(char **cmd)
 {
 	int i;
@@ -65,7 +89,21 @@ int	builtins_echo(char **cmd)
 	return (0);
 }
 
-//ignores arg?
+/**
+ * @brief Builtin "pwd" command
+ *
+ * Handles the behaviour of the pwd command,
+ * printing the current working directory to
+ * stdout.
+ * 
+ * Note: ignores arg?
+ *
+ * @param envp environment variables 
+ * @return int 
+ * @retval success 0 on success, 1 otherwise.
+ *
+ * @author kfan
+ */
 int builtins_pwd(char **envp)
 {
 	char path[1024];
@@ -82,6 +120,20 @@ int builtins_pwd(char **envp)
 // exit 9223372036854775807 > ok
 // exit 9223372036854775808 > fail
 // exit -9223372036854775807 > ok but how to make it faster?
+/**
+ * @brief Builtin "exit" command
+ *
+ * Handles the bahaviour of the builtin exit command.
+ * Quits minishell, taking one optional argument
+ * for the exit code.
+ * 
+ * @param cmd command arguments 
+ * @param token command token
+ * @return int 
+ * @retval success 0 on success, 1 on error
+ *
+ * @author kfan
+ */
 int builtins_exit(char **cmd, t_token *token)
 {
 	int i;
@@ -122,7 +174,19 @@ int builtins_exit(char **cmd, t_token *token)
 	return (0);
 }
 
-// arg?
+/**
+ * @brief Builtin env command
+ *
+ * Prints out the list of environment variables.
+ *
+ * Note: arg?
+ * 
+ * @param envp environment variables
+ * @return int 
+ * @retval return always returns 0
+ *
+ * @author kfan
+ */
 int builtins_env(char **envp)
 {
 	//"_=./minishell" > "_=env" or "/usr/bin/env"?

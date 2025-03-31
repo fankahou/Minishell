@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse2_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 18:57:22 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/31 14:25:18 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,18 @@ static int split_pipe(char *cmds, t_token *token)
     return (0);
 }
 
-
+/**
+ * @brief Second part of token initialisation
+ *
+ * This function is a mystery to me -_-
+ * 
+ * @param temp command list
+ * @param token token array
+ * 
+ * @ref t_token
+ *
+ * @author kfan
+ */
 static void init_token1(char **temp, t_token **token)
 {
     int i;
@@ -116,6 +127,24 @@ static void init_token1(char **temp, t_token **token)
     //print_token(token);
 }
 
+/**
+ * @brief Initialises a token array.
+ * 
+ * Sets the parameters taken from data
+ * in every token of a token array.
+ * 
+ * @param temp command list
+ * @param token array of t_token structs
+ * @param data t_data struct
+ * @param i length of the token array
+ * @return int 
+ * @retval success 0 on success, 1 otherwise.
+ *
+ * @ref t_token
+ * @ref t_data
+ *
+ * @author kfan
+ */
 int init_token(char **temp, t_token **token, t_data *data, int i)
 {
     while (i > 0)

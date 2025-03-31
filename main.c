@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/29 13:51:53 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/31 13:06:44 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void print_token(t_token **token)
  * @param envp Environment
  * @return int
  * @retval exit_code Exit code of the program.
+ *
+ * @author kfan
  */
 int main(int argc, char **argv, char**envp)
 {

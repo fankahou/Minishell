@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/29 13:59:53 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/31 14:08:37 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,20 @@ static int add_envp_export(char *cmd, t_token *token)
 	return (0);
 }
 
+/**
+ * @brief Add entry to envp.
+ *
+ * Adds an environment variable to envp.
+ * 
+ * @param cmd value to add
+ * @param token command token
+ * @param i mystery integer
+ * @param j mystery intgeger 2
+ * @return int 
+ * @retval success 0 on success, 1 otherwise.
+ * 
+ * @author kfan
+ */
 int add_envp(char *cmd, t_token *token, int i, int j)
 {
 	while (token->envp[i])
@@ -93,6 +107,22 @@ int add_envp(char *cmd, t_token *token, int i, int j)
 // check nmb of cmds!!!
 // check cmd[1], eg. "USER = 123"
 // check starting only with alphabats
+/**
+ * @brief Builtin "export" command
+ *
+ * Handles the behaviour of the export command.
+ * Sets or changes an environment variable to a
+ * given value.
+ * 
+ * @param cmd command arguments 
+ * @param token command token
+ * @param k mystery integer
+ * @param i mystery integer 2 - electric boogaloo
+ * @return int 
+ * @retval success 0 on success, 1 otherwise.
+ *
+ * @author kfan
+ */
 int builtins_export(char **cmd, t_token *token, int k, int i)
 {
 	while (cmd[k])
@@ -119,6 +149,21 @@ int builtins_export(char **cmd, t_token *token, int k, int i)
 	return (0);
 }
 
+/**
+ * @brief Builtin "unset" command
+ *
+ * Handles the behaviour of the builtin unset command.
+ * Deletes an environment variable from envp.
+ * 
+ * @param cmd command arguments
+ * @param envp environment variables
+ * @param token command token
+ * @param k mystery integer, very spooky
+ * @return int 
+ * @retval success 0 on success, 1 otherwise.
+ *
+ * @author kfan
+ */
 int builtins_unset(char **cmd, char **envp, t_token *token, int k)
 {
 	int		i;

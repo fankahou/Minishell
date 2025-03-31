@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/29 12:31:35 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/31 14:22:18 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@
  * 
  * This macro defines the location and name of the file where the history
  * is saved inbetween sessions.
+ * Default is ".minishell_history"
  * 
  * @author kmautner
  */
