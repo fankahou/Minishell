@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/29 15:22:21 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/01 21:03:11 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 // token->redir[1] == 6 == Append mode
 // otherwise will create new
-static int	outfile(t_token *token, int k)
+int	outfile(t_token *token, int k)
 {
 	int	fd;
 
@@ -27,7 +27,11 @@ static int	outfile(t_token *token, int k)
 	if (token->cmds[k]->redir[1] == 6)
 		fd = open(token->cmds[k]->outfile, O_WRONLY  | O_CREAT | O_APPEND, 0664);
 	else
-		fd = open(token->cmds[k]->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0664);
+	{
+		if (access(token->cmds[k]->outfile, F_OK) == 0)
+			unlink(token->cmds[k]->outfile);
+		fd = open(token->cmds[k]->outfile, O_WRONLY | O_CREAT, 0664);
+	}
 	if (fd < 0)
 		open_error(token->cmds[k]->infile, token);
 	return (fd);
@@ -41,13 +45,13 @@ static int	infile(t_token *token, int k)
 		return(token->cmds[k]->fd[0]);
 	else
 	{
-		if (access(token->cmds[k]->infile, F_OK) == 0 && access(token->cmds[k]->infile, R_OK) != 0)
+/* 		if (access(token->cmds[k]->infile, F_OK) == 0 && access(token->cmds[k]->infile, R_OK) != 0)
 		{
 			perror("minishell: Permission denied\n");
 			token->exit_code[0] = 13; // test it?
 			token->error[0] = 1;
 			return(-1);
-		}
+		} */
 		fd_in = open(token->cmds[k]->infile, O_RDONLY);
 	}
 	if (fd_in < 0)
@@ -62,15 +66,15 @@ static int open_fd(t_token *token)
 	i = 0;
 	while (i < token->nmb_of_cmd)
 	{
-		if (token->cmds[i]->infile)
-		{
-			token->cmds[i]->fd[0] = infile(token, i);
-			if (token->cmds[i]->fd[0] == -1)
-				return(1);
-		}
 		if (token->cmds[i]->outfile)
 		{
 			token->cmds[i]->fd[1] = outfile(token, i);
+			if (token->cmds[i]->fd[0] == -1)
+				return(1);
+		}
+		if (token->cmds[i]->infile)
+		{
+			token->cmds[i]->fd[0] = infile(token, i);
 			if (token->cmds[i]->fd[0] == -1)
 				return(1);
 		}

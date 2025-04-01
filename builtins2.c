@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/31 14:08:37 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:40:07 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int unset_export(t_token *token, char *temp)
 
 	i = 0;
 	prefix = 11;
-	while (token->envp_export[i])
+	while (token->envp_export && token->envp_export[i])
 	{
 		j = 0;
 		while (token->envp_export[i][j + prefix] && token->envp_export[i][j + prefix] != '=')
@@ -80,7 +80,7 @@ static int add_envp_export(char *cmd, t_token *token)
  */
 int add_envp(char *cmd, t_token *token, int i, int j)
 {
-	while (token->envp[i])
+	while (token->envp && token->envp[i])
 	{
 		j = 0;
 		while (token->envp[i][j] && token->envp[i][j] != '=')
@@ -138,9 +138,10 @@ int builtins_export(char **cmd, t_token *token, int k, int i)
 				break ;
 			i++;
 		}
-		if (token->envp && cmd[k][i] == '=' && token->nmb_of_cmd == 1)
+		//!envp???
+		if (cmd[k][i] == '=' && token->nmb_of_cmd == 1)
 			add_envp(cmd[k], token, 0, 0);
-		else if (token->envp && token->nmb_of_cmd == 1)
+		else if (token->nmb_of_cmd == 1)
 			add_envp_export(cmd[k], token);
 		k++;
 	}

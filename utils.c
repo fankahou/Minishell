@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 19:01:28 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/01 12:11:05 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ void close_unused_fd(t_token **token, int i)
         {
             if (token[i]->cmds[j]->fd[0] != token[i]->data->fd[0])
                 close(token[i]->cmds[j]->fd[0]);
-/*             if (token[i]->fd[1] != 1)
-                close(token[i]->cmds[j]->fd[0]); */
+            //if (token[i]->fd[1] != 1)
+            //    close(token[i]->cmds[j]->fd[0]);
             j++;
         }
         i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/31 14:22:18 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:41:01 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,9 +235,7 @@ void open_error(char *str, t_token *token);
 
 // from pipex
 int     pipex(t_token *token);
-//void	ft_free_pipex(char **array);
-//void	error_pipex(char *message, char **temp);
-char	*find_bin(char **cmd, char **paths, int i);
+int	outfile(t_token *token, int k);
 char	*get_path(char **cmd, char **envp);
 int	input(t_cmds *cmds, t_token *token);
 int	last_input(t_cmds *cmds, t_token *token);

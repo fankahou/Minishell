@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/29 15:42:59 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/01 13:09:37 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,12 @@ static int check_builtins(t_cmds *cmds, t_token *token, int *fd)
 	return (1);
 }
 
+// user readdir()?
 static void	child(int *fd, t_cmds *cmds, t_token *token, char *path)
 {
+	DIR *dir;
+	int i;
+	
 	if (fd)
 	{
 		close(fd[0]);
@@ -53,17 +57,20 @@ static void	child(int *fd, t_cmds *cmds, t_token *token, char *path)
 	}
 	if (execve(path, cmds->cmd, token->envp) == -1)
 	{
-		if ((!ft_strncmp(cmds->cmd[0], "../", 3) && ft_strlen(cmds->cmd[0]) == 3) || (!ft_strncmp(cmds->cmd[0], "./", 2) && ft_strlen(cmds->cmd[0]) == 2))
-		{
-			if (ft_strlen(cmds->cmd[0]) == 2)
-				perror("minishell: ./: Is a directory");
-			if (ft_strlen(cmds->cmd[0]) == 3)
-				perror("minishell: ../: Is a directory");
-			exit (126);
-		}
-		perror("minishell: command not found");
 		token->error[0] = 2;
 		token->exit_code[0] = 127;
+		dir = opendir(cmds->cmd[0]);
+		i = 0;
+		while (cmds->cmd[0] && cmds->cmd[0][i])
+			i++;
+		if (dir)
+		{
+			perror("minishell: Is a directory");
+			token->exit_code[0] = 126;
+			closedir(dir);
+		}
+		else
+			perror("minishell: command not found");
 	}
 }
 
@@ -106,6 +113,7 @@ int	input(t_cmds *cmds, t_token *token)
 		return(perror("pipe failed"), 1);
 	if (check_builtins(cmds, token, fd))
 		return (0);
+	path = get_path(cmds->cmd, token->envp);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -113,14 +121,12 @@ int	input(t_cmds *cmds, t_token *token)
 		close(fd[1]);
 		return(perror("fork failed"), 1);
 	}
-	path = get_path(cmds->cmd, token->envp);
-	if (!path)
-		return (perror("get_path failed"), 1);
 	if (pid == 0)
 		child(fd, cmds, token, path);
 	else
 		parent(fd, cmds, pid, token);
-	free(path);
+	if (path)
+		free(path);
 	return (0);
 }
 
@@ -133,16 +139,15 @@ int	last_input(t_cmds *cmds, t_token *token)
 		return (0);
 /* 	if (temp[1] && temp[1][0] != '\0' && replace_arg(cmd, temp)) // only for echo??? echo    "test        321"
 		return (1); */
+	path = get_path(cmds->cmd, token->envp);
 	pid = fork();
 	if (pid == -1)
 		return(perror("fork failed"), 1);
-	path = get_path(cmds->cmd, token->envp);
-	if (!path)
-		return (1);
 	if (pid == 0)
 		child(NULL, cmds, token, path);
 	else
 		parent(NULL, cmds, pid, token);
-	free(path);
+	if (path)
+		free(path);
 	return (0);
 }

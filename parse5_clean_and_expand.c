@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 18:05:46 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/01 14:45:18 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int clean_outfile(t_token *token)
             if (!file)
                 return (syntax_error(token->cmds[i]->outfile, token), 1);
             if (file[0] == '\0')
-                return (syntax_error(token->cmds[i]->outfile, token), 1);
+                return (free(file), token->exit_code[0] = 1, perror("ambiguous redirect"), 1);
             free(token->cmds[i]->outfile);
             token->cmds[i]->outfile = file;
         }
@@ -82,7 +82,7 @@ static int clean_infile(t_token *token)
             if (!file)
                 return (syntax_error(token->cmds[i]->infile, token), 1);
             if (file[0] == '\0')
-                return (syntax_error(token->cmds[i]->infile, token), 1); ///$FAKE: ambiguous redirect
+                return (free(file), token->exit_code[0] = 1, perror("ambiguous redirect"), 1); ///$FAKE: ambiguous redirect
             free(token->cmds[i]->infile);
             token->cmds[i]->infile = file;
         }
@@ -93,9 +93,9 @@ static int clean_infile(t_token *token)
 
 int clean_and_expand(t_token *token)
 {
-    if (clean_infile(token))
-        return (1);
     if (clean_outfile(token))
+        return (1);
+    if (clean_infile(token))
         return (1);
     if (clean_cmd(token))
         return (1);

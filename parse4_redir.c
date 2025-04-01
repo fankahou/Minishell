@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 18:57:42 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/01 12:28:48 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,29 @@ static int ft_redir_in(t_token *token, int type, char *file, int k)
     return (0);
 }
 
+
+//new: create and wipe out file clean??
 static void ft_redir_out(t_token *token, int type, char *file, int k)
 {
+    int fd;
+    char *new;
+    
     if (token->cmds[k]->redir[1] > 0 && token->cmds[k]->outfile)
-        free(token->cmds[k]->outfile);
+    {
+        new = ft_calloc(1, 1);
+        if (!new)
+            perror("ft_calloc failed");
+        else
+        {
+            new = clean_name(token->cmds[k]->outfile, token, 0, new);
+            free(token->cmds[k]->outfile);
+            token->cmds[k]->outfile = new;
+            fd = outfile(token, k);
+            if (fd >= 0)
+                close (fd);
+            free(new);
+        }
+    }
     token->cmds[k]->outfile = file;
     token->cmds[k]->redir[1] = 5;
     if (type == 6)

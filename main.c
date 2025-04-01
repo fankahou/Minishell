@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/31 13:06:44 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:40:39 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//to do list 1 April
+// ..
+// cat /dev/random | head -c 100 | wc -c // waitpid ??? signal?
+// ls '" and ls "'
+// echo hello $NOT_A_VAT // with space handling
+// export L="ls -la"; $L // change tree order and split?
+// export A=a A2=a; unset A; echo $A $A2 // also space handling
+// mkdir a a/b; cd a/b; rm -rf ../../a; pwd // also cd .. instead of pwd // and plus unset PWD OLDPWD in between
+// unset HOME; cd $HOME // also unset PATH
+// exit -9223372036854775808
+// check pipes forbitten files
+// < valid_finfile_1 cat >outfile1 // if open failed just continue? no return 1?
+// cat < forbidden_file: echo $? // also ./forbidden_file
 
 /**
  * @brief Debug function to print tokens.
@@ -101,7 +115,10 @@ int main(int argc, char **argv, char**envp)
     {
         temp = readline("minishell> "); // new: one more space just for better read
         if (temp[0] == '\0')
+        {
+            free(temp);
             break ;
+        }
         data.str = ft_calloc(ft_strlen(temp) + 2, 1); //new: copy one more \0 to imitate gnl to avoid invalid read in Ka Hou's code
         if (!data.str)
             break ;
@@ -114,6 +131,8 @@ int main(int argc, char **argv, char**envp)
         if (data.error == 2)
             break;
     }
+    if (data.str)
+        free(data.str);
     if (data.fd[0] != 0) // make sure Koloman close!!!
         close(data.fd[0]);
     if (data.fd[1] != 1)

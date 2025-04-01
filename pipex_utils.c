@@ -6,13 +6,13 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/29 13:43:13 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/31 17:58:26 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_free_pipex(char **array)
+static void	ft_free_pipex(char **array)
 {
 	int	i;
 
@@ -29,15 +29,8 @@ void	ft_free_pipex(char **array)
 		array = NULL;
 	}
 }
-/* 
-void	error_pipex(char *message, char **temp)
-{
-	perror(message);
-	if (temp)
-		ft_free_pipex(temp);
-} */
 
-char	*find_bin(char **cmd, char **paths, int i)
+static char	*find_bin(char **cmd, char **paths, int i)
 {
 	char	*temp;
 	char	*temp1;

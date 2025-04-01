@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 18:50:29 by kfan             ###   ########.fr       */
+/*   Updated: 2025/03/29 20:46:50 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ char	**add_array(char **input, char *entry, int y)
 	char	**temp;
     int     i;
 
-    while (input[y])
+    while (input && input[y])
         y++;
     temp = malloc(sizeof(char *) * (y + 2));
 	if (!temp)
