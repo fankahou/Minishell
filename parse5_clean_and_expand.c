@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/01 14:45:18 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/02 14:52:08 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static int clean_cmd(t_token *token)
             if (!file)
                 return (ft_free_split(token->cmds[i]->cmd), token->error[0] = 1, 1);
             free(token->cmds[i]->cmd[j]);
+            //printf("file = ---%s---\n", file);
             token->cmds[i]->cmd[j] = file;
             j++;
         }
@@ -55,7 +56,7 @@ static int clean_outfile(t_token *token)
             file = clean_name(token->cmds[i]->outfile, token, 0, file);
             if (!file)
                 return (syntax_error(token->cmds[i]->outfile, token), 1);
-            if (file[0] == '\0')
+            if (file[0] == '\0' || !ft_strncmp("$$NOT_A_VAR$$", file, 13))
                 return (free(file), token->exit_code[0] = 1, perror("ambiguous redirect"), 1);
             free(token->cmds[i]->outfile);
             token->cmds[i]->outfile = file;
@@ -81,7 +82,7 @@ static int clean_infile(t_token *token)
             file = clean_name(token->cmds[i]->infile, token, 0, file);
             if (!file)
                 return (syntax_error(token->cmds[i]->infile, token), 1);
-            if (file[0] == '\0')
+            if (file[0] == '\0' || !ft_strncmp("$$NOT_A_VAR$$", file, 13))
                 return (free(file), token->exit_code[0] = 1, perror("ambiguous redirect"), 1); ///$FAKE: ambiguous redirect
             free(token->cmds[i]->infile);
             token->cmds[i]->infile = file;

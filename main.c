@@ -6,25 +6,19 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/01 21:40:39 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/02 19:21:21 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//to do list 1 April
-// ..
+//to do list 2 April
 // cat /dev/random | head -c 100 | wc -c // waitpid ??? signal?
-// ls '" and ls "'
-// echo hello $NOT_A_VAT // with space handling
+// ls '" and ls "' // just leave it as it is?
+// echo hello $NOT_A_VAT $NOT_A_VAT $NOT_A_VAT// with space handling still one last space left
 // export L="ls -la"; $L // change tree order and split?
-// export A=a A2=a; unset A; echo $A $A2 // also space handling
 // mkdir a a/b; cd a/b; rm -rf ../../a; pwd // also cd .. instead of pwd // and plus unset PWD OLDPWD in between
-// unset HOME; cd $HOME // also unset PATH
-// exit -9223372036854775808
-// check pipes forbitten files
-// < valid_finfile_1 cat >outfile1 // if open failed just continue? no return 1?
-// cat < forbidden_file: echo $? // also ./forbidden_file
+// unset HOME; cd $HOME // also unset PATH  // just leave it as it is?
 
 /**
  * @brief Debug function to print tokens.
@@ -97,6 +91,7 @@ int main(int argc, char **argv, char**envp)
 
     (void) argc;
     (void) argv;
+    data.str = NULL;
     data.exit_code = 0;
     data.error = 2;
     data.fd[0] = 0;
@@ -104,7 +99,7 @@ int main(int argc, char **argv, char**envp)
     //envp = NULL; // just to test
     data.envp = NULL;
     data.envp_export = NULL;
-    if (envp) // new: protection!
+    if (envp && envp[0]) // new: protection!
     {
         data.envp = copy_array(envp);
         data.envp_export = copy_array_prefix(envp, 0 , 0, 0); // new!!!!!!!!!!!!!!!!!!!!!!!!!!!

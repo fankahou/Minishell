@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/31 20:42:21 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/02 13:58:20 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,16 @@ static int clean_name_envp(char *temp, t_token *token, t_clean *clean)
     if (!clean->envp_temp)
         return (token->error[0] = 1, perror("expand_envp failed"), free(clean->file), -1);
     clean->count = clean->count + check_envp_count(&temp[clean->count + 1]);
+    //printf("clean->count = ---%d---\n", clean->count);
     if (ft_strlen(clean->envp_temp) > 0)
         clean->space = 0;
-    clean->new = ft_strjoin(clean->file, clean->envp_temp);
+    //printf("clean->envp_temp = ---%s---\n", clean->envp_temp);
+    //printf("clean->file = ---%s---\n", clean->file);
+    if (clean->envp_temp[0] == '\0' && clean->file[0] == '\0')
+        clean->new = ft_strjoin(clean->file, "$$NOT_A_VAR$$");
+    else
+        clean->new = ft_strjoin(clean->file, clean->envp_temp);
+    //printf("clean->new = ---%s---\n", clean->new);
     free(clean->file);
     clean->file = NULL;
     free(clean->envp_temp);
@@ -88,9 +95,18 @@ char *clean_name(char *temp, t_token *token, int count, char *file)
         count++;
     init_clean(&clean, count, file);
     return_val = 0;
+    //printf("temp = ---%s---\n", temp);
     while (temp[clean.count])
     {
-        if (clean.new)
+        //printf("temp[clean.count] = ---%c---\n", temp[clean.count]);
+        if (!ft_strncmp("$$NOT_A_VAR$$", clean.new, 13))
+        {
+            free(clean.new);
+            clean.file = ft_calloc(1, 1);
+            if (!clean.file)
+                return (perror("ft_calloc failed"), NULL);
+        }
+        else if (clean.new)
             clean.file = clean.new;
         clean.quote = inside_quote(temp[clean.count], clean.quote);
         if (temp[clean.count] == '$' && clean.quote != 1 && clean.quote != 3)
@@ -100,6 +116,7 @@ char *clean_name(char *temp, t_token *token, int count, char *file)
         if (return_val == -1)
             return (NULL);
         clean.count++;
+        //printf("clean.count = ---%d---\n", clean.count);
     }
     if (!clean.new && clean.file)
         free(clean.file);

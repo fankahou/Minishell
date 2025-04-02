@@ -56,8 +56,6 @@ static char	*ft_newstring(char *s)
 		while (s[i] && quote != 0)
 			quote = inside_quote(s[i++], quote);
 	}
-	while (s[i] && is_space(s[i]))
-		i++;
 	str = malloc(i + 1);
 	if (!str)
 		return (NULL);
@@ -79,6 +77,8 @@ static char	**ft_array(char *s, char **array)
 	j = 0;
 	while (i < ft_count(s))
 	{
+		while (s[j] && is_space(s[j]))
+			j++;
 		array[i] = ft_newstring(s + j);
 		if (!array[i])
 		{

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/01 21:38:50 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/02 15:32:08 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,15 @@ int	builtins_echo(char **cmd)
 		flag = 1;
 	while (cmd[i])
 	{
-		if (cmd[i])
+		if (cmd[i] && ft_strncmp("$$NOT_A_VAR$$", cmd[i], 13))
 			write(1, cmd[i], ft_strlen(cmd[i]));
 		i++;
 		if (!cmd[i])
 			break ;
 		// to fix "echo $NOT_A_VAR $NOT_A_VAR $NOT_A_VAR $USER" :???
 		//if (cmd[i + 1] && cmd[i][0] != '\0' && cmd[i + 1][0] != '\0')
-		//if (cmd[i][0] != '\0')
-		write(1, " ", 1);
+		if (ft_strncmp("$$NOT_A_VAR$$", cmd[i - 1], 13))
+			write(1, " ", 1);
 	}
 	if (flag == 0)
 		return (write(1, "\n", 1), 0);
@@ -115,7 +115,6 @@ int builtins_pwd(char **envp)
 	return (0);
 }
 
-
 int	check_long_overflow(const char *nptr, long temp, int digit_cmd, int	digit_temp)
 {
 	int		i;
@@ -132,7 +131,9 @@ int	check_long_overflow(const char *nptr, long temp, int digit_cmd, int	digit_te
 		i++;
 	while (nptr[i] && ft_isdigit(nptr[i++]))
 		digit_cmd++;
-	if (temp < 0)
+	if (temp == LONG_MIN)
+		digit_temp = 20;
+	else if (temp < 0)
 	{
 		temp = temp * -1;
 		digit_temp++;
@@ -198,10 +199,8 @@ int builtins_exit(char **cmd, t_token *token)
 			return (token->exit_code[0] = 2, perror("minishell: exit: numeric argument required"), 0);
 		while(cmd[0][i])
 		{
-			if (cmd[0][i] && !is_space(cmd[0][i]) && !ft_isdigit(cmd[0][i]) && token->error[0] == 2)
+			if (cmd[0][i] && !is_space(cmd[0][i]) && !ft_isdigit(cmd[0][i]))
 				return (token->exit_code[0] = 2, perror("minishell: exit: numeric argument required"), 0);
-			else if (cmd[0][i] && !is_space(cmd[0][i]) && !ft_isdigit(cmd[0][i]))
-				return (perror("minishell: exit: numeric argument required"), 0);
 			i++;
 		}
 	}

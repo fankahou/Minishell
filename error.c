@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/27 12:51:11 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:03:58 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	open_error(char *str, t_token *token)
 	if (token)
 	{
 		token->exit_code[0] = 1;
-		token->error[0] = 1;
+		//token->error[0] = 1;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/01 12:28:48 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/02 19:02:36 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	ft_heredoc(t_token *token, int k)
 
 static int ft_redir_in(t_token *token, int type, char *file, int k)
 {
-    //int fd;
+    char *new;
     
     if (token->cmds[k]->redir[0] > 0 && token->cmds[k]->infile)
     {
@@ -76,7 +76,22 @@ static int ft_redir_in(t_token *token, int type, char *file, int k)
             return(perror("heredoc failed"), -1);
     }
     else
+    {
         token->cmds[k]->redir[0] = 4;
+        new = ft_calloc(1, 1);
+        if (!new)
+            perror("ft_calloc failed");
+        else
+        {
+            new = clean_name(file, token, 0, new);
+            token->cmds[k]->fd[0] = open(new, O_RDONLY);
+            if (token->cmds[k]->fd[0] == -1)
+                token->cmds[k]->fd[1] = -1;
+            else
+                close(token->cmds[k]->fd[0]);
+            free(new);
+        }
+    }
     return (0);
 }
 
@@ -88,25 +103,23 @@ static void ft_redir_out(t_token *token, int type, char *file, int k)
     char *new;
     
     if (token->cmds[k]->redir[1] > 0 && token->cmds[k]->outfile)
-    {
-        new = ft_calloc(1, 1);
-        if (!new)
-            perror("ft_calloc failed");
-        else
-        {
-            new = clean_name(token->cmds[k]->outfile, token, 0, new);
-            free(token->cmds[k]->outfile);
-            token->cmds[k]->outfile = new;
-            fd = outfile(token, k);
-            if (fd >= 0)
-                close (fd);
-            free(new);
-        }
-    }
-    token->cmds[k]->outfile = file;
+        free(token->cmds[k]->outfile);
     token->cmds[k]->redir[1] = 5;
     if (type == 6)
         token->cmds[k]->redir[1] = 6;
+    new = ft_calloc(1, 1);
+    if (!new)
+        perror("ft_calloc failed");
+    else
+    {
+        new = clean_name(file, token, 0, new);
+        token->cmds[k]->outfile = new;
+        fd = outfile(token, k);
+        if (fd >= 0)
+            close (fd);
+        free(new);
+    }
+    token->cmds[k]->outfile = file;
 }
 
 int redir(char *temp, t_token *token, int k)
@@ -124,16 +137,9 @@ int redir(char *temp, t_token *token, int k)
         count++;
     if (temp[count] == '\0')
         return (syntax_error(temp, token), -1);
+    if (token->cmds[k]->fd[0] == -1)
+        return (0);
     file = ft_strdup(&temp[count]);
-    // get rid of this for expand in excute?
-/*     file = ft_calloc(1, 1);
-    if (!file)
-        return (ft_printf("ft_calloc failed\n"), -1);
-    file = clean_name(temp, token, count, file);
-    if (!file)
-        return (syntax_error(&temp[0], token), -1);
-    if (file[0] == '\0')
-        return (syntax_error(&temp[0], token), -1);  *///$FAKE: ambiguous redirect
     if (type == 3 || type == 4)
         return_val = ft_redir_in(token, type, file, k);
     else if (type == 5 || type == 6)

@@ -147,16 +147,19 @@ function where the program exits.
 
 \> kfan
 
-//to do list 1 April
-// ..
+//to do list 2 April
 // cat /dev/random | head -c 100 | wc -c // waitpid ??? signal?
-// ls '" and ls "'
-// echo hello $NOT_A_VAT // with space handling
+// ls '" and ls "' // just leave it as it is?
+// echo hello $NOT_A_VAT $NOT_A_VAT $NOT_A_VAT// with space handling still one last space left
 // export L="ls -la"; $L // change tree order and split?
-// export A=a A2=a; unset A; echo $A $A2 // also space handling
 // mkdir a a/b; cd a/b; rm -rf ../../a; pwd // also cd .. instead of pwd // and plus unset PWD OLDPWD in between
-// unset HOME; cd $HOME // also unset PATH
-// exit -9223372036854775808
-// check pipes forbitten files
-// < valid_finfile_1 cat >outfile1 // if open failed just continue? no return 1?
-// cat < forbidden_file: echo $? // also ./forbidden_file
+// unset HOME; cd $HOME // also unset PATH  // just leave it as it is?
+
+
+fixed: 1 April
+//.. > hardcoded
+// export A=a A2=a; unset A; echo $A $A2 // also space handling
+// exit -9223372036854775808 // hardcoded LONG_MIN
+// check pipes forbitten files // this was tricky
+// < valid_finfile_1 cat >outfile1 // if open failed just continue? no return 1? // and this one too, so weird
+// cat < forbidden_file: echo $? // also ./forbidden_file // easy fix at the end of the child

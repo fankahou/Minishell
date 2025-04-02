@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/01 12:11:05 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/02 15:01:16 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int inside_quote(char c, int quote)
 }
 
 //also for closing unused here_doc temp file in bonus
+//check again!!!
 void close_unused_fd(t_token **token, int i)
 {
     int j;
@@ -80,10 +81,10 @@ void close_unused_fd(t_token **token, int i)
         j = 0;
         while (token[i]->cmds && token[i]->cmds[j])
         {
-            if (token[i]->cmds[j]->fd[0] != token[i]->data->fd[0])
+            if (token[i]->cmds[j]->fd[0] != token[i]->data->fd[0] && token[i]->cmds[j]->fd[0] >= 0)
                 close(token[i]->cmds[j]->fd[0]);
-            //if (token[i]->fd[1] != 1)
-            //    close(token[i]->cmds[j]->fd[0]);
+            if (token[i]->cmds[j]->fd[1] != token[i]->data->fd[1] && token[i]->cmds[j]->fd[1] >= 0)
+                close(token[i]->cmds[j]->fd[1]);
             j++;
         }
         i++;
