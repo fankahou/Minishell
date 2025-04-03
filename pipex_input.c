@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/02 19:08:32 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 16:44:50 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ static int check_builtins(t_cmds *cmds, t_token *token, int *fd)
 // user readdir()?
 static void	child(int *fd, t_cmds *cmds, t_token *token, char *path)
 {
-	DIR *dir;
-
 	if (fd)
 	{
 		close(fd[0]);
@@ -54,50 +52,27 @@ static void	child(int *fd, t_cmds *cmds, t_token *token, char *path)
 		}
 		close(fd[1]);
 	}
-	if (execve(path, cmds->cmd, token->envp) == -1)
-	{
-		token->error[0] = 2;
-		token->exit_code[0] = 127;
-		dir = opendir(cmds->cmd[0]);
-		if (!dir)
-		{
-			if (access(cmds->cmd[0], F_OK) == 0 && access(cmds->cmd[0], X_OK) != 0)
-			{
-				perror("minishell: Permission denied");
-				token->exit_code[0] = 126;
-			}
-			else
-				perror("minishell: command not found");
-		}
-		else
-		{
-			//printf("path = %s\n", path);
-			closedir(dir);
-			if (!ft_strncmp(cmds->cmd[0], "..", ft_strlen(path)) && ft_strlen(path) > 2)// || (!ft_strncmp(cmds->cmd[0], "../", 3)))// && ft_strlen(cmds->cmd[0]) == 3))
-				perror("minishell: command not found");
-			else
-			{
-				perror("minishell: Is a directory");
-				token->exit_code[0] = 126;
-			}
-		}
-	}
+	if (path)
+		execve(path, cmds->cmd, token->envp);
+	execve_error(cmds->cmd[0], path, token, NULL);
 }
 
-static void	parent(int *fd, t_cmds *cmds, int pid, t_token *token)
+static void	parent(int *fd, t_cmds *cmds, t_token *token, char *path)
 {
 	int	status;
 
 	status = 0;
+	if (cmds->cmd[0] && cmds->cmd[1])
+		path = cmds->cmd[1];
 	if (ft_strncmp(cmds->infile, "/dev/urandom", 12)
 		&& ft_strncmp(cmds->infile, "/dev/random", 11)
-		&& ft_strncmp(cmds->cmd[1], "/dev/urandom", 12) 
-		&& ft_strncmp(cmds->cmd[1], "/dev/random", 11))// wait for signal?
+		&& ft_strncmp(path, "/dev/urandom", 12) 
+		&& ft_strncmp(path, "/dev/random", 11))// wait for signal?
 	{
-		waitpid(pid, &status, 0); // protection?
+		waitpid(cmds->pid, &status, 0); // protection?
 	}
 	else
-		kill(pid, 1); // usleep or kill later?
+		kill(cmds->pid, 1); // usleep or kill later?
 	if (fd)
 	{
 		close(fd[1]);
@@ -136,28 +111,29 @@ int empty_pipe(int *fd)
 
 int	input(t_cmds *cmds, t_token *token)
 {
-	int		pid;
 	int		fd[2];
 	char *path;
 
+	path = NULL;
 	if (pipe(fd) == -1)
 		return(perror("pipe failed"), 1);
 	if (cmds->fd[0] == -1)
 		return (empty_pipe(fd));
 	if (check_builtins(cmds, token, fd))
 		return (0);
-	path = get_path(cmds->cmd, token->envp);
-	pid = fork();
-	if (pid == -1)
+	if (cmds->cmd[0])
+		path = get_path(cmds->cmd, token->envp);
+	cmds->pid = fork();
+	if (cmds->pid == -1)
 	{
 		close(fd[0]);
 		close(fd[1]);
 		return(perror("fork failed"), 1);
 	}
-	if (pid == 0)
+	if (cmds->pid == 0)
 		child(fd, cmds, token, path);
 	else
-		parent(fd, cmds, pid, token);
+		parent(fd, cmds, token, path);
 	if (path)
 		free(path);
 	return (0);
@@ -165,21 +141,22 @@ int	input(t_cmds *cmds, t_token *token)
 
 int	last_input(t_cmds *cmds, t_token *token)
 {
-	int		pid;
 	char *path;
 
+	path = NULL;
 	if (check_builtins(cmds, token, NULL))
 		return (0);
 /* 	if (temp[1] && temp[1][0] != '\0' && replace_arg(cmd, temp)) // only for echo??? echo    "test        321"
 		return (1); */
-	path = get_path(cmds->cmd, token->envp);
-	pid = fork();
-	if (pid == -1)
+	if (cmds->cmd[0])
+		path = get_path(cmds->cmd, token->envp);
+	cmds->pid = fork();
+	if (cmds->pid == -1)
 		return(perror("fork failed"), 1);
-	if (pid == 0)
+	if (cmds->pid == 0)
 		child(NULL, cmds, token, path);
 	else
-		parent(NULL, cmds, pid, token);
+		parent(NULL, cmds, token, path);
 	if (path)
 		free(path);
 	return (0);

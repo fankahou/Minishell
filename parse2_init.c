@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/01 21:38:24 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/02 23:55:14 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ int init_token(char **temp, t_token **token, t_data *data, int i)
         token[i]->delimiter = 0;
         token[i]->nmb_of_cmd = 0;
         token[i]->data = data;
+        //token[i]->cmd_temp = NULL; // causes seg fault???
     }
     init_token1(temp, token);
     return (0);

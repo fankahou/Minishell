@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/02 13:58:20 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 19:13:45 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,34 @@ static int get_rid_of_extra_space(char *temp)
 
 static int clean_name_envp(char *temp, t_token *token, t_clean *clean)
 {
+    int i;
+    char **check;
+    
     clean->envp_temp = expand_envp(&temp[clean->count + 1], token, NULL, clean);
     if (!clean->envp_temp)
         return (token->error[0] = 1, perror("expand_envp failed"), free(clean->file), -1);
     clean->count = clean->count + check_envp_count(&temp[clean->count + 1]);
-    //printf("clean->count = ---%d---\n", clean->count);
     if (ft_strlen(clean->envp_temp) > 0)
         clean->space = 0;
-    //printf("clean->envp_temp = ---%s---\n", clean->envp_temp);
-    //printf("clean->file = ---%s---\n", clean->file);
-    if (clean->envp_temp[0] == '\0' && clean->file[0] == '\0')
-        clean->new = ft_strjoin(clean->file, "$$NOT_A_VAR$$");
-    else
-        clean->new = ft_strjoin(clean->file, clean->envp_temp);
-    //printf("clean->new = ---%s---\n", clean->new);
+    clean->new = ft_strjoin(clean->file, clean->envp_temp);
     free(clean->file);
     clean->file = NULL;
-    free(clean->envp_temp);
     if (!clean->new)
-        return (perror("ft_strjoin failed\n"), -1);
+        return (free(clean->envp_temp), perror("ft_strjoin failed\n"), -1);
+    check = ft_split_space(clean->envp_temp);
+    if (!check)
+        perror("ft_split_space failed");
+    else
+    {
+        i = 0;
+        while (check[i])
+            i++;
+        //printf("i = %d\n", i);
+        if ((i == 0 && ((clean->envp_temp[0] != '\0') || clean->quote != 2) && clean->new[0] == '\0' ) || i > 1)
+            clean->temp = ft_cmd(clean->new, token, NULL);
+        ft_free_split(check);
+    }
+    free(clean->envp_temp);
     return (0);
 }
 
@@ -80,6 +89,7 @@ static void    init_clean(t_clean *clean, int count, char *file)
     clean->envp_temp = NULL;
     clean->new = NULL;
     clean->file = file;
+    clean->temp = NULL;
 }
 
 //  $USER inside ' ' shouldnt expand, otherwise always expand
@@ -95,18 +105,9 @@ char *clean_name(char *temp, t_token *token, int count, char *file)
         count++;
     init_clean(&clean, count, file);
     return_val = 0;
-    //printf("temp = ---%s---\n", temp);
     while (temp[clean.count])
     {
-        //printf("temp[clean.count] = ---%c---\n", temp[clean.count]);
-        if (!ft_strncmp("$$NOT_A_VAR$$", clean.new, 13))
-        {
-            free(clean.new);
-            clean.file = ft_calloc(1, 1);
-            if (!clean.file)
-                return (perror("ft_calloc failed"), NULL);
-        }
-        else if (clean.new)
+        if (clean.new)
             clean.file = clean.new;
         clean.quote = inside_quote(temp[clean.count], clean.quote);
         if (temp[clean.count] == '$' && clean.quote != 1 && clean.quote != 3)
@@ -116,11 +117,13 @@ char *clean_name(char *temp, t_token *token, int count, char *file)
         if (return_val == -1)
             return (NULL);
         clean.count++;
-        //printf("clean.count = ---%d---\n", clean.count);
     }
+    // split here?
     if (!clean.new && clean.file)
         free(clean.file);
-    if (clean.quote > 0)
-        return (syntax_error("unclosed quote", token), clean.new);
+    if (clean.quote > 0) // not nessecary? just pass it to execve?
+        return (syntax_error("unexpected EOF while looking for matching quote", token), clean.new);
+    if (clean.temp)
+        token->data->cmd_temp = clean.temp;
     return (clean.new);
 }

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/02 19:02:36 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 11:53:05 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int ft_redir_in(t_token *token, int type, char *file, int k)
             new = clean_name(file, token, 0, new);
             token->cmds[k]->fd[0] = open(new, O_RDONLY);
             if (token->cmds[k]->fd[0] == -1)
-                token->cmds[k]->fd[1] = -1;
+                open_error(new, token, token->cmds[k]->fd);
             else
                 close(token->cmds[k]->fd[0]);
             free(new);

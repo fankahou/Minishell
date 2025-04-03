@@ -147,12 +147,14 @@ function where the program exits.
 
 \> kfan
 
-//to do list 2 April
+//to do list 3 April
+// mkdir a a/b; cd a/b; rm -rf ../../a; unset PWD; unset OLDPWD; pwd
 // cat /dev/random | head -c 100 | wc -c // waitpid ??? signal?
 // ls '" and ls "' // just leave it as it is?
+
+fixed 2 April
 // echo hello $NOT_A_VAT $NOT_A_VAT $NOT_A_VAT// with space handling still one last space left
 // export L="ls -la"; $L // change tree order and split?
-// mkdir a a/b; cd a/b; rm -rf ../../a; pwd // also cd .. instead of pwd // and plus unset PWD OLDPWD in between
 // unset HOME; cd $HOME // also unset PATH  // just leave it as it is?
 
 

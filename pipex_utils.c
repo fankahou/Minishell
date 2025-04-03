@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/31 17:58:26 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 14:16:39 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,15 @@ static char	*find_bin(char **cmd, char **paths, int i)
 	char	*temp;
 	char	*temp1;
 
-	while (paths[i] && ft_strncmp(cmd[0], "./", 2))
+	while (cmd && cmd[0] && paths[i] && ft_strncmp(cmd[0], "./", 2))
 	{
 		temp = ft_strjoin(paths[i], "/");
 		if (!temp)
-			return (perror("strjoin failed"), NULL);
+			return (perror("strjoin1 failed"), NULL);
 		temp1 = ft_strjoin(temp, cmd[0]); //
 		free(temp);
 		if (!temp1)
-			return (perror("strjoin failed"), NULL);
+			return (perror("strjoin2 failed"), NULL);
 		if (access(temp1, F_OK) == 0)
 			return (temp1);
 		free(temp1);

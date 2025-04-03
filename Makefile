@@ -17,6 +17,7 @@ SRC = main.c \
 	builtins3.c \
 	builtins_pipes.c \
 	error.c \
+	error_mini.c \
 	utils.c \
 	utils_array1.c \
 	utils_array2.c \

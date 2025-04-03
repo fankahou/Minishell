@@ -6,15 +6,17 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/02 19:21:21 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 19:35:30 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//to do list 2 April
+//to do list 3 April
+// mkdir a a/b; cd a/b; rm -rf ../../a; unset PWD; unset OLDPWD; pwd
 // cat /dev/random | head -c 100 | wc -c // waitpid ??? signal?
 // ls '" and ls "' // just leave it as it is?
+
 // echo hello $NOT_A_VAT $NOT_A_VAT $NOT_A_VAT// with space handling still one last space left
 // export L="ls -la"; $L // change tree order and split?
 // mkdir a a/b; cd a/b; rm -rf ../../a; pwd // also cd .. instead of pwd // and plus unset PWD OLDPWD in between

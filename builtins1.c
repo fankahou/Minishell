@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/02 15:32:08 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 19:44:21 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,20 +74,36 @@ int	builtins_echo(char **cmd)
 		flag = 1;
 	while (cmd[i])
 	{
-		if (cmd[i] && ft_strncmp("$$NOT_A_VAR$$", cmd[i], 13))
-			write(1, cmd[i], ft_strlen(cmd[i]));
+		//if (cmd[i])// && ft_strncmp("$$NOT_A_VAR$$", cmd[i], 13))
+		write(1, cmd[i], ft_strlen(cmd[i]));
 		i++;
 		if (!cmd[i])
 			break ;
 		// to fix "echo $NOT_A_VAR $NOT_A_VAR $NOT_A_VAR $USER" :???
 		//if (cmd[i + 1] && cmd[i][0] != '\0' && cmd[i + 1][0] != '\0')
-		if (ft_strncmp("$$NOT_A_VAR$$", cmd[i - 1], 13))
-			write(1, " ", 1);
+		//if (ft_strncmp("$$NOT_A_VAR$$", cmd[i - 1], 13))
+		//if (cmd[i - 1][0] != '\0')
+		write(1, " ", 1);
 	}
 	if (flag == 0)
 		return (write(1, "\n", 1), 0);
 	return (0);
 }
+
+/* When run as a built-in command in that shell it was 
+that shell internally keeping track of the name of 
+the current directory in a shell/environment variable. 
+When run as a built-in command in another shell, 
+it was the other shell failing to match the device 
+and i-node number of its working directory to the second directory 
+now named by the contents of the PWD environment variable that it inherited, 
+thus deciding not to trust the contents of PWD, and then failing in the getcwd() 
+library function because the working directory does not have any names any longer, 
+it having been unlinked. */
+
+// need to check!!!!
+// mkdir a a/b; cd a/b; rm -rf ../../a; unset PWD; unset OLDPWD; pwd
+// why is it still working in bash???
 
 /**
  * @brief Builtin "pwd" command
@@ -100,7 +116,7 @@ int	builtins_echo(char **cmd)
  *
  * @param envp environment variables 
  * @return int 
- * @retval success 0 on success, 1 otherwise.
+ * @retval success 0 on success, return 0 also when getcwd fails, just a bash thing
  *
  * @author kfan
  */
@@ -110,7 +126,7 @@ int builtins_pwd(char **envp)
 	
 	(void)envp;
 	if (!getcwd(path, 1024))
-		return(perror("minishell: getcwd failed"), 1);
+		return(perror("minishell: pwd: getcwd: cannot access parent directories: "), 0);
 	ft_printf("%s\n", path);
 	return (0);
 }

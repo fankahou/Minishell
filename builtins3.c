@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/01 21:40:25 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 19:17:21 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int check_and_change_path(char **envp, char *path, t_token *token)
 		return (perror("minishell: cd: OLDPWD not set"), 1);
 	}
 	if (!getcwd(oldpath, 1024))
-		 return(perror("minishell: getcwd failed"), 1);
+		 return(perror("minishell: cd: getcwd: cannot access parent directories: "), 0);
 	if (chdir(path))
 		return (perror("minishell: cd: "), 1);
 	return(replace_pwd(oldpath, token));
@@ -103,7 +103,7 @@ static int change_dir(char *path, char **envp, t_token *token)
  * @param envp environment variables
  * @param token command token
  * @return int 
- * @retval success 0 on success, 1 otherwise,
+ * @retval success 0 on success, 1 otherwise, return 0 also when getcwd fails, just a bash thing
  *
  * @author kfan
  */
@@ -117,7 +117,7 @@ int builtins_cd(char **cmd, char **envp, t_token *token)
 	{
 		dir = opendir(cmd[0]);
 		if (!dir)
-			return (perror("No such file or directory"), 1);
+			return (perror("No such file or directory"), 0);
 		// readdir() for Permission?
 		closedir(dir);
 	}

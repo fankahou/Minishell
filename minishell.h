@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/01 21:41:01 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 16:26:13 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct s_cmds
 	int			fd[2];
 	char		*infile;
 	char		*outfile;
-	// int pid; // to wait for the last input to finish?
+	int			pid; // to wait for the last input to finish?
 }				t_cmds;
 
 // to be used in clean_name() for pasring to get through norm 25 lines;
@@ -89,6 +89,7 @@ typedef struct s_clean
 	char		*envp_temp;
 	char		*new;
 	char		*file;
+	char		**temp; // to check split_space() for envp
 }				t_clean;
 
 /**
@@ -125,6 +126,7 @@ typedef struct s_data
 	int			error;
 	char		**envp;
 	char    **envp_export; // new!!!!!
+	char		**cmd_temp; // new!! for split_space envp  // causes seg fault???
 	// pid for waiting?
 }				t_data;
 
@@ -171,6 +173,7 @@ typedef struct s_token
 	int			*error;
 	char		**envp;
 	char    **envp_export; // new!!!!!
+	//char		**cmd_temp; // new!! for split_space envp  // causes seg fault???
 	t_data		*data;
 }				t_token;
 
@@ -223,6 +226,7 @@ void print_token(t_token **token);  // for debugging'
 void make_tree(t_data *data);
 int init_token(char **temp, t_token **token, t_data *data, int i);
 int make_cmd_list(char **temp, t_token *token);
+char **ft_cmd(char *temp, t_token *token, char **old);
 int redir(char *temp, t_token *token, int k);
 int clean_and_expand(t_token *token);
 char *clean_name(char *temp, t_token *token, int count, char *file);
@@ -231,7 +235,9 @@ int check_envp_count(char *temp);
 
 //error
 void syntax_error(char *str, t_token *token);
-void open_error(char *str, t_token *token);
+void open_error(char *str, t_token *token, int *fd);
+void	mini_error(char *str, char *arg, t_token *token, int *fd);
+void	execve_error(char *cmd, char *path, t_token *token, DIR *dir);
 
 // from pipex
 int     pipex(t_token *token);
@@ -239,7 +245,6 @@ int	outfile(t_token *token, int k);
 char	*get_path(char **cmd, char **envp);
 int	input(t_cmds *cmds, t_token *token);
 int	last_input(t_cmds *cmds, t_token *token);
-//void	execve_error(char *message, char **temp, int fd);
 
 //all utils
 char	*ft_charjoin(char *s1, char *s2);

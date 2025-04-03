@@ -6,11 +6,16 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/02 16:03:58 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 19:54:31 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//write all error messages to a file and print it out later?
+// open(fd);
+// dup2(fd, 2)?
+// in bash all errors prints out only after the STDOUT
 
 /**
  * @brief Indicates a syntax error.
@@ -19,16 +24,17 @@
  * token that is currently being processed and
  * stops the processing of this token.
  *
- * @param str debug feature, unused
+ * @param str message printed
  * @param token token in which the error occurred
  *
  * @author kfan
  */
 void	syntax_error(char *str, t_token *token)
 {
-	// ft_printf("minishell: syntax error near unexpected token '%s'\n", str);
-	(void)str;
-	perror("minishell: syntax error");
+	write(2, "minishell: syntax error: \"", 26);
+	if (str)
+		write(2, str, ft_strlen(str));
+	write(2, "\"\n", 2);
 	if (token)
 	{
 		token->exit_code[0] = 2;
@@ -36,29 +42,6 @@ void	syntax_error(char *str, t_token *token)
 	}
 }
 
-/**
- * @brief Indicates an open error.
- * 
- * This function indicates an open error in the
- * token that is currently being processed and
- * stops the processing of this token.
- *
- * @param str debug feature, unused
- * @param token token in which the error occurred.
- *
- * @author kfan
- */
-void	open_error(char *str, t_token *token)
-{
-	// ft_printf("minishell: %s: open failed", str);
-	(void)str;
-	perror("minishell: open failed");
-	if (token)
-	{
-		token->exit_code[0] = 1;
-		//token->error[0] = 1;
-	}
-}
 
 /**
  * @brief Prints an error to stderr and returns 1.

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/02 15:51:40 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 15:39:59 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,16 +120,16 @@ char	**add_array(char **input, char *entry, int y)
 	if (!temp)
 		return (perror("malloc failed"), NULL);
     temp[y + 1] = NULL;
-    temp[0] = ft_strdup(entry);
-    if (!temp[0])
-        return (perror("ft_strdup failed"), NULL);
-    i = 1;
-	while (i < y + 1)
+    i = 0;
+	while (i < y)
 	{
-		temp[i] = ft_strdup(input[i - 1]);
+		temp[i] = ft_strdup(input[i]);
 		if (!temp[i])
             return (free_if_failed(temp, i), perror("ft_strdup failed"), NULL);
 		i++;
 	}
+	temp[y] = ft_strdup(entry);
+	if (!temp[y])
+        return (perror("ft_strdup failed"), NULL);
 	return (temp);
 }

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/01 21:41:23 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 13:21:57 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ static int init_tree(t_data *data, int *fd)
     data->fd_in = fd[0];
     data->fd_out = fd[1];
     data->error = 0; // fresh restart
+    data->cmd_temp = NULL;
     return (0);
 }
 

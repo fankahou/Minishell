@@ -6,34 +6,20 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 18:57:32 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 14:08:02 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // new split
-static char **ft_cmd(char *temp, t_token *token, char **old)//, int i)
+char **ft_cmd(char *temp, t_token *token, char **old)
 {
-    //char *file;
     char **cmd;
 
     cmd = ft_split_space(temp); // need custom split! need to check?
     if (!cmd)
         return (perror("ft_split failed"), token->error[0] = 1, NULL);
-/*     while (cmd[i])
-    {
-        // get rid of this for expand in excute?
-        file = ft_calloc(1, 1);
-        if (!file)
-            return (ft_free_split(cmd), perror("ft_calloc failed"), token->error[0] = 1, NULL);
-        file = clean_name(cmd[i], token, 0, file);
-        if (!file)
-            return (ft_free_split(cmd), token->error[0] = 1, NULL);
-        free(cmd[i]);
-        cmd[i] = file;
-        i++;
-    } */
     if (old)
         old = join_split(&old, &cmd, 0, 0);
     else
