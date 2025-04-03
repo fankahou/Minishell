@@ -6,12 +6,29 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/02 23:55:14 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 22:19:31 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief checks errors and arrays needed to malloc the cmds struct
+ * 
+ * throws error if two pipes are next to each other eg. "|  |"
+ * error_count starts at one will throw syntax error if a cmd starts with a pipe
+ * error_count resets to zero if it hits anything rather than a pipe and increment if it hits one
+ * 
+ * @param temp second split of pipe
+ * @param token token struct
+ * @param token error_count
+ * @return int 
+ * @retval arrays need for the char **cmd aka token->nmb_of_cmd
+ * 
+ * @ref t_token
+ *
+ * @author kfan
+ */
 static int check_cmd(char **temp, t_token *token, int error_count)
 {
     int i;
@@ -41,6 +58,16 @@ static int check_cmd(char **temp, t_token *token, int error_count)
     return (k);
 }
 
+/**
+ * @brief checks errors and arrays needed to malloc the cmds struct, malloc it and initilize the struct
+ * 
+ * @param temp initial split
+ * @param token token struct
+ * 
+ * @ref t_token
+ *
+ * @author kfan
+ */
 static int check_and_malloc(char **temp, t_token *token)
 {
     int i;
@@ -70,6 +97,19 @@ static int check_and_malloc(char **temp, t_token *token)
     return (0);
 }
 
+/**
+ * @brief Split the array by pipe '|', 
+ * than check errors and arrays needed to malloc the cmds struct, 
+ *
+ * note that the modifidied split function also stores the '|' in an individual array
+ * 
+ * @param cmds individual str of cmd after initial split
+ * @param token token struct
+ * 
+ * @ref t_token
+ *
+ * @author kfan
+ */
 static int split_pipe(char *cmds, t_token *token)
 {
     char **temp;
@@ -89,9 +129,17 @@ static int split_pipe(char *cmds, t_token *token)
 /**
  * @brief Second part of token initialisation
  *
- * This function is a mystery to me -_-
+ * It checks the initial split of the str and 
+ * stores the value of the delimiter to the malloc-ed token tree 
+ * for later use in bonus of just normal ; seperation of cmds (not mandatory)
  * 
- * @param temp command list
+ * token[k]->delimiter:
+ * 0 = end;
+ * 1 = ;
+ * 2 = &&
+ * 3 = ||
+ * 
+ * @param temp initial split
  * @param token token array
  * 
  * @ref t_token
@@ -154,7 +202,6 @@ int init_token(char **temp, t_token **token, t_data *data, int i)
         if (!token[i])
             return (small_free(token, i), perror("malloc failed"), 1);
         token[i]->cmds = NULL;
-        //check if !envp?
         token[i]->envp = data->envp;
         token[i]->envp_export = data->envp_export;
         token[i]->exit_code = &data->exit_code;
@@ -164,7 +211,6 @@ int init_token(char **temp, t_token **token, t_data *data, int i)
         token[i]->delimiter = 0;
         token[i]->nmb_of_cmd = 0;
         token[i]->data = data;
-        //token[i]->cmd_temp = NULL; // causes seg fault???
     }
     init_token1(temp, token);
     return (0);

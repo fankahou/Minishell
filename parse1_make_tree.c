@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/03 13:21:57 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/03 21:56:35 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 // echo 123 >out1 | echo 456 >>out 2 | echo 789 >> out3 | >out4 | echo 678 ; <out1 cat | cat > out; << EOF cat | cat >> out4
 // echo 123 >out1 | echo 456 >>out 2 | echo 789 >> out3 | >out4 | echo 678 ; <out1 cat | cat > out; << EOF cat | cat >> out4
 /**
- * @brief I have no idea what this does.
+ * @brief Check error and return how many arrays it needs for malloc the token tree
  * 
- * Please write some Documentation here, Ka Hou. 
+ * It will throw error if two delimiters are next to each other (eg: "; ;" or "; &&" or "|| &&")
  *
- * @param temp (description of temp)
- * @param error_count (description of error_count)
+ * @param temp array of split of the initial str
+ * @param error_count starts with 0 and will increment when it hits a delimiter, goes back to zero if it hits a non- delimiter and throws error if the value is greater than 1
  * @return int 
- * @retval k (description of k)
+ * @retval number of arrays needed for malloc the **token
  */
 static int check_temp(char **temp, int error_count)
 {
