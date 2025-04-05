@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/03 16:26:13 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/05 14:47:54 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_clean
 	int			quote;
 	int			space;
 	char		*envp_temp;
+	//char		*wildcards;
 	char		*new;
 	char		*file;
 	char		**temp; // to check split_space() for envp
@@ -173,7 +174,7 @@ typedef struct s_token
 	int			*error;
 	char		**envp;
 	char    **envp_export; // new!!!!!
-	//char		**cmd_temp; // new!! for split_space envp  // causes seg fault???
+	char		*wildcards; // new!!
 	t_data		*data;
 }				t_token;
 
@@ -232,6 +233,7 @@ int clean_and_expand(t_token *token);
 char *clean_name(char *temp, t_token *token, int count, char *file);
 char *expand_envp(char *temp, t_token *token, char *new, t_clean *clean);
 int check_envp_count(char *temp);
+char *wildcards(char *temp, t_token *token, t_clean *clean);
 
 //error
 void syntax_error(char *str, t_token *token);
@@ -245,6 +247,7 @@ int	outfile(t_token *token, int k);
 char	*get_path(char **cmd, char **envp);
 int	input(t_cmds *cmds, t_token *token);
 int	last_input(t_cmds *cmds, t_token *token);
+int empty_pipe(int *fd);
 
 //all utils
 char	*ft_charjoin(char *s1, char *s2);
@@ -252,7 +255,10 @@ int inside_quote(char c, int quote);
 void close_unused_fd(t_token **token, int i);
 void restore_fd(t_data *data, int *fd);
 char *join_cmd(char *src, char *new);
+int join_cmd_1(t_token *token, int i, int j, char *file);
+int join_cmd_2(t_token *token, int i, int j, char *file);
 void sort_array(char **input);
+void sort_array_wildcards(char **input); //for bonus
 char *attach_quote(char *temp);
 char	**copy_array_prefix(char **input, int y, int i, int j);
 char	**copy_array(char **input);

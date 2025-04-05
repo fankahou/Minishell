@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/03 14:16:39 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/05 14:21:34 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,25 @@ char	*get_path(char **cmd, char **envp)
 	if (!path)
 		return (perror("ft_strdup failed"), NULL);
 	return (path);
+}
+
+int empty_pipe(int *fd)
+{
+	if (dup2(fd[1], 1) == -1)
+	{
+		close(fd[0]);
+		close(fd[1]);
+		perror("dup2 failed");
+		return (1);
+	}
+	if (dup2(fd[0], 0) == -1)
+	{
+		close(fd[0]);
+		close(fd[1]);
+		perror("dup2 failed");
+		return (1);
+	}
+	close(fd[0]);
+	close(fd[1]);
+	return (0);
 }

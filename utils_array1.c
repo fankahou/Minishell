@@ -6,12 +6,13 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 18:50:00 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/04 13:42:25 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// sort array according to ascii value
 void sort_array(char **input)
 {
     char *temp;
@@ -26,6 +27,57 @@ void sort_array(char **input)
         while (input[y + 1])
         {
             val = ft_strncmp(input[y], input[y + 1], (ft_strlen(input[y]) | ft_strlen(input[y + 1])));
+            if (val > 0)
+            {
+                temp = input[y];
+                input[y] = input[y + 1];
+                input[y + 1] = temp;
+            }
+            y++;
+        }
+        i++;
+    }
+}
+
+//modified strncmp for alphabets so A = a
+static int	ft_strncmp_alpha(const char *s1, const char *s2, size_t n)
+{
+	size_t			i;
+	unsigned char	str1;
+	unsigned char	str2;
+
+	i = 0;
+	if (!s1 || !s2)
+		return (1);
+	if (n == 0)
+		return (1);
+	while (i < n && (s1[i] != '\0' || s2[i] != '\0'))
+	{
+		str1 = ft_tolower(s1[i]);
+		str2 = ft_tolower(s2[i]);
+		if (str1 != str2)
+			return (str1 - str2);
+		i++;
+	}
+	return (0);
+}
+
+// for bonus: wildcards
+// sort array according to alphabets A=a usw
+void sort_array_wildcards(char **input)
+{
+    char *temp;
+    int val;
+    int y;
+    int i;
+
+    i = 0;
+    while (input[i + 1])
+    {
+        y = 0;
+        while (input[y + 1])
+        {
+            val = ft_strncmp_alpha(input[y], input[y + 1], (ft_strlen(input[y]) | ft_strlen(input[y + 1])));
             if (val > 0)
             {
                 temp = input[y];

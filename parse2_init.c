@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/03 22:19:31 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/05 12:01:00 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,7 @@ int init_token(char **temp, t_token **token, t_data *data, int i)
         token[i]->delimiter = 0;
         token[i]->nmb_of_cmd = 0;
         token[i]->data = data;
+        token[i]->wildcards = NULL;
     }
     init_token1(temp, token);
     return (0);

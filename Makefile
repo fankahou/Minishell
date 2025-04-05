@@ -9,6 +9,7 @@ SRC = main.c \
 	parse5_clean_and_expand.c \
 	parse6_clean_name.c \
 	parse7_expand_envp.c \
+	parse8_wildcards.c \
 	pipex.c \
 	pipex_input.c \
 	pipex_utils.c \
@@ -23,7 +24,7 @@ SRC = main.c \
 	utils_array2.c \
 	utils_free.c \
 	utils_is.c \
-	utils_join_split.c \
+	utils_join.c \
 	utils_ft_split_space.c \
 	utils_ft_split_cmd.c \
 	utils_ft_split_pipe.c \

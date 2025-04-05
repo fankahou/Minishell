@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/03 16:44:50 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/05 14:21:28 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,27 +86,6 @@ static void	parent(int *fd, t_cmds *cmds, t_token *token, char *path)
 	}
 	token->exit_code[0] = WEXITSTATUS(status);
 		// if statement for the one terminated by signal also?
-}
-
-int empty_pipe(int *fd)
-{
-	if (dup2(fd[1], 1) == -1)
-	{
-		close(fd[0]);
-		close(fd[1]);
-		perror("dup2 failed");
-		return (1);
-	}
-	if (dup2(fd[0], 0) == -1)
-	{
-		close(fd[0]);
-		close(fd[1]);
-		perror("dup2 failed");
-		return (1);
-	}
-	close(fd[0]);
-	close(fd[1]);
-	return (0);
 }
 
 int	input(t_cmds *cmds, t_token *token)

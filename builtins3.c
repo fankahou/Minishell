@@ -6,12 +6,13 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/03 19:17:21 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/04 12:59:12 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//works like strjoin but will update the temp after joining by dereferencing
 static int make_path(char *path, char *prefix, char **temp)
 {
 	char *new;
@@ -25,14 +26,14 @@ static int make_path(char *path, char *prefix, char **temp)
 	return (0);
 }
 
-
+// path[4096] is max length of path in linux
 static int replace_pwd(char *oldpath, t_token *token)
 {
 	char *pwd;
 	char *oldpwd;
-	char path[1024];
+	char path[4096];
 	
-	if (!getcwd(path, 1024))
+	if (!getcwd(path, 4096))
 		return(perror("minishell: getcwd failed"), 1);
 	if (make_path(path, "PWD=", &pwd))  // use getcwd(char *buf, size_t size) to get pwd!
 		return (1);
@@ -50,7 +51,7 @@ static int replace_pwd(char *oldpath, t_token *token)
 static int check_and_change_path(char **envp, char *path, t_token *token)
 {
 	int i;
-	char oldpath[1024];
+	char oldpath[4096];
 
 	if (path && path[0] == '-' && path[1] == '\0')
 	{
@@ -63,7 +64,7 @@ static int check_and_change_path(char **envp, char *path, t_token *token)
 		}
 		return (perror("minishell: cd: OLDPWD not set"), 1);
 	}
-	if (!getcwd(oldpath, 1024))
+	if (!getcwd(oldpath, 4096))
 		 return(perror("minishell: cd: getcwd: cannot access parent directories: "), 0);
 	if (chdir(path))
 		return (perror("minishell: cd: "), 1);
