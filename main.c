@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/07 15:46:06 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/07 17:26:27 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <readline/readline.h>
 
 //to do list 3 April
 // mkdir a a/b; cd a/b; rm -rf ../../a; unset PWD; unset OLDPWD; pwd
@@ -91,9 +92,9 @@ int main(int argc, char **argv, char**envp)
     t_history history;
     char *temp;
 
-    signal_init();
     (void) argc;
     (void) argv;
+
     data.str = NULL;
     data.exit_code = 0;
     data.error = 0;
@@ -109,9 +110,21 @@ int main(int argc, char **argv, char**envp)
         sort_array(data.envp_export); // new!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
     init_history(&history);
+    signal_init();
     while (1)
     {
-        temp = readline("minishell> "); // new: one more space just for better read
+        /* if (g_sigrecv == SIGINT)
+        {
+            g_sigrecv = 0;
+            temp = readline("");
+        }
+        else */
+            temp = readline("minishell> "); // new: one more space just for better read
+        if (g_sigrecv == 2)
+        {
+            data.exit_code = 130;
+            g_sigrecv = 0;
+        }
         if (!temp)
             break ;
         //printf("data.error = %d\n", data.error);

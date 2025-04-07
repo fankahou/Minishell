@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 13:09:49 by kmautner          #+#    #+#             */
-/*   Updated: 2025/03/31 13:05:42 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/07 15:55:19 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 int	history_add(t_history *history, char *command)
 {
 	debug("Adding new element to history...");
+	if (command[0] == '\n' || command[0] == '\0')
+		return (free(command), debug("Will not add empty line to history."), 0);
 	if (history->length > 0 && str_equals(history->list[history->length - 1],
 			command))
 	{
@@ -80,8 +82,11 @@ int	read_history_file(t_history *history, int fd)
 			return (free(command), 0);
 		if (command[ft_strlen(command) - 1] == '\n')
 			command[ft_strlen(command) - 1] = '\0';
-		if (history_add(history, command))
-			warn("Error adding a command from file!");
+		if (command[0] != '\n' && command[0] != '\0')
+		{
+			if (history_add(history, command))
+				warn("Error adding a command from file!");
+		}
 		command = get_next_line(fd);
 	}
 	get_next_line(-1);

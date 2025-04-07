@@ -44,6 +44,7 @@ LIBS = $(SRCDIR)/libft/libft.a -lreadline
 RM = rm -f
 
 HOSTNAME = $(shell "hostname")
+DEBUG = 0
 
 .DEFAULT_GOAL = all
 
@@ -52,6 +53,20 @@ HOSTNAME = $(shell "hostname")
 all: $(NAME)
 bonus: $(NAME_BONUS)
 
+ifeq ($(DEBUG),1)
+$(NAME): obj $(OBJ)
+	cd $(SRCDIR)/libft && make
+	cc $(CFLAGS) $(OBJ) $(LIBS) -D DEBUG=1 -o $(NAME)
+	export HOSTNAME=$(HOSTNAME)
+
+$(NAME_BONUS): obj $(OBJ)
+	cd $(SRCDIR)/libft && make
+	cc $(CFLAGS) $(OBJ) $(LIBS) -D DEBUG=1 -o $(NAME_BONUS)
+	export HOSTNAME=$(HOSTNAME)
+
+$(OBJ): $(OBJDIR)/%.o : $(SRCDIR)/%.c
+	cc $(CFLAGS) -c $< -D DEBUG=1 -o $@
+else
 $(NAME): obj $(OBJ)
 	cd $(SRCDIR)/libft && make
 	cc $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
@@ -64,6 +79,7 @@ $(NAME_BONUS): obj $(OBJ)
 
 $(OBJ): $(OBJDIR)/%.o : $(SRCDIR)/%.c
 	cc $(CFLAGS) -c $< -o $@
+endif
 
 obj:
 	mkdir -p $@

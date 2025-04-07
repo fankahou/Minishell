@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse4_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/07 14:58:33 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/07 17:14:35 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ static void	write_heredoc(t_token *token, char *temp, int fd, char *eof)
 	{
 		write(token->fd_in, "heredoc> ", 9);
 		temp = get_next_line(token->fd_in);
-        if (!temp)
+		if (g_sigrecv == SIGINT)
+			free(temp);
+        if (!temp || g_sigrecv == SIGINT)
             break ;
 		if (!ft_strncmp(eof, temp, n))
 		{
