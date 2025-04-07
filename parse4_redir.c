@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse4_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/07 17:14:35 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:43:44 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,29 @@ static void	write_heredoc(t_token *token, char *temp, int fd, char *eof)
 {
 	int	n;
 
+    (void)token; // for gnl previosly
 	n = ft_strlen(eof);
 	while (1)
 	{
-		write(token->fd_in, "heredoc> ", 9);
-		temp = get_next_line(token->fd_in);
-		if (g_sigrecv == SIGINT)
-			free(temp);
-        if (!temp || g_sigrecv == SIGINT)
+/* 		write(token->fd_in, "> ", 2);
+		temp = get_next_line(token->fd_in); */
+        temp = readline("> "); // KA HOU: new!!! instead of gnl to ignore ctrl+ '\'
+        if (!temp && g_sigrecv != 3) // for (ctrl + \)
+        {
+            write(fd, "\n", 1);
+            if (g_sigrecv == 0)
+                write(2, "\nminishell: warning: here-document delimited by end-of-file (wanted `eof')\n", 75);
             break ;
+        }
 		if (!ft_strncmp(eof, temp, n))
 		{
 			if (temp)
 				free(temp);
-			get_next_line(-1);
+			//get_next_line(-1);
 			break ;
 		}
 		write(fd, temp, ft_strlen(temp));
+        write(fd, "\n", 1);
 		if (temp)
 			free(temp);
 	}

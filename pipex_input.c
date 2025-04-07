@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/05 14:21:28 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/07 18:42:03 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,11 @@ static void	parent(int *fd, t_cmds *cmds, t_token *token, char *path)
 	int	status;
 
 	status = 0;
-	if (cmds->cmd[0] && cmds->cmd[1])
+	(void)path;
+	(void)cmds;
+	//dont wait here!
+	//waitpid(cmds->pid, &status, 0); // protection?
+/* 	if (cmds->cmd[0] && cmds->cmd[1])
 		path = cmds->cmd[1];
 	if (ft_strncmp(cmds->infile, "/dev/urandom", 12)
 		&& ft_strncmp(cmds->infile, "/dev/random", 11)
@@ -72,7 +76,7 @@ static void	parent(int *fd, t_cmds *cmds, t_token *token, char *path)
 		waitpid(cmds->pid, &status, 0); // protection?
 	}
 	else
-		kill(cmds->pid, 1); // usleep or kill later?
+		kill(cmds->pid, 1); // usleep or kill later? */
 	if (fd)
 	{
 		close(fd[1]);

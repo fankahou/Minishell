@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/07 13:46:40 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:51:51 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,6 +280,7 @@ void			debug(char *msg);
 // SIGNALS.C
 extern int		g_sigrecv;
 int	signal_init(void);
+int	signal_init1(void);
 
 // HISTORY.C
 int				history_add(t_history *history, char *command);

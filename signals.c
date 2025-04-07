@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 13:49:39 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/07 17:30:45 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:44:48 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,18 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
 {
 	(void)context;
 	(void)info;
-	if (signal == SIGSEGV)
-	{
+	//ft_printf("Received signal %i from process %i\n", signal, info->si_pid);
+/* 	if (signal == SIGSEGV)
 		ft_printf("You fucking moron, you caused a segmentation fault! >:(\n");
 		exit(0);
 	}
 	if (g_sigrecv != 0)
-		debug("Unprocessed signal in sigrecv! This signal will be overwritten!");
+		error("Unprocessed signal in sigrecv! This signal will be overwritten!"); */
 	g_sigrecv = signal;
 	if (g_sigrecv == SIGINT)
+	if (g_sigrecv == SIGINT)
 	{
+		write(2, "\n", 1);
 		write(2, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
@@ -79,14 +81,59 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
 int	signal_init(void)
 {
 	struct sigaction	act;
+	struct sigaction	ignore; // KA HOU: new: set SIGQUIT to ignore
 
 	ft_bzero(&act, sizeof(act));
 	act.sa_sigaction = &signal_handler;
-	act.sa_flags = SA_SIGINFO | SA_RESTART;
+	act.sa_flags = SA_SIGINFO;
+	ignore.sa_handler = SIG_IGN;
+	ignore.sa_flags = 0;
 	if (sigaction(SIGINT, &act, NULL))
 		return (error("Error setting sigaction for SIGINT"));
-	if (sigaction(SIGQUIT, &act, NULL))
-		return (error("Error setting sigaction for SIGQUIT"));
+	if (sigaction(SIGTERM, &act, NULL))
+		return (error("Error setting sigaction for SIGTERM"));
+	if (sigaction(SIGQUIT, &ignore, NULL))
+		return (error("Error setting sigaction for SIGTERM"));
+	if (sigaction(SIGSEGV, &act, NULL))
+		return (error("Error setting sigaction for SIGSEGV"));
+	sigaction(SIGKILL, &act, NULL);
+	return (0);
+}
+
+
+void	signal_handler1(int signal, siginfo_t *info, void *context)
+{
+	(void)context;
+	(void)info;
+	//ft_printf("Received signal %i from process %i\n", signal, info->si_pid);
+/* 	if (signal == SIGSEGV)
+		ft_printf("You fucking moron, you caused a segmentation fault! >:(\n");
+	if (g_sigrecv != 0)
+		error("Unprocessed signal in sigrecv! This signal will be overwritten!"); */
+	g_sigrecv = signal;
+	if (g_sigrecv == SIGINT)
+		write(2, "\n", 1);
+	if (signal == SIGSEGV)
+		exit(0);
+/* 	if (signal == SIGINT)
+		exit(1); */
+}
+int	signal_init1(void)
+{
+	struct sigaction	act;
+	struct sigaction	ignore; // KA HOU: new: set SIGQUIT to ignore
+
+	ft_bzero(&act, sizeof(act));
+	act.sa_sigaction = &signal_handler1;
+	act.sa_flags = SA_SIGINFO;
+	ignore.sa_handler = SIG_IGN;
+	ignore.sa_flags = 0;
+	if (sigaction(SIGINT, &act, NULL))
+		return (error("Error setting sigaction for SIGINT"));
+	if (sigaction(SIGTERM, &act, NULL))
+		return (error("Error setting sigaction for SIGTERM"));
+	if (sigaction(SIGQUIT, &ignore, NULL))
+		return (error("Error setting sigaction for SIGTERM"));
 	if (sigaction(SIGSEGV, &act, NULL))
 		return (error("Error setting sigaction for SIGSEGV"));
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/03 15:10:58 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/07 19:58:42 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ static int replace_fd(t_token *token, int i)
 	}
 	else if (i > 0 && token->cmds[i - 1]->outfile && dup2(token->fd_in, 0) == -1) // restore st_in to 0 again if the pipe was already in previous outfile
 		return(1);
+	else if (i > 0 && i != token->nmb_of_cmd && dup2(token->cmds[i - 1]->fd[1], 0) == -1) // !!!new: pipes in between
+		return(1);
 	if (token->cmds[i]->outfile)
 	{
 		if (token->cmds[i]->fd[1] != -1 && dup2(token->cmds[i]->fd[1], 1) == -1)
@@ -97,7 +99,7 @@ static int replace_fd(t_token *token, int i)
 		if (token->cmds[i]->fd[1] != -1)
 			close(token->cmds[i]->fd[1]);
 	}
-	else if (dup2(token->fd_out, 1) == -1) // copy st_out to 1 again
+	else if (i == token->nmb_of_cmd && dup2(token->fd_out, 1) == -1) // copy LAST st_out to 1 again (i == token->nmb_of_cmd  is new!!!)
 		return(1);
 	return (0);
 }
@@ -105,6 +107,7 @@ static int replace_fd(t_token *token, int i)
 int	 pipex(t_token *token)
 {
 	int	i;
+	int status;
 	
 	i = 0;
 	while (i < token->nmb_of_cmd - 1 && token->error[0] == 0)
@@ -123,6 +126,14 @@ int	 pipex(t_token *token)
 			return (perror("dup2 failed"), 1);
 		if (token->cmds[i]->fd[0] != -1 && token->cmds[i]->cmd && last_input(token->cmds[i], token))
 			return (1);
+	}
+	i = 0;
+	while (i < token->nmb_of_cmd && token->error[0] == 0) // new wait!!!
+	{
+		if (token->cmds[i]->pid != 0)
+			waitpid(token->cmds[i]->pid, &status, 0);
+		//printf("pid = %d\n", token->cmds[i]->pid);
+		i++;
 	}
 	return (0);
 }
