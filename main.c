@@ -6,11 +6,14 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/07 20:41:51 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/07 23:19:28 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//to do list 7 April
+//ctrl + c then <<eof cat and ctrl + c/ or d then ctrl + c, why extra \n????
 
 //to do list 3 April
 // mkdir a a/b; cd a/b; rm -rf ../../a; unset PWD; unset OLDPWD; pwd
@@ -109,10 +112,16 @@ int main(int argc, char **argv, char**envp)
         sort_array(data.envp_export); // new!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
     init_history(&history);
-    signal_init();
     while (1)
     {
+        //printf("g_sigrecv = %d\n", g_sigrecv);
+        signal_init();
         temp = readline("minishell> "); // new: one more space just for better read
+        if (g_sigrecv != 0)
+        {   
+            data.exit_code = 130;
+            g_sigrecv = 0;
+        }
         if (!temp)
             break ;
         signal_init1();

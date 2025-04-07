@@ -147,6 +147,17 @@ function where the program exits.
 
 \> kfan
 
+//new to do list April 7
+// <<eof < hello cat |echo 123 --- ctrl + d eof warning comes before STDOUT, bash error comes after STDOUT
+//ctrl + c then <<eof cat and ctrl + c/ or d then ctrl + c, why extra \n???? after changing gnl to readline in here_doc
+// to Koloman: please check the add_history empty line thing if there is leak, thanks!
+
+//fixed April 7
+//signals
+//cat | echo 123
+//waitpid
+// ctrl + \ should do nth in minishell and heredoc!
+
 //to do list 3 April
 // mkdir a a/b; cd a/b; rm -rf ../../a; unset PWD; unset OLDPWD; pwd
 // cat /dev/random | head -c 100 | wc -c // waitpid ??? signal?

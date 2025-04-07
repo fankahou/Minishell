@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 13:49:39 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/07 20:44:48 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/07 23:37:06 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * @var sigrecv
  * @brief Variable to store received signals.
- * 
+ *
  * This global variable contains the number of the
  * last received signal. It is exported in the header
  * and should be set to 0 after the signal has been
@@ -44,22 +44,21 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
 {
 	(void)context;
 	(void)info;
-	//ft_printf("Received signal %i from process %i\n", signal, info->si_pid);
-/* 	if (signal == SIGSEGV)
-		ft_printf("You fucking moron, you caused a segmentation fault! >:(\n");
-		exit(0);
-	}
-	if (g_sigrecv != 0)
-		error("Unprocessed signal in sigrecv! This signal will be overwritten!"); */
+	// ft_printf("Received signal %i from process %i\n", signal, info->si_pid);
+	/* 	if (signal == SIGSEGV)
+			ft_printf("You fucking moron,
+				you caused a segmentation fault! >:(\n");
+			exit(0);
+		}
+		if (g_sigrecv != 0)
+			error("Unprocessed signal in sigrecv! This signal will be overwritten!"); */
 	g_sigrecv = signal;
 	if (g_sigrecv == SIGINT)
-	if (g_sigrecv == SIGINT)
 	{
-		write(2, "\n", 1);
-		write(2, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
+		write(2, "\n", 1); // why the fuck is there an extra line after here_doc ends with ctrl???
+		rl_replace_line("", 0); // replace the buffer
+		rl_on_new_line(); // new prompt on the next line but not shown
+		rl_redisplay(); // flush the buffer
 	}
 }
 
@@ -81,13 +80,14 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
 int	signal_init(void)
 {
 	struct sigaction	act;
-	struct sigaction	ignore; // KA HOU: new: set SIGQUIT to ignore
-
+	struct sigaction ignore; // KA HOU: new: set SIGQUIT to ignore
+	
 	ft_bzero(&act, sizeof(act));
 	act.sa_sigaction = &signal_handler;
-	act.sa_flags = SA_SIGINFO;
+	act.sa_flags = SA_SIGINFO;// | SA_RESTART;
 	ignore.sa_handler = SIG_IGN;
 	ignore.sa_flags = 0;
+	sigemptyset(&ignore.sa_mask);  // no other signal to block, valgrind will complaim this if not set
 	if (sigaction(SIGINT, &act, NULL))
 		return (error("Error setting sigaction for SIGINT"));
 	if (sigaction(SIGTERM, &act, NULL))
@@ -96,38 +96,38 @@ int	signal_init(void)
 		return (error("Error setting sigaction for SIGTERM"));
 	if (sigaction(SIGSEGV, &act, NULL))
 		return (error("Error setting sigaction for SIGSEGV"));
-	sigaction(SIGKILL, &act, NULL);
+	sigaction(SIGKILL, &act, NULL); // Warning: ignored attempt to set SIGKILL handler in sigaction(); the SIGKILL signal is uncatchable???
 	return (0);
 }
-
 
 void	signal_handler1(int signal, siginfo_t *info, void *context)
 {
 	(void)context;
 	(void)info;
-	//ft_printf("Received signal %i from process %i\n", signal, info->si_pid);
-/* 	if (signal == SIGSEGV)
-		ft_printf("You fucking moron, you caused a segmentation fault! >:(\n");
-	if (g_sigrecv != 0)
-		error("Unprocessed signal in sigrecv! This signal will be overwritten!"); */
 	g_sigrecv = signal;
-	if (g_sigrecv == SIGINT)
-		write(2, "\n", 1);
+	if (g_sigrecv == SIGINT) // need to quit here_doc!!!
+	{
+		//printf("hello\n");
+		close(0); // really?? KA HOU: I close the STD_IN, works like eof, but I dont know whether it's correct...
+		//write(2, "\n", 1); // how about execve??
+/* 		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay(); */
+	}
 	if (signal == SIGSEGV)
 		exit(0);
-/* 	if (signal == SIGINT)
-		exit(1); */
 }
 int	signal_init1(void)
 {
 	struct sigaction	act;
-	struct sigaction	ignore; // KA HOU: new: set SIGQUIT to ignore
 
+	struct sigaction ignore; // KA HOU: new: set SIGQUIT to ignore
 	ft_bzero(&act, sizeof(act));
 	act.sa_sigaction = &signal_handler1;
-	act.sa_flags = SA_SIGINFO;
+	act.sa_flags = SA_SIGINFO;// | SA_RESTART;
 	ignore.sa_handler = SIG_IGN;
 	ignore.sa_flags = 0;
+	sigemptyset(&ignore.sa_mask);
 	if (sigaction(SIGINT, &act, NULL))
 		return (error("Error setting sigaction for SIGINT"));
 	if (sigaction(SIGTERM, &act, NULL))

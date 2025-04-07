@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/05 12:01:00 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/07 21:50:26 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ static int check_and_malloc(char **temp, t_token *token)
         token->cmds[i]->outfile = NULL;
         token->cmds[i]->fd[0] = token->data->fd[0];
         token->cmds[i]->fd[1] = token->data->fd[1];
+        token->cmds[i]->pid = 0;
         i++;
     }
     token->cmds[i] = NULL;
