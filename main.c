@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/07 14:33:18 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/07 15:46:06 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,14 @@ int main(int argc, char **argv, char**envp)
     while (1)
     {
         temp = readline("minishell> "); // new: one more space just for better read
-        printf("data.error = %d\n", data.error);
-        if (temp && temp[0] == '\0')
+        if (!temp)
+            break ;
+        //printf("data.error = %d\n", data.error);
+/*         if (temp && temp[0] == '\0')
         {
             free(temp);
             break ;
-        }
+        } */
         data.str = ft_calloc(ft_strlen(temp) + 2, 1); //new: copy one more \0 to imitate gnl to avoid invalid read in Ka Hou's code
         if (!data.str)
             break ;
