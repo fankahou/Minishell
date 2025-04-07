@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/03 19:54:31 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/07 12:44:09 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//write all error messages to a file and print it out later?
+// write all error messages to a file and print it out later?
 // open(fd);
 // dup2(fd, 2)?
 // in bash all errors prints out only after the STDOUT
 
 /**
  * @brief Indicates a syntax error.
- * 
+ *
  * This function indicates a syntax error in the
  * token that is currently being processed and
  * stops the processing of this token.
@@ -42,7 +42,6 @@ void	syntax_error(char *str, t_token *token)
 	}
 }
 
-
 /**
  * @brief Prints an error to stderr and returns 1.
  *
@@ -58,15 +57,19 @@ void	syntax_error(char *str, t_token *token)
  */
 int	error(char *msg)
 {
-	char *prefix;
-	char *combined;
+	char	*prefix;
+	char	*combined;
 
 	prefix = "\033[1;41m ERROR \033[22;0m -> ";
 	combined = ft_strjoin(prefix, msg);
-	if (msg)
+	if (msg && combined)
 	{
 		perror(combined);
 		free(combined);
+	}
+	else if (msg && !combined)
+	{
+		perror(msg);
 	}
 	else
 		perror("\033[1;41m ERROR \033[22;0m -> unknown error (no message)");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/05 14:47:54 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/07 13:46:40 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,10 @@ typedef struct s_data
  *		Error status (1 if an error occurred, 0 otherwise)
  * @var t_token::envp
  *		environment variables
+ * @var t_token::envp_export
+ *		exported envp?
+ * @var t_token::wildcards
+ *		no clue what this is...
  * @var t_token::data
  *		data struct
  *
@@ -195,32 +199,6 @@ typedef struct s_history
 	char		*list[HISTORY_MAX_SIZE];
 	int			length;
 }				t_history;
-
-/**
- * @deprecated
- * @struct t_signal
- * @brief Struct to store a received signal.
- * @deprecated Will be replaced because of subject/norm.
- *
- * @var t_signal::signal
- *		number of the signal
- * @var t_signal::siginfo
- *		info about the signal sender (see siginfo_t)
- * @var t_signal::context
- *		Not used for anything.
- * @var t_signal::check
- *		See if the sgnal has been processed.
- *		Set to 0 after processing the signal.
- *
- * @author kmautner
- */
-typedef struct s_signal
-{
-	int			signal;
-	siginfo_t	*siginfo;
-	void		*context;
-	char		check;
-}				t_signal;
 
 void print_token(t_token **token);  // for debugging'
 
@@ -299,8 +277,11 @@ int				error(char *msg);
 void			warn(char *msg);
 void			debug(char *msg);
 
+// SIGNALS.C
+extern int		g_sigrecv;
+int	signal_init(void);
+
 // HISTORY.C
-extern int		sigrecv;
 int				history_add(t_history *history, char *command);
 int				init_history(t_history *history);
 void			destroy_history(t_history *history);

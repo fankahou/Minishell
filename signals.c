@@ -6,11 +6,12 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 13:49:39 by kmautner          #+#    #+#             */
-/*   Updated: 2025/03/27 12:41:31 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/07 14:14:28 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <signal.h>
 
 /**
  * @var sigrecv
@@ -23,7 +24,7 @@
  *
  * @author kmautner
  */
-int		sigrecv;
+int		g_sigrecv;
 
 /**
  * @brief Signal handler to process received signals.
@@ -42,14 +43,18 @@ int		sigrecv;
  */
 void	signal_handler(int signal, siginfo_t *info, void *context)
 {
+	(void)context;
 	ft_printf("Received signal %i from process %i\n", signal, info->si_pid);
 	if (signal == SIGSEGV)
 		ft_printf("You fucking moron, you caused a segmentation fault! >:(\n");
-	if (sigrecv != 0)
+	if (g_sigrecv != 0)
 		error("Unprocessed signal in sigrecv! This signal will be overwritten!");
-	sigrecv = signal;
-	if (signal == SIGINT)
-		error("SIGINT RECEIVED!");
+	g_sigrecv = signal;
+	printf("g_sigrecv -> %i\n", g_sigrecv);
+	if (signal == SIGSEGV)
+		exit(0);
+/* 	if (signal == SIGINT)
+		exit(1); */
 }
 
 /**
@@ -66,7 +71,7 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
  * @return int
  * @retval success 0 on success, 1 otherwise.
  *
- *@author kmautner
+ * @author kmautner
  */
 int	signal_init(void)
 {
@@ -79,7 +84,10 @@ int	signal_init(void)
 		return (error("Error setting sigaction for SIGINT"));
 	if (sigaction(SIGTERM, &act, NULL))
 		return (error("Error setting sigaction for SIGTERM"));
+	if (sigaction(SIGQUIT, &act, NULL))
+		return (error("Error setting sigaction for SIGTERM"));
 	if (sigaction(SIGSEGV, &act, NULL))
 		return (error("Error setting sigaction for SIGSEGV"));
+	sigaction(SIGKILL, &act, NULL);
 	return (0);
 }

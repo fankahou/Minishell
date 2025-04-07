@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/03 19:35:30 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/07 14:33:18 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,12 @@ int main(int argc, char **argv, char**envp)
     t_history history;
     char *temp;
 
+    signal_init();
     (void) argc;
     (void) argv;
     data.str = NULL;
     data.exit_code = 0;
-    data.error = 2;
+    data.error = 0;
     data.fd[0] = 0;
     data.fd[1] = 1;
     //envp = NULL; // just to test
@@ -111,7 +112,8 @@ int main(int argc, char **argv, char**envp)
     while (1)
     {
         temp = readline("minishell> "); // new: one more space just for better read
-        if (temp[0] == '\0')
+        printf("data.error = %d\n", data.error);
+        if (temp && temp[0] == '\0')
         {
             free(temp);
             break ;
