@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_mini.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/03 19:55:20 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/08 18:09:09 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 /**
  * @brief Indicates a mini error.
- * 
+ *
  * This function indicates a mini error in the
  * token that is currently being processed and
  * will not stop the processing of this token.
@@ -46,16 +46,16 @@ void	mini_error(char *str, char *arg, t_token *token, int *fd)
 	}
 }
 
-static void command_not_found(char *cmd)
+static void	command_not_found(char *cmd)
 {
-	if(cmd)
+	if (cmd)
 		write(2, cmd, ft_strlen(cmd));
 	write(2, ": ", 2);
 	perror("command not found");
 }
 
 void	execve_error(char *cmd, char *path, t_token *token, DIR *dir)
-{	
+{
 	token->error[0] = 2;
 	token->exit_code[0] = 127;
 	dir = NULL;
@@ -68,8 +68,10 @@ void	execve_error(char *cmd, char *path, t_token *token, DIR *dir)
 			mini_error("Permission denied", cmd, NULL, NULL);
 			token->exit_code[0] = 126;
 		}
-/* 		else if (access(cmd, F_OK) == 0 && access(cmd, R_OK) == 0)
-			printf("file exists"); */ // recursion make tree for cmd? open and gnl? implement -c for minishell and pass to it!
+		/* 		else if (access(cmd, F_OK) == 0 && access(cmd, R_OK) == 0)
+					printf("file exists"); */
+						// recursion make tree for cmd? open and gnl? implement
+						// -c for minishell and pass to it!
 		else
 			command_not_found(cmd);
 	}
@@ -88,7 +90,7 @@ void	execve_error(char *cmd, char *path, t_token *token, DIR *dir)
 
 /**
  * @brief Indicates an open error.
- * 
+ *
  * This function indicates an open error in the
  * token that is currently being processed and
  * stops the processing of this token.

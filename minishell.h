@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/07 17:51:51 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/08 13:13:34 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * @file minshell.h
  * @brief Minishell header file.
- * 
+ *
  * Contains all the tools and utilities for minishell.
  */
 
@@ -22,7 +22,7 @@
 
 # ifndef DEBUG
 /**
- * @def DEBUG 
+ * @def DEBUG
  * @brief Debug status
  *
  * Indicates if minishell is in debug mode.
@@ -30,37 +30,37 @@
  * Use the debug rule in the make file to compile
  * minishell with debug mode enabled.
  *
- * @author kmautner 
+ * @author kmautner
  */
 #  define DEBUG 0
 # endif // DEBUG
 
 # include "libft/libft.h"
+# include <dirent.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
 # include <sys/wait.h>
-# include <dirent.h>
 
 /**
  * @def HISTORY_MAX_SIZE
  * @brief Max size for history.
- * 
+ *
  * This macro defines the max size of the history. Default is 100 commands.
- * 
+ *
  * @author kmautner
  */
 # define HISTORY_MAX_SIZE 100
 /**
  * @def HISTORY_FILE
  * @brief Location and name of the history file.
- * 
+ *
  * This macro defines the location and name of the file where the history
  * is saved inbetween sessions.
  * Default is ".minishell_history"
- * 
+ *
  * @author kmautner
  */
 # define HISTORY_FILE ".minishell_history"
@@ -72,26 +72,26 @@
 //  3 = ||
 typedef struct s_cmds
 {
-	char		**cmd;
-	int			redir[2];
-	int			fd[2];
-	char		*infile;
-	char		*outfile;
-	int			pid; // to wait for the last input to finish?
-}				t_cmds;
+	char	**cmd;
+	int		redir[2];
+	int		fd[2];
+	char	*infile;
+	char	*outfile;
+	int		pid; // to wait for the last input to finish?
+}			t_cmds;
 
 // to be used in clean_name() for pasring to get through norm 25 lines;
 typedef struct s_clean
 {
-	int			count;
-	int			quote;
-	int			space;
-	char		*envp_temp;
-	//char		*wildcards;
-	char		*new;
-	char		*file;
-	char		**temp; // to check split_space() for envp
-}				t_clean;
+	int		count;
+	int		quote;
+	int		space;
+	char	*envp_temp;
+	// char		*wildcards;
+	char	*new;
+	char	*file;
+	char	**temp; // to check split_space() for envp
+}			t_clean;
 
 /**
  * @struct t_data
@@ -119,17 +119,17 @@ typedef struct s_clean
  */
 typedef struct s_data
 {
-	char		*str;
-	int			fd_in;
-	int			fd_out;
-	int			fd[2];
-	int			exit_code;
-	int			error;
-	char		**envp;
-	char    **envp_export; // new!!!!!
-	char		**cmd_temp; // new!! for split_space envp  // causes seg fault???
-	// pid for waiting?
-}				t_data;
+	char	*str;
+	int		fd_in;
+	int		fd_out;
+	int		fd[2];
+	int		exit_code;
+	int		error;
+	char	**envp;
+	char	**envp_export; // new!!!!!
+	char	**cmd_temp; // new!! for split_space envp  // causes seg fault???
+						// pid for waiting?
+}			t_data;
 
 /**
  * @struct t_token
@@ -139,7 +139,7 @@ typedef struct s_data
  * I need to get Ka Hou to give a more detailed explanation
  * of what a token is for this description because I
  * don't quite understand his code (yet).
- * 
+ *
  * @var t_token::cmds
  *		(unknown)
  * @var t_token::fd_in
@@ -169,18 +169,18 @@ typedef struct s_data
  */
 typedef struct s_token
 {
-	t_cmds		**cmds;
-	int			fd_in;
-	int			fd_out;
-	int			delimiter;
-	int			nmb_of_cmd;
-	int			*exit_code;
-	int			*error;
-	char		**envp;
-	char    **envp_export; // new!!!!!
-	char		*wildcards; // new!!
-	t_data		*data;
-}				t_token;
+	t_cmds	**cmds;
+	int		fd_in;
+	int		fd_out;
+	int		delimiter;
+	int		nmb_of_cmd;
+	int		*exit_code;
+	int		*error;
+	char	**envp;
+	char	**envp_export; // new!!!!!
+	char	*wildcards; // new!!
+	t_data	*data;
+}			t_token;
 
 /**
  * @struct t_history
@@ -196,53 +196,53 @@ typedef struct s_token
  */
 typedef struct s_history
 {
-	char		*list[HISTORY_MAX_SIZE];
-	int			length;
-}				t_history;
+	char	*list[HISTORY_MAX_SIZE];
+	int		length;
+}			t_history;
 
-void print_token(t_token **token);  // for debugging'
+void	print_token(t_token **token); // for debugging'
 
-void make_tree(t_data *data);
-int init_token(char **temp, t_token **token, t_data *data, int i);
-int make_cmd_list(char **temp, t_token *token);
-char **ft_cmd(char *temp, t_token *token, char **old);
-int redir(char *temp, t_token *token, int k);
-int clean_and_expand(t_token *token);
-char *clean_name(char *temp, t_token *token, int count, char *file);
-char *expand_envp(char *temp, t_token *token, char *new, t_clean *clean);
-int check_envp_count(char *temp);
-char *wildcards(char *temp, t_token *token, t_clean *clean);
+void	make_tree(t_data *data);
+int		init_token(char **temp, t_token **token, t_data *data, int i);
+int		make_cmd_list(char **temp, t_token *token);
+char	**ft_cmd(char *temp, t_token *token, char **old);
+int		redir(char *temp, t_token *token, int k);
+int		clean_and_expand(t_token *token);
+char	*clean_name(char *temp, t_token *token, int count, char *file);
+char	*expand_envp(char *temp, t_token *token, char *new, t_clean *clean);
+int		check_envp_count(char *temp);
+char	*wildcards(char *temp, t_token *token, t_clean *clean);
 
-//error
-void syntax_error(char *str, t_token *token);
-void open_error(char *str, t_token *token, int *fd);
+// error
+void	syntax_error(char *str, t_token *token);
+void	open_error(char *str, t_token *token, int *fd);
 void	mini_error(char *str, char *arg, t_token *token, int *fd);
 void	execve_error(char *cmd, char *path, t_token *token, DIR *dir);
 
 // from pipex
-int     pipex(t_token *token);
-int	outfile(t_token *token, int k);
+int		pipex(t_token *token);
+int		outfile(t_token *token, int k);
 char	*get_path(char **cmd, char **envp);
-int	input(t_cmds *cmds, t_token *token);
-int	last_input(t_cmds *cmds, t_token *token);
-int empty_pipe(int *fd);
+int		input(t_cmds *cmds, t_token *token);
+int		last_input(t_cmds *cmds, t_token *token);
+int		empty_pipe(int *fd);
 
-//all utils
+// all utils
 char	*ft_charjoin(char *s1, char *s2);
-int inside_quote(char c, int quote);
-void close_unused_fd(t_token **token, int i);
-void restore_fd(t_data *data, int *fd);
-char *join_cmd(char *src, char *new);
-int join_cmd_1(t_token *token, int i, int j, char *file);
-int join_cmd_2(t_token *token, int i, int j, char *file);
-void sort_array(char **input);
-void sort_array_wildcards(char **input); //for bonus
-char *attach_quote(char *temp);
+int		inside_quote(char c, int quote);
+void	close_unused_fd(t_token **token, int i);
+void	restore_fd(t_data *data, int *fd);
+char	*join_cmd(char *src, char *new);
+int		join_cmd_1(t_token *token, int i, int j, char *file);
+int		join_cmd_2(t_token *token, int i, int j, char *file);
+void	sort_array(char **input);
+void	sort_array_wildcards(char **input); // for bonus
+char	*attach_quote(char *temp);
 char	**copy_array_prefix(char **input, int y, int i, int j);
 char	**copy_array(char **input);
 char	**remove_array(char **input, int index, int y, int j);
 char	**add_array(char **input, char *entry, int y);
-void print_array(char **temp);
+void	print_array(char **temp);
 char	**ft_split_space(char *s);
 char	**ft_split_cmd(char *s);
 char	**ft_split_delimiter(char const *s);
@@ -250,45 +250,45 @@ char	**ft_split_pipe(char *s);
 void	ft_free(char **array, int i);
 void	ft_free_split(char **array);
 void	ft_free_token(t_token **token);
-void    small_free(t_token **token, int i);
-int is_delimiter(char c1, char c2);
-int is_sym(char c1, char c2);
-int is_quote(char c);
-int is_space(char c);
-int is_pipe(char c);
-int sym_count(char c1, char c2, char *pin);
-int delimiter_count(char c1, char c2);
-char **join_split(char ***old, char ***cmd, int i, int j);
+void	small_free(t_token **token, int i);
+int		is_delimiter(char c1, char c2);
+int		is_sym(char c1, char c2);
+int		is_quote(char c);
+int		is_space(char c);
+int		is_pipe(char c);
+int		sym_count(char c1, char c2, char *pin);
+int		delimiter_count(char c1, char c2);
+char	**join_split(char ***old, char ***cmd, int i, int j);
 
-//builtins
-int builtins_echo(char **cmd);
-int builtins_cd(char **cmd, char **envp, t_token *token);
-int builtins_pwd(char **envp);
-int builtins_export(char **cmd, t_token *token, int k, int i);
-int builtins_unset(char **cmd, char **envp, t_token *token, int k);
-int builtins_env(char **envp);
-int builtins_exit(char **cmd, t_token *token);
-int add_envp(char *cmd, t_token *token, int i, int j);
-int builtins_pipe_fd_out(t_cmds *cmds, int *fd);
-int builtins_pipe_fd_in(t_cmds *cmds, int *fd);
+// builtins
+int		builtins_echo(char **cmd);
+int		builtins_cd(char **cmd, char **envp, t_token *token);
+int		builtins_pwd(char **envp);
+int		builtins_export(char **cmd, t_token *token, int k, int i);
+int		builtins_unset(char **cmd, char **envp, t_token *token, int k);
+int		builtins_env(char **envp);
+int		builtins_exit(char **cmd, t_token *token);
+int		add_envp(char *cmd, t_token *token, int i, int j);
+int		builtins_pipe_fd_out(t_cmds *cmds, int *fd);
+int		builtins_pipe_fd_in(t_cmds *cmds, int *fd);
 
 // ERROR.C
-int				error(char *msg);
-void			warn(char *msg);
-void			debug(char *msg);
+int		error(char *msg);
+void	warn(char *msg);
+void	debug(char *msg);
 
 // SIGNALS.C
-extern int		g_sigrecv;
-int	signal_init(void);
-int	signal_init1(void);
+extern int	g_sigrecv;
+int		signal_init(void);
+int		signal_init1(void);
 
 // HISTORY.C
-int				history_add(t_history *history, char *command);
-int				init_history(t_history *history);
-void			destroy_history(t_history *history);
+int		history_add(t_history *history, char *command);
+int		init_history(t_history *history);
+void	destroy_history(t_history *history);
 
 // UTILS_HISTORY.C
-int				str_equals(char *str1, char *str2);
-void			shift_array(char **array, int length);
+int		str_equals(char *str1, char *str2);
+void	shift_array(char **array, int length);
 
 #endif

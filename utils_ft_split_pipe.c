@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ft_split_pipe.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/28 19:00:15 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/08 17:43:10 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char	*ft_newstring(char *s)
 			quote = inside_quote(s[i++], quote);
 	}
 	if (s[i] && is_pipe(s[i]) && i == 0)
-		i = i + sym_count(s[i],0, &s[i]);
+		i = i + sym_count(s[i], 0, &s[i]);
 	str = malloc(i + 1);
 	if (!str)
 		return (NULL);

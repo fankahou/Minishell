@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 13:06:39 by kmautner          #+#    #+#             */
-/*   Updated: 2025/03/27 12:40:11 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:17:24 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,10 @@ int	str_equals(char *str1, char *str2)
 		return (0);
 	return (1);
 }
+
 /**
  * @brief Shifts an array of strings to the left by one position.
- * 
+ *
  * All elements should be malloc'd, the first element will get
  * freed and overwritten!
  *

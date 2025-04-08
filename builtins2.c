@@ -3,28 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/01 21:40:07 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/08 17:32:58 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // if prefix == 11, will skip the prefix in envp_export
-static int unset_export(t_token *token, char *temp)
+static int	unset_export(t_token *token, char *temp)
 {
-	int i;
-	int j;
-	int prefix;
+	int	i;
+	int	j;
+	int	prefix;
 
 	i = 0;
 	prefix = 11;
 	while (token->envp_export && token->envp_export[i])
 	{
 		j = 0;
-		while (token->envp_export[i][j + prefix] && token->envp_export[i][j + prefix] != '=')
+		while (token->envp_export[i][j + prefix] && token->envp_export[i][j
+			+ prefix] != '=')
 			j++;
 		if (!ft_strncmp(&token->envp_export[i][prefix], temp, j))
 		{
@@ -40,11 +41,11 @@ static int unset_export(t_token *token, char *temp)
 	return (0);
 }
 
-static int add_envp_export(char *cmd, t_token *token)
+static int	add_envp_export(char *cmd, t_token *token)
 {
-	char *temp;
-	char *quote;
-	
+	char	*temp;
+	char	*quote;
+
 	if (unset_export(token, cmd))
 		return (1);
 	quote = attach_quote(cmd);
@@ -53,11 +54,11 @@ static int add_envp_export(char *cmd, t_token *token)
 	temp = ft_strjoin("declare -x ", quote);
 	free(quote);
 	if (!temp)
-		return(perror("ft_strjoin failed"), 1);
+		return (perror("ft_strjoin failed"), 1);
 	token->envp_export = add_array(token->envp_export, temp, 0);
 	free(temp);
 	if (!token->envp_export)
-		return(perror("add_array failed"), 1);
+		return (perror("add_array failed"), 1);
 	ft_free_split(token->data->envp_export);
 	token->data->envp_export = token->envp_export;
 	sort_array(token->envp_export);
@@ -68,17 +69,17 @@ static int add_envp_export(char *cmd, t_token *token)
  * @brief Add entry to envp.
  *
  * Adds an environment variable to envp.
- * 
+ *
  * @param cmd value to add
  * @param token command token
  * @param i mystery integer
  * @param j mystery intgeger 2
- * @return int 
+ * @return int
  * @retval success 0 on success, 1 otherwise.
- * 
+ *
  * @author kfan
  */
-int add_envp(char *cmd, t_token *token, int i, int j)
+int	add_envp(char *cmd, t_token *token, int i, int j)
 {
 	while (token->envp && token->envp[i])
 	{
@@ -98,7 +99,7 @@ int add_envp(char *cmd, t_token *token, int i, int j)
 	}
 	token->envp = add_array(token->envp, cmd, 0); // random??
 	if (!token->envp)
-		return(perror("add_array failed"), 1);
+		return (perror("add_array failed"), 1);
 	ft_free_split(token->data->envp);
 	token->data->envp = token->envp;
 	return (add_envp_export(cmd, token));
@@ -113,17 +114,17 @@ int add_envp(char *cmd, t_token *token, int i, int j)
  * Handles the behaviour of the export command.
  * Sets or changes an environment variable to a
  * given value.
- * 
- * @param cmd command arguments 
+ *
+ * @param cmd command arguments
  * @param token command token
  * @param k mystery integer
  * @param i mystery integer 2 - electric boogaloo
- * @return int 
+ * @return int
  * @retval success 0 on success, 1 otherwise.
  *
  * @author kfan
  */
-int builtins_export(char **cmd, t_token *token, int k, int i)
+int	builtins_export(char **cmd, t_token *token, int k, int i)
 {
 	while (cmd[k])
 	{
@@ -132,13 +133,14 @@ int builtins_export(char **cmd, t_token *token, int k, int i)
 			return (perror("bash: export: not a valid identifier"), 1);
 		while (cmd[k][i])
 		{
-			if (!ft_isalpha(cmd[k][i]) && !ft_isalnum(cmd[k][i]) && cmd[k][i] != '_' && cmd[k][i] != '=')
+			if (!ft_isalpha(cmd[k][i]) && !ft_isalnum(cmd[k][i])
+				&& cmd[k][i] != '_' && cmd[k][i] != '=')
 				return (perror("bash: export: not a valid identifier"), 1);
 			if (cmd[k][i] == '=')
 				break ;
 			i++;
 		}
-		//!envp???
+		//! envp???
 		if (cmd[k][i] == '=' && token->nmb_of_cmd == 1)
 			add_envp(cmd[k], token, 0, 0);
 		else if (token->nmb_of_cmd == 1)
@@ -155,28 +157,29 @@ int builtins_export(char **cmd, t_token *token, int k, int i)
  *
  * Handles the behaviour of the builtin unset command.
  * Deletes an environment variable from envp.
- * 
+ *
  * @param cmd command arguments
  * @param envp environment variables
  * @param token command token
  * @param k mystery integer, very spooky
- * @return int 
+ * @return int
  * @retval success 0 on success, 1 otherwise.
  *
  * @author kfan
  */
-int builtins_unset(char **cmd, char **envp, t_token *token, int k)
+int	builtins_unset(char **cmd, char **envp, t_token *token, int k)
 {
-	int		i;
+	int	i;
 
 	if (!envp)
-		return(0);
+		return (0);
 	while (cmd[k] && token->nmb_of_cmd == 1)
 	{
 		i = 0;
 		while (envp[i])
 		{
-			if (!ft_strncmp(envp[i], cmd[k], ft_strlen(cmd[k])) && envp[i][ft_strlen(cmd[k])] == '=')
+			if (!ft_strncmp(envp[i], cmd[k], ft_strlen(cmd[k]))
+				&& envp[i][ft_strlen(cmd[k])] == '=')
 			{
 				envp = remove_array(envp, i, 0, 0);
 				if (!envp)

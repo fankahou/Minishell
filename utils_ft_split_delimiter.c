@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ft_split_delimiter.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/03/29 12:05:07 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/08 18:12:35 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ static size_t	ft_count(char const *s)
 	i = 0;
 	count = 0;
 	quote = 0;
-	if (s[i] != '\0' && !is_delimiter(s[i],s[i + 1]))
+	if (s[i] != '\0' && !is_delimiter(s[i], s[i + 1]))
 		count++;
 	while (s[i])
 	{
 		quote = inside_quote(s[i], quote);
-		if (is_delimiter(s[i],s[i + 1]) && quote == 0)
+		if (is_delimiter(s[i], s[i + 1]) && quote == 0)
 		{
 			count++;
-			i = i + delimiter_count(s[i],s[i + 1]);
-			if (!is_delimiter(s[i],s[i + 1]) && s[i] != '\0')
+			i = i + delimiter_count(s[i], s[i + 1]);
+			if (!is_delimiter(s[i], s[i + 1]) && s[i] != '\0')
 				count++;
 		}
 		else
@@ -61,15 +61,15 @@ static char	*ft_newstring(char const *s)
 
 	i = 0;
 	quote = 0;
-	while (s[i] && !is_delimiter(s[i],s[i + 1]))
+	while (s[i] && !is_delimiter(s[i], s[i + 1]))
 	{
 		quote = inside_quote(s[i], quote);
 		i++;
 		while (s[i] && quote != 0)
 			quote = inside_quote(s[i++], quote);
 	}
-	if (i == 0 && s[i] && is_delimiter(s[i],s[i + 1]))
-		i = i + delimiter_count(s[i],s[i + 1]);
+	if (i == 0 && s[i] && is_delimiter(s[i], s[i + 1]))
+		i = i + delimiter_count(s[i], s[i + 1]);
 	str = malloc(i + 1);
 	if (!str)
 		return (NULL);

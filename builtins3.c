@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   builtins3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/04 12:59:12 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/08 18:10:36 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//works like strjoin but will update the temp after joining by dereferencing
-static int make_path(char *path, char *prefix, char **temp)
+// works like strjoin but will update the temp after joining by dereferencing
+static int	make_path(char *path, char *prefix, char **temp)
 {
-	char *new;
+	char	*new;
 
 	new = ft_calloc(ft_strlen(path) + ft_strlen(prefix) + 1, 1);
 	if (!new)
@@ -27,31 +27,33 @@ static int make_path(char *path, char *prefix, char **temp)
 }
 
 // path[4096] is max length of path in linux
-static int replace_pwd(char *oldpath, t_token *token)
+static int	replace_pwd(char *oldpath, t_token *token)
 {
-	char *pwd;
-	char *oldpwd;
-	char path[4096];
-	
+	char	*pwd;
+	char	*oldpwd;
+	char	path[4096];
+
 	if (!getcwd(path, 4096))
-		return(perror("minishell: getcwd failed"), 1);
-	if (make_path(path, "PWD=", &pwd))  // use getcwd(char *buf, size_t size) to get pwd!
+		return (perror("minishell: getcwd failed"), 1);
+	if (make_path(path, "PWD=", &pwd)) // use getcwd(char *buf,
+		// size_t size) to get pwd!
 		return (1);
-	if (make_path(oldpath, "OLDPWD=", &oldpwd)) // use getcwd(char *buf, size_t size) to get oldpwd from parent function!
+	if (make_path(oldpath, "OLDPWD=", &oldpwd)) // use getcwd(char *buf,
+		// size_t size) to get oldpwd from parent function!
 		return (free(pwd), 1);
 	if (add_envp(oldpwd, token, 0, 0))
-		return(free(pwd), free(oldpwd), 1);
+		return (free(pwd), free(oldpwd), 1);
 	if (add_envp(pwd, token, 0, 0))
-		return(free(pwd), free(oldpwd), 1);
+		return (free(pwd), free(oldpwd), 1);
 	free(pwd);
 	free(oldpwd);
 	return (0);
 }
 
-static int check_and_change_path(char **envp, char *path, t_token *token)
+static int	check_and_change_path(char **envp, char *path, t_token *token)
 {
-	int i;
-	char oldpath[4096];
+	int		i;
+	char	oldpath[4096];
 
 	if (path && path[0] == '-' && path[1] == '\0')
 	{
@@ -65,16 +67,16 @@ static int check_and_change_path(char **envp, char *path, t_token *token)
 		return (perror("minishell: cd: OLDPWD not set"), 1);
 	}
 	if (!getcwd(oldpath, 4096))
-		 return(perror("minishell: cd: getcwd: cannot access parent directories: "), 0);
+		return (perror("minishell: cd: getcwd: cannot access parent directories: "), 0);
 	if (chdir(path))
 		return (perror("minishell: cd: "), 1);
-	return(replace_pwd(oldpath, token));
+	return (replace_pwd(oldpath, token));
 }
 
-static int change_dir(char *path, char **envp, t_token *token)
+static int	change_dir(char *path, char **envp, t_token *token)
 {
-	int		i;
-	
+	int	i;
+
 	if (!path)
 	{
 		i = 0;
@@ -95,25 +97,26 @@ static int change_dir(char *path, char **envp, t_token *token)
 // opendir function to check for errors? error after a pipe??
 /**
  * @brief Builtin "cd" command.
- * 
+ *
  * Handles the behaviour of the builtin cd command.
  * Changes the current working directory to a given
  * relative or absolute path.
- * 
+ *
  * @param cmd command arguments
  * @param envp environment variables
  * @param token command token
- * @return int 
- * @retval success 0 on success, 1 otherwise, return 0 also when getcwd fails, just a bash thing
+ * @return int
+ * @retval success 0 on success, 1 otherwise, return 0 also when getcwd fails,
+	just a bash thing
  *
  * @author kfan
  */
-int builtins_cd(char **cmd, char **envp, t_token *token)
+int	builtins_cd(char **cmd, char **envp, t_token *token)
 {
-	DIR *dir;
-	
+	DIR	*dir;
+
 	if (cmd[0] && cmd[1])
-		return(perror("bash: cd: too many arguments"), 1);
+		return (perror("bash: cd: too many arguments"), 1);
 	if (cmd[0])
 	{
 		dir = opendir(cmd[0]);

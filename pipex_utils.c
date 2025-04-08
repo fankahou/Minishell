@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/05 14:21:34 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/08 13:17:39 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*get_path(char **cmd, char **envp)
 	return (path);
 }
 
-int empty_pipe(int *fd)
+int	empty_pipe(int *fd)
 {
 	if (dup2(fd[1], 1) == -1)
 	{
