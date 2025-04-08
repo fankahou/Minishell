@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 13:13:34 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/08 21:24:57 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ typedef struct s_data
 	char	**envp;
 	char	**envp_export; // new!!!!!
 	char	**cmd_temp; // new!! for split_space envp  // causes seg fault???
-						// pid for waiting?
+	int		readline_switch;
 }			t_data;
 
 /**
@@ -281,6 +281,8 @@ void	debug(char *msg);
 extern int	g_sigrecv;
 int		signal_init(void);
 int		signal_init1(void);
+int		signal_init_here_doc(void);
+int		signal_init_execve(void);
 
 // HISTORY.C
 int		history_add(t_history *history, char *command);

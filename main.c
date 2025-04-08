@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/07 23:19:28 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/08 21:28:08 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,10 @@ int main(int argc, char **argv, char**envp)
         sort_array(data.envp_export); // new!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
     init_history(&history);
+    signal_init();
     while (1)
     {
-        //printf("g_sigrecv = %d\n", g_sigrecv);
-        signal_init();
+        data.readline_switch = 0; // new: to check whether the readline in here_doc returns NULL for that stupid empty line
         temp = readline("minishell> "); // new: one more space just for better read
         if (g_sigrecv != 0)
         {   
@@ -124,13 +124,7 @@ int main(int argc, char **argv, char**envp)
         }
         if (!temp)
             break ;
-        signal_init1();
-        //printf("data.error = %d\n", data.error);
-/*         if (temp && temp[0] == '\0')
-        {
-            free(temp);
-            break ;
-        } */
+        signal_init(); // new!
         data.str = ft_calloc(ft_strlen(temp) + 2, 1); //new: copy one more \0 to imitate gnl to avoid invalid read in Ka Hou's code
         if (!data.str)
             break ;

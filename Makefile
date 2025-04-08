@@ -32,7 +32,8 @@ SRC = main.c \
 	utils_count.c \
 	utils_history.c \
 	history.c \
-	signals.c
+	signals1.c \
+	signals2.c 
 OBJ = $(patsubst %.c,$(OBJDIR)/%.o,$(SRC))
 
 NAME = minishell

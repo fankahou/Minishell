@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse1_make_tree.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 18:19:22 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/08 21:27:51 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ static int	execute(t_token **token, t_data *data, int *fd)
 	int	i;
 
 	i = 0;
+	signal_init_execve();
 	while (token[i])
 	{
 		token[i]->envp = data->envp;
@@ -131,6 +132,10 @@ static int	execute(t_token **token, t_data *data, int *fd)
 		restore_fd(data, fd); // reset after each pipe???
 		i++;
 	}
+	if (data->readline_switch == 0)
+		signal_init();
+	else
+		signal_init1();
 	// update envp "echo $_"???
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 13:25:20 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/08 22:12:28 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,28 +81,26 @@ static int	open_fd(t_token *token, int i)
 
 static int	replace_fd(t_token *token, int i)
 {
-	if (token->cmds[i]->infile) // replace fd
+	if (token->cmds[i]->infile && token->cmds[i]->fd[0] != -1) // replace fd
 	{
-		if (token->cmds[i]->fd[0] != -1 && dup2(token->cmds[i]->fd[0], 0) == -1)
+		if (dup2(token->cmds[i]->fd[0], 0) == -1)
 			return (close(token->cmds[i]->fd[0]), 1);
-		if (token->cmds[i]->fd[0] != -1)
-			close(token->cmds[i]->fd[0]);
+		close(token->cmds[i]->fd[0]);
 	}
-	else if (i > 0 && token->cmds[i - 1]->outfile
+	else if (i > 0 && token->cmds[i - 1]->fd[0] != -1 && token->cmds[i - 1]->outfile
 		&& dup2(token->fd_in, 0) == -1)
 		// restore st_in to 0 again if the pipe was already in previous outfile
 		return (1);
-	else if (i > 0 && i != token->nmb_of_cmd && dup2(token->cmds[i - 1]->fd[1],
+	else if (i > 0 && token->cmds[i - 1]->fd[0] != -1 && i != token->nmb_of_cmd && dup2(token->cmds[i - 1]->fd[1],
 			0) == -1) // !!!new: pipes in between
 		return (1);
-	if (token->cmds[i]->outfile)
+	if (token->cmds[i]->outfile && token->cmds[i]->fd[1] != -1 )
 	{
-		if (token->cmds[i]->fd[1] != -1 && dup2(token->cmds[i]->fd[1], 1) == -1)
+		if (dup2(token->cmds[i]->fd[1], 1) == -1)
 			return (close(token->cmds[i]->fd[1]), 1);
-		if (token->cmds[i]->fd[1] != -1)
-			close(token->cmds[i]->fd[1]);
+		close(token->cmds[i]->fd[1]);
 	}
-	else if (i == token->nmb_of_cmd && dup2(token->fd_out, 1) == -1)
+	else if (token->cmds[i]->fd[1] != -1 && i == token->nmb_of_cmd - 1 && dup2(token->fd_out, 1) == -1)
 		// copy LAST st_out to 1 again (i == token->nmb_of_cmd  is new!!!)
 		return (1);
 	return (0);

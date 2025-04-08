@@ -3,54 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   parse4_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 18:14:55 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/08 21:40:53 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	write_heredoc(t_token *token, char *temp, int fd, char *eof)
+static int	write_heredoc(t_token *token, char *temp, int fd, char *eof)
 {
 	int	n;
 	int	fd_temp;
 
-	(void)token; // for gnl previosly
 	n = ft_strlen(eof);
 	while (1)
 	{
-		/* 		write(token->fd_in, "> ", 2);
-				temp = get_next_line(token->fd_in); */
 		fd_temp = dup(0); // for SIGINT to close(0)
 		temp = readline("> ");
-			// KA HOU: new!!! instead of gnl to ignore ctrl+ '\'
 		if (!temp)
 		{
+			token->data->readline_switch = 1;
+			signal_init1();
+			close(fd_temp);
 			write(fd, "\0", 1);
 			if (g_sigrecv == 0)
 			{
-				close(fd_temp);
 				write(2,
 					"minishell: warning: here-document delimited by end-of-file (wanted `eof')\n",
 					74);
 			}
 			else
 			{
-				write(2, "\n", 1);
-				dup2(fd_temp, 0); // to restore the
-				close(fd_temp);
+				token->error[0] = 1; // whole cmd is gone
+				token->exit_code[0] = 130;
+				dup2(fd_temp, 0); // to restore the STDIN after close in signal file
 				g_sigrecv = 0;
 			}
-			// printf("g_sigrecv = %d\n", g_sigrecv);
-			break ;
+			return (1);
 		}
 		if (!ft_strncmp(eof, temp, n))
 		{
+			signal_init();
+			close(fd_temp);
 			if (temp)
 				free(temp);
-			// get_next_line(-1);
 			break ;
 		}
 		write(fd, temp, ft_strlen(temp));
@@ -59,6 +57,7 @@ static void	write_heredoc(t_token *token, char *temp, int fd, char *eof)
 			free(temp);
 		close(fd_temp);
 	}
+	return (0);
 }
 
 static int	ft_heredoc(t_token *token, char *eof)
@@ -71,12 +70,14 @@ static int	ft_heredoc(t_token *token, char *eof)
 		unlink("temp");
 	fd = open("temp", O_WRONLY | O_CREAT, 0644);
 	if (fd < 0)
+		return (open_error("here_doc", token, NULL), -1);
+	signal_init_here_doc(); // new!
+	if (write_heredoc(token, temp, fd, eof))
 		return (-1);
-	write_heredoc(token, temp, fd, eof);
 	close(fd);
 	fd = open("temp", O_RDONLY);
 	if (fd < 0)
-		return (-1);
+		return (open_error("here_doc", token, NULL), -1);
 	if (access("temp", F_OK) == 0)
 		unlink("temp");
 	return (fd);
@@ -103,7 +104,7 @@ static int	ft_redir_in(t_token *token, int type, char *file, int k)
 		token->cmds[k]->redir[0] = 3;
 		token->cmds[k]->fd[0] = ft_heredoc(token, new);
 		if (token->cmds[k]->fd[0] == -1)
-			return (perror("heredoc failed"), -1);
+			token->cmds[k]->fd[1] = -1;//return (perror("heredoc failed"), -1);
 	}
 	else
 	{
