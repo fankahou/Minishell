@@ -13,9 +13,10 @@ SRC = main.c \
 	pipex.c \
 	pipex_input.c \
 	pipex_utils.c \
-	builtins1.c \
-	builtins2.c \
-	builtins3.c \
+	builtins_cd.c \
+	builtins_echo_env.c \
+	builtins_exit_pwd.c \
+	builtins_export_unset.c \
 	builtins_pipes.c \
 	error.c \
 	error_mini.c \
