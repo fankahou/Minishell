@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 22:12:28 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/09 18:56:14 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,13 @@ static int	replace_fd(t_token *token, int i)
 			return (close(token->cmds[i]->fd[0]), 1);
 		close(token->cmds[i]->fd[0]);
 	}
-	else if (i > 0 && token->cmds[i - 1]->fd[0] != -1 && token->cmds[i - 1]->outfile
+/* 	else if (i > 0 && token->cmds[i - 1]->fd[0] != -1 && token->cmds[i - 1]->outfile
 		&& dup2(token->fd_in, 0) == -1)
 		// restore st_in to 0 again if the pipe was already in previous outfile
 		return (1);
 	else if (i > 0 && token->cmds[i - 1]->fd[0] != -1 && i != token->nmb_of_cmd && dup2(token->cmds[i - 1]->fd[1],
 			0) == -1) // !!!new: pipes in between
-		return (1);
+		return (1); */
 	if (token->cmds[i]->outfile && token->cmds[i]->fd[1] != -1 )
 	{
 		if (dup2(token->cmds[i]->fd[1], 1) == -1)
@@ -109,7 +109,6 @@ static int	replace_fd(t_token *token, int i)
 int	pipex(t_token *token)
 {
 	int	i;
-	int	status;
 
 	i = 0;
 	while (i < token->nmb_of_cmd - 1 && token->error[0] == 0)
@@ -129,14 +128,6 @@ int	pipex(t_token *token)
 		if (token->cmds[i]->fd[0] != -1 && token->cmds[i]->cmd
 			&& last_input(token->cmds[i], token))
 			return (1);
-	}
-	i = 0;
-	while (i < token->nmb_of_cmd && token->error[0] == 0) // new wait!!!
-	{
-		if (token->cmds[i]->pid != 0)
-			waitpid(token->cmds[i]->pid, &status, 0);
-		// printf("pid = %d\n", token->cmds[i]->pid);
-		i++;
 	}
 	return (0);
 }

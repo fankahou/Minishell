@@ -149,10 +149,17 @@ function where the program exits.
 
 
 TODO:
-- Fix heredocs
 - Documentation
 - Implement "-c" flag for minishell (ex: minishell -c "echo 123")
 - Run tester (and fix anything that comes up)
+- exit -00000000000000000000000000000000000000000000000 doesn't work probably we broke sth today with the long overflow thing
+
+Apr 9 fixed:
+- Fix heredocs
+- New clean_name_no_expand file
+- Fix pipes (yes again...)
+- Fix waitpid
+- Fix exit code
 
 //new to do list April 7
 // <<eof < hello cat |echo 123 --- ctrl + d eof warning comes before STDOUT, bash error comes after STDOUT

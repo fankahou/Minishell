@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 22:11:45 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/09 19:49:13 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,22 @@ static int check_builtins(t_cmds *cmds, t_token *token, int *fd)
 	if (builtins_pipe_fd_out(cmds, fd))
 		return (1);
 	if ((!ft_strncmp(cmds->cmd[0], "echo", 4) && ft_strlen(cmds->cmd[0]) == 4))
-		token->exit_code[0] = builtins_echo(&cmds->cmd[1]);
+		cmds->exit_code = builtins_echo(&cmds->cmd[1]);
 	else if ((!ft_strncmp(cmds->cmd[0], "cd", 2) && ft_strlen(cmds->cmd[0]) == 2))
-		token->exit_code[0] = builtins_cd(&cmds->cmd[1], token->envp, token);
+		cmds->exit_code = builtins_cd(&cmds->cmd[1], token->envp, token);
 	else if ((!ft_strncmp(cmds->cmd[0], "pwd", 3) && ft_strlen(cmds->cmd[0]) == 3))
-		token->exit_code[0] = builtins_pwd(token->envp);
+		cmds->exit_code = builtins_pwd(token->envp);
 	else if ((!ft_strncmp(cmds->cmd[0], "export", 6) && ft_strlen(cmds->cmd[0]) == 6))
-		token->exit_code[0] = builtins_export(&cmds->cmd[1], token, 0, 0);
+		cmds->exit_code = builtins_export(&cmds->cmd[1], token, 0, 0);
 	else if ((!ft_strncmp(cmds->cmd[0], "unset", 5) && ft_strlen(cmds->cmd[0]) == 5))
-		token->exit_code[0] = builtins_unset(&cmds->cmd[1], token->envp, token, 0);
+		cmds->exit_code = builtins_unset(&cmds->cmd[1], token->envp, token, 0);
 	else if ((!ft_strncmp(cmds->cmd[0], "env", 3) && ft_strlen(cmds->cmd[0]) == 3))
-		token->exit_code[0] = builtins_env(token->envp);
+		cmds->exit_code = builtins_env(token->envp);
 	else if ((!ft_strncmp(cmds->cmd[0], "exit", 4) && ft_strlen(cmds->cmd[0]) == 4))
+	{
 		builtins_exit(&cmds->cmd[1], token);
+		cmds->exit_code = token->exit_code[0];
+	}
 	else
 		return (0);
 	if (builtins_pipe_fd_in(cmds, fd))
@@ -64,6 +67,7 @@ static void	parent(int *fd, t_cmds *cmds, t_token *token, char *path)
 	status = 0;
 	(void)path;
 	(void)cmds;
+	(void)token;
 	//dont wait here!
 	//waitpid(cmds->pid, &status, 0); // protection?
 /* 	if (cmds->cmd[0] && cmds->cmd[1])
@@ -88,7 +92,7 @@ static void	parent(int *fd, t_cmds *cmds, t_token *token, char *path)
 		}
 		close(fd[0]);
 	}
-	token->exit_code[0] = WEXITSTATUS(status);
+	//token->exit_code[0] = WEXITSTATUS(status);
 		// if statement for the one terminated by signal also?
 }
 

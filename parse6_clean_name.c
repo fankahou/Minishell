@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse6_clean_name.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 18:08:33 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:45:02 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	clean_name_envp(char *temp, t_token *token, t_clean *clean)
 	int		i;
 	char	**check;
 
-	clean->envp_temp = expand_envp(&temp[clean->count + 1], token, NULL, clean);
+	clean->envp_temp = expand_envp(&temp[clean->count + 1], token, NULL, clean->quote);
 	if (!clean->envp_temp)
 		return (token->error[0] = 1, perror("expand_envp failed"),
 			free(clean->file), -1);
@@ -127,7 +127,6 @@ static void	init_clean(t_clean *clean, int count, char *file)
 	clean->new = NULL;
 	clean->file = file;
 	clean->temp = NULL;
-	// clean->wildcards = NULL;
 }
 
 //  $USER inside ' ' shouldnt expand, otherwise always expand

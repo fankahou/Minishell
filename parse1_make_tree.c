@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse1_make_tree.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 17:07:29 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:42:08 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,28 @@ static t_token	**make_token(char **temp, t_token **token, t_data *data)
 	return (token);
 }
 
+void wait_pipes(t_token *token)
+{
+	int i;
+	int status;
+	
+	i = 0;
+	while (i < token->nmb_of_cmd && token->error[0] == 0) // new wait!!!
+	{
+		if (token->cmds[i]->pid != 0)
+		{
+			waitpid(token->cmds[i]->pid, &status, 0);
+			token->cmds[i]->exit_code = WEXITSTATUS(status);
+			// how about builtins??? move them into the child before execve?
+			// cant move to child because of export and shits of the forked memory!
+		}
+		// printf("pid = %d\n", token->cmds[i]->pid);
+		if (token->cmds[i]->fd[0] != -1) // new : if it is a valid pipe
+			token->exit_code[0] = token->cmds[i]->exit_code; // new update exit code of each pipe!
+		i++;
+	}
+}
+
 // update envp after each pipex
 /**
  * @brief Executes tokens.
@@ -126,13 +148,14 @@ static int	execute(t_token **token, t_data *data, int *fd)
 			return (data->error = 1, 1);
 		if (token[i]->nmb_of_cmd > 0)
 			pipex(token[i]);
+		restore_fd(data, fd); // reset after each pipe???
+		wait_pipes(token[i]); // new: wait here instead of in pipex parent
 		if (token[i]->delimiter == 2 && token[i]->exit_code[0] != 0)
 			break ;
 		if (token[i]->delimiter == 3 && token[i]->exit_code[0] == 0)
 			break ;
 		if (data->error != 0)
 			break ;
-		restore_fd(data, fd); // reset after each pipe???
 		i++;
 	}
 	if (data->readline_switch == 0)

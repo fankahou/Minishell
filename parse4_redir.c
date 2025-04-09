@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse4_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 17:12:31 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:43:43 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,17 @@
  *
  * @author kfan
  */
-static int	write_heredoc(t_token *token, char *temp, int fd, char *eof)
+static int	write_heredoc(t_token *token, int fd, char *eof, int quote)
 {
+	char *temp;
 	int	n;
 	int	fd_temp;
+	int i;
+	char *temp_expanded;
+	char *prefix;
+	char *suffix;
 
+	temp = NULL;
 	n = ft_strlen(eof);
 	while (1)
 	{
@@ -49,6 +55,7 @@ static int	write_heredoc(t_token *token, char *temp, int fd, char *eof)
 				write(2,
 					"minishell: warning: here-document delimited by end-of-file (wanted `eof')\n",
 					74);
+				return (0);
 			}
 			else
 			{
@@ -66,6 +73,36 @@ static int	write_heredoc(t_token *token, char *temp, int fd, char *eof)
 			if (temp)
 				free(temp);
 			break ;
+		}
+		if (quote == 0)
+		{
+			i = 0;
+			while(temp[i])
+			{
+				if (temp[i] == '$')
+				{
+					//printf("temp[i + 1] = %s\n", &temp[i + 1]);
+					temp_expanded = expand_envp(&temp[i + 1], token, NULL, 0);
+					prefix = ft_substr(temp, 0, i); // protection
+					i = i + check_envp_count(&temp[i + 1]);
+					i++; // for '$'
+					suffix = ft_substr(temp, i, ft_strlen(&temp[i]));  // protection
+					//printf("prefix = %s\n", prefix);
+					//printf("temp_expanded = %s\n", temp_expanded);
+					//printf("suffix = %s\n", suffix);
+					free(temp);
+					temp = ft_strjoin(prefix, temp_expanded);  // protection
+					free(prefix);
+					free(temp_expanded);
+					temp_expanded = ft_strjoin(temp, suffix); // protection
+					free(temp);
+					free(suffix);
+					temp = temp_expanded;
+					//printf("temp_expanded = %s---\n", temp_expanded);
+				}
+				else
+					i++;
+			}
 		}
 		write(fd, temp, ft_strlen(temp));
 		write(fd, "\n", 1);
@@ -89,19 +126,23 @@ static int	write_heredoc(t_token *token, char *temp, int fd, char *eof)
  *
  * @author kfan
  */
-static int	ft_heredoc(t_token *token, char *eof)
+static int	ft_heredoc(t_token *token, char *eof, char *file)
 {
-	int		fd;
-	char	*temp;
-
-	temp = NULL;
+	int	fd;
+	int	i;
+	
 	if (access("temp", F_OK) == 0)
 		unlink("temp");
 	fd = open("temp", O_WRONLY | O_CREAT, 0644);
 	if (fd < 0)
 		return (open_error("here_doc", token, NULL), -1);
 	signal_init_here_doc(); // new!
-	if (write_heredoc(token, temp, fd, eof))
+	i = 0;
+	while (file[i] && is_quote(file[i]))
+		i++;
+	if (!file[i])
+		i = 0;
+	if (write_heredoc(token, fd, eof, i))
 		return (-1);
 	close(fd);
 	fd = open("temp", O_RDONLY);
@@ -127,16 +168,18 @@ static int	ft_redir_in(t_token *token, int type, char *file, int k)
 	new = ft_calloc(1, 1);
 	if (!new)
 		return (perror("ft_calloc failed"), -1);
-	new = clean_name(file, token, 0, new);
 	if (type == 3)
 	{
+		new = clean_name_no_expand(file, token, 0, new);
+		// new >> name is cleaned differently! no expand of $USER for eof, only quotes and space at the end!
 		token->cmds[k]->redir[0] = 3;
-		token->cmds[k]->fd[0] = ft_heredoc(token, new);
+		token->cmds[k]->fd[0] = ft_heredoc(token, new, file);
 		if (token->cmds[k]->fd[0] == -1)
 			token->cmds[k]->fd[1] = -1;//return (perror("heredoc failed"), -1);
 	}
 	else
 	{
+		new = clean_name(file, token, 0, new);
 		token->cmds[k]->redir[0] = 4;
 		token->cmds[k]->fd[0] = open(new, O_RDONLY);
 		if (token->cmds[k]->fd[0] == -1)

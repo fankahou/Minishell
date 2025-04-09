@@ -8,6 +8,7 @@ SRC = main.c \
 	parse4_redir.c \
 	parse5_clean_and_expand.c \
 	parse6_clean_name.c \
+	parse6a_clean_name_no_expand.c \
 	parse7_expand_envp.c \
 	parse8_wildcards.c \
 	pipex.c \

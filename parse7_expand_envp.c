@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse7_expand_envp.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 13:21:20 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:45:32 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*expand_exit_code(t_token *token, char *new)
 	return (new);
 }
 
-char	*expand_envp(char *temp, t_token *token, char *new, t_clean *clean)
+char	*expand_envp(char *temp, t_token *token, char *new, int quote)
 {
 	int	i;
 	int	j;
@@ -60,7 +60,7 @@ char	*expand_envp(char *temp, t_token *token, char *new, t_clean *clean)
 	if (!new)
 		return (perror("ft_calloc failed\n"), NULL);
 	i = check_envp_count(temp);
-	if (i == 0 && is_quote(temp[i]) && clean->quote == 0)
+	if (i == 0 && is_quote(temp[i]) && quote == 0)
 		return (new);
 	else if (i == 0)
 		return (new[0] = '$', new);

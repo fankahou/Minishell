@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 21:24:57 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/09 19:25:00 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_cmds
 	char	*infile;
 	char	*outfile;
 	int		pid; // to wait for the last input to finish?
+	int		exit_code; // new: everything pipe has it's own exit code
 }			t_cmds;
 
 // to be used in clean_name() for pasring to get through norm 25 lines;
@@ -209,7 +210,8 @@ char	**ft_cmd(char *temp, t_token *token, char **old);
 int		redir(char *temp, t_token *token, int k);
 int		clean_and_expand(t_token *token);
 char	*clean_name(char *temp, t_token *token, int count, char *file);
-char	*expand_envp(char *temp, t_token *token, char *new, t_clean *clean);
+char	*clean_name_no_expand(char *temp, t_token *token, int count, char *file);
+char	*expand_envp(char *temp, t_token *token, char *new, int quote);
 int		check_envp_count(char *temp);
 char	*wildcards(char *temp, t_token *token, t_clean *clean);
 
