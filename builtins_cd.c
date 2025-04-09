@@ -1,18 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins3.c                                        :+:      :+:    :+:   */
+/*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 18:10:36 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/09 14:52:14 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // works like strjoin but will update the temp after joining by dereferencing
+/**
+ * @brief Joins two strings to a path
+ *
+ * Joins two paths using strjoin and updates the string
+ * inside of temp accordingly (*temp == result).
+ *
+ * @param path path to contatenate with
+ * @param prefix Prefix to concatenate the path on
+ * @param temp Adress to write the result to
+ * @return int
+ * @retval succes 0 on success, 1 otherwise.
+ *
+ * @author kfan
+ */
 static int	make_path(char *path, char *prefix, char **temp)
 {
 	char	*new;
@@ -27,6 +41,21 @@ static int	make_path(char *path, char *prefix, char **temp)
 }
 
 // path[4096] is max length of path in linux
+/**
+ * @brief Replace PWD with a new path
+ *
+ * Updates the PWD environmental variable with the current
+ * working directory.
+ * Fetches the cwd using getcwd() and copies the old working
+ * directory to the OLDPWD envronment variable.
+ *
+ * @param oldpath old working directory
+ * @param token Token to export the variables with
+ * @return int
+ * @retval success 0 on success, 1 otherwise
+ *
+ * @author kfan
+ */
 static int	replace_pwd(char *oldpath, t_token *token)
 {
 	char	*pwd;
@@ -35,11 +64,9 @@ static int	replace_pwd(char *oldpath, t_token *token)
 
 	if (!getcwd(path, 4096))
 		return (perror("minishell: getcwd failed"), 1);
-	if (make_path(path, "PWD=", &pwd)) // use getcwd(char *buf,
-		// size_t size) to get pwd!
+	if (make_path(path, "PWD=", &pwd))
 		return (1);
-	if (make_path(oldpath, "OLDPWD=", &oldpwd)) // use getcwd(char *buf,
-		// size_t size) to get oldpwd from parent function!
+	if (make_path(oldpath, "OLDPWD=", &oldpwd))
 		return (free(pwd), 1);
 	if (add_envp(oldpwd, token, 0, 0))
 		return (free(pwd), free(oldpwd), 1);
@@ -50,6 +77,25 @@ static int	replace_pwd(char *oldpath, t_token *token)
 	return (0);
 }
 
+/**
+ * @brief Changes the current working directory.
+ *
+ * Changes the path of the current working directory, as long
+ * as the path is a valid directory.
+ * If the path is "-" it changes the current working directory to OLDPWD.
+ * Caches the current working directory before changing it and calling
+ * replace_pwd() to update the environment variables.
+ *
+ * @param envp environment variables
+ * @param path path to the new working directory
+ * @param token Token to change the variables with
+ * @return int
+ * @retval succes 0 on success, 1 otherwise.
+ *
+ * @ref replace_pwd
+ *
+ * @author kfan
+ */
 static int	check_and_change_path(char **envp, char *path, t_token *token)
 {
 	int		i;
@@ -67,12 +113,31 @@ static int	check_and_change_path(char **envp, char *path, t_token *token)
 		return (perror("minishell: cd: OLDPWD not set"), 1);
 	}
 	if (!getcwd(oldpath, 4096))
-		return (perror("minishell: cd: getcwd: cannot access parent directories: "), 0);
+		return (perror(
+				"minishell: cd: getcwd: cannot access parent directories: "),
+			0);
 	if (chdir(path))
 		return (perror("minishell: cd: "), 1);
 	return (replace_pwd(oldpath, token));
 }
 
+/**
+ * @brief Changes the current working directory.
+ *
+ * Checks if path is empty. If so, changes the current working directory
+ * to the home directory. Otherwise it changes the directory to
+ * path using check_and_change_path().
+ *
+ * @param path path to new working directory
+ * @param envp environment variables
+ * @param token token to change the variables with
+ * @return int
+ * @retval success 0 on success, 1 otherwise.
+ *
+ * @ref check_and_change_path
+ *
+ * @author kfan
+ */
 static int	change_dir(char *path, char **envp, t_token *token)
 {
 	int	i;
@@ -101,13 +166,16 @@ static int	change_dir(char *path, char **envp, t_token *token)
  * Handles the behaviour of the builtin cd command.
  * Changes the current working directory to a given
  * relative or absolute path.
+ * If getcwd fails, it wil lreturn with 0. We don't know why,
+ * but bash does it so we do it too. :P
  *
  * @param cmd command arguments
  * @param envp environment variables
  * @param token command token
  * @return int
- * @retval success 0 on success, 1 otherwise, return 0 also when getcwd fails,
-	just a bash thing
+ * @retval success 0 on success, 1 otherwise
+ *
+ * @ref change_dir
  *
  * @author kfan
  */
@@ -121,7 +189,7 @@ int	builtins_cd(char **cmd, char **envp, t_token *token)
 	{
 		dir = opendir(cmd[0]);
 		if (!dir)
-			return (perror("No such file or directory"), 0);
+			return (perror("No such file or directory"), 1);
 		// readdir() for Permission?
 		closedir(dir);
 	}
