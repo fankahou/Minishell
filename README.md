@@ -147,6 +147,13 @@ function where the program exits.
 
 \> kfan
 
+
+TODO:
+- Fix heredocs
+- Documentation
+- Implement "-c" flag for minishell (ex: minishell -c "echo 123")
+- Run tester (and fix anything that comes up)
+
 //new to do list April 7
 // <<eof < hello cat |echo 123 --- ctrl + d eof warning comes before STDOUT, bash error comes after STDOUT
 //ctrl + c then <<eof cat and ctrl + c/ or d then ctrl + c, why extra \n???? after changing gnl to readline in here_doc
