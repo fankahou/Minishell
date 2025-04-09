@@ -3,15 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   parse4_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 21:40:53 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/09 17:12:31 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Main heredoc functionality
+ * 
+ * Handles the bulk of the heredoc funcitonality, allowing
+ * the user to write into a temporary file to get more complex
+ * input for a command.
+ *
+ * @param token command token
+ * @param temp buffer to read into (unused as argument)
+ * @param fd file descriptor of the heredoc file
+ * @param eof end of file character(s)
+ * @return int 
+ * @retval success 0 on success, 1 otherwise.
+ *
+ * @author kfan
+ */
 static int	write_heredoc(t_token *token, char *temp, int fd, char *eof)
 {
 	int	n;
@@ -60,6 +76,19 @@ static int	write_heredoc(t_token *token, char *temp, int fd, char *eof)
 	return (0);
 }
 
+/**
+ * @brief Handles the functionality of a heredoc.
+ *
+ * Creates a temporary file for the user to write to
+ * when using a heredoc and deletes it afterwards.
+ * 
+ * @param token Command token
+ * @param eof End of file indicator
+ * @return int 
+ * @retval fd file descriptor of the heredoc
+ *
+ * @author kfan
+ */
 static int	ft_heredoc(t_token *token, char *eof)
 {
 	int		fd;

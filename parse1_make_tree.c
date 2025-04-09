@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 16:42:55 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:07:29 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,20 @@
 // echo 123 >out1 | echo 456 >>out 2 | echo 789 >> out3 | >out4 | echo 678 ; <out1 cat | cat > out; << EOF cat | cat >> out4
 // echo 123 >out1 | echo 456 >>out 2 | echo 789 >> out3 | >out4 | echo 678 ; <out1 cat | cat > out; << EOF cat | cat >> out4
 /**
-
-	* @brief Check error and return how many arrays it needs for malloc the token tree
+ * @brief Check for errors and count the amount of token arrays needed
  *
- * It will throw error if two delimiters are next to each other (eg: "; ;" or ";
-	&&" or "|| &&")
+ * It will throw error if two delimiters are next to each other (eg: "; ;"
+ * or "; &&" or "|| &&")
+ * error_count starts at 0 and will increment whenever it hits a delimiter.
+ * If it hits a non-delimiter it resets and it throws an error when it goes
+ * over 1.
  *
  * @param temp array of split of the initial str
- * @param error_count starts with 0 and will increment when it hits a delimiter,
-	goes back to zero if it hits a non- delimiter and throws error if the value is greater than 1
+ * @param error_count Counting variable (always set to 0!)
  * @return int
  * @retval number of arrays needed for malloc the **token
+ *
+ * @author kfan
  */
 static int	check_temp(char **temp, int error_count)
 {
