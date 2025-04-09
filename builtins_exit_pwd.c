@@ -3,20 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit_pwd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 14:26:48 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/09 15:55:43 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // get total digit of str
+/**
+ * @brief Get the number of digits in a string
+ *
+ * Count the number of digits in the string representation
+ * of a number.
+ * The string may begin with an arbitrarry amount of whitespace,
+ * followed by a single '+' or '-' symbol, follwoed by digits.
+ * The number may be prepended by any amount of zeroes and they
+ * will not be counted towards the length of the number.
+ *
+ * @param nptr string to check
+ * @return int
+ * @retval digit_cmd Number of digits in the string
+ */
 static int	pre_check_long_overflow(const char *nptr)
 {
 	int	i;
-	int digit_cmd;
+	int	digit_cmd;
 
 	i = 0;
 	digit_cmd = 0;
@@ -29,14 +43,26 @@ static int	pre_check_long_overflow(const char *nptr)
 	}
 	while (nptr[i] == '0')
 		i++;
+	if (!nptr[i])
+		digit_cmd++;
 	while (nptr[i] && ft_isdigit(nptr[i++]))
 		digit_cmd++;
 	return (digit_cmd);
 }
 
-// check overflow by comparing digits of str and long
-// digit_cmd = digits of str
-// digit_temp = digits of long
+/**
+ * @brief Check if a long overflowed.
+ *
+ * Checks if a long overflowed by comparing its digits
+ * to a string representation of the wanted number.
+ *
+ * @param nptr string to compare the number to
+ * @param temp number to check for overflows
+ * @param digit_cmd number of digits in the string
+ * @param digit_temp number of digits in the number
+ * @return int
+ * @retval success 0 if it did not overflow, 1 otherwise.
+ */
 static int	check_long_overflow(const char *nptr, long temp, int digit_cmd,
 		int digit_temp)
 {
@@ -60,7 +86,24 @@ static int	check_long_overflow(const char *nptr, long temp, int digit_cmd,
 	return (0);
 }
 
-static int exit_arg(char **cmd, t_token *token, long temp, int i)
+/**
+ * @brief Evaluates the arguments of the exit command
+ * 
+ * Checks for errors in the arguments of exit.
+ * If more than one argument is given it throws an error.
+ * If a non-numeric argument is given it throws an error.
+ * If the number is too large (over LONG_MAX) it throws an error.
+ *
+ * @param cmd command arguments
+ * @param token token to change the exit code in
+ * @param temp converted number (ignored)
+ * @param i character index. Always set to 0!
+ * @return int 
+ * @retval success Always returns 0
+ *
+ * @author kfan
+ */
+static int	exit_arg(char **cmd, t_token *token, long temp, int i)
 {
 	temp = ft_atoi(cmd[0]);
 	if (temp > 255)
@@ -116,10 +159,9 @@ int	builtins_exit(char **cmd, t_token *token)
 		token->exit_code[0] = 0;
 	}
 	if (cmd[0])
-		exit_arg(cmd, token, 0 ,0);
+		exit_arg(cmd, token, 0, 0);
 	return (0);
 }
-
 
 /* When run as a built-in command in that shell it was
 that shell internally keeping track of the name of

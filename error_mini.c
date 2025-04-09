@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 18:09:09 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:37:18 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,17 @@ void	mini_error(char *str, char *arg, t_token *token, int *fd)
 	}
 }
 
+/**
+ * @brief Raises a command not found error.
+ *
+ * Raises a command not found error, writing an error
+ * message to stdout (fd = 2). The message is formatted as
+ * follows "<cmd>: command not found".
+ * 
+ * @param cmd command that caused the error (may be NULL)
+ *
+ * @author kfan
+ */
 static void	command_not_found(char *cmd)
 {
 	if (cmd)
@@ -54,6 +65,24 @@ static void	command_not_found(char *cmd)
 	perror("command not found");
 }
 
+/**
+ * @brief Raises an execve error
+ *
+ * Raises an execve error and prints an error message
+ * to stdout (fd = 2). Depending on the type of
+ * execve error (permission denied or command not found)
+ * the printing is handled by mini_error() or command_not_found().
+ * 
+ * @param cmd command that caused the error
+ * @param path path to the faulty executable
+ * @param token token in which the error occurred
+ * @param dir directory in which the error occurred
+ *
+ * @ref mini_error
+ * @ref command_not_found
+ *
+ * @author kfan
+ */
 void	execve_error(char *cmd, char *path, t_token *token, DIR *dir)
 {
 	token->error[0] = 2;

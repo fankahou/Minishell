@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse1_make_tree.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 21:27:51 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/09 16:42:55 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,9 +186,9 @@ static int	init_tree(t_data *data, int *fd)
  * call to pipex.
  * If data->error is not 0, it will not execute the token.
  *
- * @param data
+ * @param data data to parse into the tokens
  *
- * @ref t_token token struct
+ * @ref t_data token struct
  * @ref pipex pipex function
  *
  * @author kfan

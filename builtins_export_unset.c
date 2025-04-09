@@ -3,16 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export_unset.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 14:07:15 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/09 16:09:07 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // if prefix == 11, will skip the prefix in envp_export
+/**
+ * @brief Unsets an environment variable
+ *
+ * Unsets (deletes) an environment variable from the given token's
+ * environment variable list.
+ * 
+ * @param token token to unset the variable in
+ * @param temp variable to unset
+ * @return int 
+ * @retval succes 0 on success, 1 otherwise-.
+ *
+ * @author kfan
+ */
 static int	unset_export(t_token *token, char *temp)
 {
 	int	i;
@@ -41,6 +54,19 @@ static int	unset_export(t_token *token, char *temp)
 	return (0);
 }
 
+/**
+ * @brief Add a variable to envp.
+ *
+ * Adds a variable to envp for the export command.
+ * If the valie is already present it should be overwritten.
+ * 
+ * @param cmd name of the variable to export
+ * @param token token to set environment variables with
+ * @return int 
+ * @retval success 0 on success, 1 otherwise.
+ *
+ * @author kfan
+ */
 static int	add_envp_export(char *cmd, t_token *token)
 {
 	char	*temp;
@@ -71,9 +97,9 @@ static int	add_envp_export(char *cmd, t_token *token)
  * Adds an environment variable to envp.
  *
  * @param cmd value to add
- * @param token command token
- * @param i mystery integer
- * @param j mystery intgeger 2
+ * @param token Token to set environment variables
+ * @param i index 1 (Always set to 0!)
+ * @param j index 2 (Always set to 0!)
  * @return int
  * @retval success 0 on success, 1 otherwise.
  *

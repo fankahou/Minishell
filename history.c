@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 13:09:49 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/07 15:55:19 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:40:34 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,11 @@
  * This function adds a malloc'd string to the history.
  * If an equal string is already the latest entry in history,
  * it will get free'd and ignored.
- * Note that the string does not get free'd by this function!
- * Call destroy_history() at the end of the program to
- * free the entire history!
  *
  * @param history history struct
  * @param command entry to add to history
  * @return int
  * @retval success 0 on success, 1 otherwise.
- *
- * @ref destroy_history
  *
  * @author kmautner
  */
@@ -97,11 +92,15 @@ int	read_history_file(t_history *history, int fd)
  * @brief Initialise the history of the minishell.
  *
  * Function used to initialise the static data of
- * the history.
+ * the history. If the history file is present,
+ * its contents get read into the history using
+ * read_history_file().
  *
  * @param history history struct pointer
  * @return int
  * @retval success 0 on success, 1 otherwise.
+ *
+ * @ref read_history_file
  *
  * @author kmautner
  */
@@ -160,10 +159,12 @@ int	history_write(t_history history)
  * @brief Destroys the history of the minishell.
  *
  * This function destroys the current history.
- * All entries are written to the history file before
- * the history is destroyed.
+ * All entries are written to the history file using
+ * history_write() before the history is destroyed.
  *
  * @param history history struct
+ *
+ * @ref history_write
  *
  * @author kmautner
  */
