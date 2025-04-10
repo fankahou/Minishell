@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 15:55:43 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/10 12:43:53 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,13 +184,14 @@ it having been unlinked. */
  * Handles the behaviour of the pwd command,
  * printing the current working directory to
  * stdout.
+ * If getcwd fails, it will return 0. We have
+ * no idea why, but bash does it so we do it too.
  *
  * Note: ignores arg?
  *
  * @param envp environment variables
  * @return int
- * @retval success 0 on success, return 0 also when getcwd fails,
-	just a bash thing
+ * @retval success always returns 0
  *
  * @author kfan
  */

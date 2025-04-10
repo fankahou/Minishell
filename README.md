@@ -154,6 +154,10 @@ TODO:
 - Run tester (and fix anything that comes up)
 - exit -00000000000000000000000000000000000000000000000 doesn't work probably we broke sth today with the long overflow thing
 
+10.4.2025:
+- Rewrote long int overflow checker (needs review for implementation)
+- Added some more documentation, sadly not much tho cause I still have trouble understanding most of the code.
+
 Apr 9 fixed:
 - Fix heredocs
 - New clean_name_no_expand file

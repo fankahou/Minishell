@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 17:50:51 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:08:24 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,32 @@
 // 6 = >>
 // 7 = ;
 // 8 (||) and 9 (&&) for bonus
+
+/**
+ * @brief Checks which type a symbol is.
+ *
+ * Checks for which type the given symbol is.
+ * The list of symbols and their return values are:
+ * - $ = 1
+ * - | = 2
+ * - << = 3
+ * - < = 4
+ * - > = 5
+ * - >> = 6
+ * - ; = 7
+ * - || = 8
+ * - && = 9
+ *
+ * || and && are only needed for the bonus.
+ * If no symbol is recognised, the function will return 0.
+ * 
+ * @param c1 First character of the symbol
+ * @param c2 Second character of the symbol
+ * @return int 
+ * @retval type Type of the symbol
+ *
+ * @author kfan
+ */
 int	is_sym(char c1, char c2)
 {
 	/*     if (c1 == '|')

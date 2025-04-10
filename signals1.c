@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 13:49:39 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/08 22:18:03 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/10 16:25:17 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,8 @@ void	signal_handler1(int signal, siginfo_t *info, void *context)
  *
  * @return int 
  * @retval success 0 on success, 1 otherwise.
+ *
+ * @author kfan
  */
 int	signal_init1(void)
 {

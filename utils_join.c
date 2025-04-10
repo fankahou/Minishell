@@ -6,13 +6,26 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 18:00:34 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:16:01 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// just copying the char for join_split()
+/**
+ * @brief Concatenating logic of join_split()
+ * 
+ * Concatenates to arrays of strings.
+ *
+ * @param dest Array to concantenate on
+ * @param src Array to concatenate with
+ * @param temp Destination for resulting array
+ * @param strlen Expected length of result
+ *
+ * @ref join_split
+ *
+ * @author kfan
+ */
 static void	join_split2(char **dest, char **src, char **temp, int strlen)
 {
 	int	k;
@@ -35,10 +48,24 @@ static void	join_split2(char **dest, char **src, char **temp, int strlen)
 	}
 }
 
-// can be used as static?
-// joining 2 splited array together
-// will free the pointers of both sources and put the str contents
-//      in a new malloc container
+/**
+ * @brief Joins to arrays of strings together.
+ *
+ * Concatenates two string arrays and frees the originals.
+ * The result will be allocated with malloc().
+ * The main logic for the concatenation is in join_split2().
+ * 
+ * @param old Array to concatenate on
+ * @param cmd Array to concatenate with
+ * @param i Counter variable, ALWAYS SET TO 0!
+ * @param j Counter variable, ALWAYS SET TO 0!
+ * @return char** 
+ * @retval new Concatenated array
+ *
+ * @ref join_split2
+ *
+ * @author kfan
+ */
 char	**join_split(char ***old, char ***cmd, int i, int j)
 {
 	char	**src;

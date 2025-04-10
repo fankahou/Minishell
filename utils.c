@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 18:03:14 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:21:15 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,26 @@ char	*ft_charjoin(char *s1, char *s2)
 // 2 = "
 // 3 = ' "
 // 4 = " '
+/**
+ * @brief Get the current quote state.
+ *
+ * Gets the current quote state.
+ * List of quote states and their values:
+ * - ' = 1
+ * - " = 2
+ * - ' " = 3
+ * - " ' = 4
+ * 
+ * Returns 0 if the current position is not inside
+ * a quotation marked block.
+ *
+ * @param c quote character
+ * @param quote current quote state
+ * @return int 
+ * @retval state New quote state
+ *
+ * @author kfan
+ */
 int	inside_quote(char c, int quote)
 {
 	int	i;

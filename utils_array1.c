@@ -6,13 +6,23 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 13:16:52 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:41:08 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // sort array according to ascii value
+/**
+ * @brief Sorts an array of strings
+ *
+ * Sorts an array of strings by their ASCII value.
+ * The sorting happens in place!
+ * 
+ * @param input array to sort
+ *
+ * @author kfan
+ */
 void	sort_array(char **input)
 {
 	char	*temp;
@@ -41,6 +51,22 @@ void	sort_array(char **input)
 }
 
 // modified strncmp for alphabets so A = a
+/**
+ * @brief Compares two strings
+ * 
+ * Compares two strings based on their characters' alphabetical index.
+ * Works like strncmp, except that A = a, B = b, etc.
+ * Returns 0 if the strings are equal, otherwise it returns the
+ * ASCII difference of the first different character.
+ *
+ * @param s1 String to compare
+ * @param s2 String to compare with
+ * @param n amount of characters (bytes) to compare
+ * @return int 
+ * @retval diff Difference between the strings
+ *
+ * @author kfan
+ */
 static int	ft_strncmp_alpha(const char *s1, const char *s2, size_t n)
 {
 	size_t			i;
@@ -92,6 +118,20 @@ void	sort_array_wildcards(char **input)
 	}
 }
 
+/**
+ * @brief Add quotation marks around a substring
+ *
+ * Adds quotation marks around a literal value inside a string.
+ * The literal value is detected by the presence of an '=' sign
+ * in front of it.
+ * If no '=' is found it returns a duplicate of the original string.
+ * 
+ * @param temp String to add quotes to
+ * @return char* 
+ * @retval new Modified string
+ *
+ * @author kfan
+ */
 char	*attach_quote(char *temp)
 {
 	int		i;

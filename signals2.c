@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 13:49:39 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/08 22:17:31 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/10 16:24:59 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	signal_handler_here_doc(int signal, siginfo_t *info, void *context)
  *
  * @return int 
  * @retval success 0 on success, 1 otherwise.
+ *
+ * @author kfan
  */
 int	signal_init_here_doc(void)
 {
@@ -70,7 +72,19 @@ int	signal_init_here_doc(void)
 	return (0);
 }
 
-
+/**
+ * @brief Modified signal handler for execve.
+ *
+ * Modified signal handler for execve because stupid.
+ * 
+ * @param signal signal number
+ * @param info signal info (unused)
+ * @param context signal context (unused)
+ *
+ * @ref signal_handler
+ *
+ * @author kfan
+ */
 void	signal_handler_execve(int signal, siginfo_t *info, void *context)
 {
 	(void)context;
@@ -84,6 +98,19 @@ void	signal_handler_execve(int signal, siginfo_t *info, void *context)
 	if (signal == SIGSEGV)
 		exit(0);
 }
+
+/**
+ * @brief Initialises the execve signal handler.
+ *
+ * Initialises the modified signal handler for execve.
+ * 
+ * @return int 
+ * @retval success 0 on success, 1 otherwise.
+ *
+ * @ref signal_init
+ *
+ * @author kfan
+ */
 int	signal_init_execve(void)
 {
 	struct sigaction	act;

@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 18:13:46 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:03:49 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,22 @@ int	sym_count(char c1, char c2, char *pin)
 	return (0);
 }
 
+/**
+ * @brief Count the length of a delimiter.
+ *
+ * Returns how long a delimiter is.
+ * Delimiters are:
+ * - ;
+ * - &&
+ * - ||
+ * 
+ * @param c1 First character of the delimiter
+ * @param c2 Second character of the delimiter
+ * @return int 
+ * @retval len Length of the delimiter
+ *
+ * @author kfan
+ */
 int	delimiter_count(char c1, char c2)
 {
 	if (c1 == ';')
