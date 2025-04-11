@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 19:25:57 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/11 14:58:42 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	check_cmd(char **temp, t_token *token, int error_count)
 			return (syntax_error("|", token), -1);
 		i++;
 	}
-	if (i > 0 && is_pipe(temp[i - 1][j])) // && token->delimiter > 0)
+	if (i > 0 && is_pipe(temp[i - 1][j]))
 		return (syntax_error("|", token), -1);
 	return (k);
 }
@@ -67,16 +67,14 @@ static int	check_cmd(char **temp, t_token *token, int error_count)
  *
  * @param temp initial split
  * @param token token struct
+ * @param i just a count starting with 0 to save lines
  *
  * @ref t_token
  *
  * @author kfan
  */
-static int	check_and_malloc(char **temp, t_token *token)
+static int	check_and_malloc(char **temp, t_token *token, int i)
 {
-	int	i;
-
-	i = 0;
 	token->nmb_of_cmd = check_cmd(temp, token, 1);
 	if (token->nmb_of_cmd == -1)
 		return (1);
@@ -126,9 +124,9 @@ static int	split_pipe(char *cmds, t_token *token)
 	temp = ft_split_pipe(cmds);
 	if (!temp)
 		return (perror("ft_split_pipe failed"), token->error[0] = 1, 1);
-	if (check_and_malloc(temp, token))
+	if (check_and_malloc(temp, token, 0))
 		return (ft_free_split(temp), 1);
-	make_cmd_list(temp, token); // protection?
+	make_cmd_list(temp, token);
 	ft_free_split(temp);
 	if (!token->cmds)
 		return (token->error[0] = 1, 1);
@@ -181,7 +179,6 @@ static void	init_token1(char **temp, t_token **token)
 			i++;
 		k++;
 	}
-	// print_token(token);
 }
 
 /**

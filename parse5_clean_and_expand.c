@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse5_clean_and_expand.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 13:22:17 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 16:16:16 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // join_cmd_2 for envp i = 0 for wiping out the current array of str and skip
 static int	clean_cmd(t_token *token, char *file, int i, int j)
 {
-	while (token->cmds[i]->cmd && token->cmds[i]->cmd[j])
+	while (token->cmds[i]->cmd && token->cmds[i]->cmd[++j])
 	{
 		file = ft_calloc(1, 1);
 		if (!file)
@@ -35,7 +35,6 @@ static int	clean_cmd(t_token *token, char *file, int i, int j)
 			j = j + join_cmd_2(token, i, j, file);
 		else
 			token->cmds[i]->cmd[j] = file;
-		j++;
 		if (token->error[0] != 0)
 			return (1);
 		if (token->wildcards)
@@ -53,7 +52,7 @@ static int	clean_cmd_list(t_token *token)
 	i = 0;
 	while (token->cmds && token->cmds[i])
 	{
-		if (clean_cmd(token, NULL, i, 0))
+		if (clean_cmd(token, NULL, i, -1))
 			return (1);
 		i++;
 	}
@@ -65,8 +64,8 @@ static int	clean_outfile(t_token *token)
 	char	*file;
 	int		i;
 
-	i = 0;
-	while (token->cmds && token->cmds[i])
+	i = -1;
+	while (token->cmds && token->cmds[++i])
 	{
 		if (token->cmds[i]->outfile)
 		{
@@ -85,7 +84,6 @@ static int	clean_outfile(t_token *token)
 				free(token->wildcards);
 			token->wildcards = NULL;
 		}
-		i++;
 	}
 	return (0);
 }
@@ -95,8 +93,8 @@ static int	clean_infile(t_token *token)
 	char	*file;
 	int		i;
 
-	i = 0;
-	while (token->cmds && token->cmds[i])
+	i = -1;
+	while (token->cmds && token->cmds[++i])
 	{
 		if (token->cmds[i]->infile)
 		{
@@ -115,7 +113,6 @@ static int	clean_infile(t_token *token)
 				free(token->wildcards);
 			token->wildcards = NULL;
 		}
-		i++;
 	}
 	return (0);
 }

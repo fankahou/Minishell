@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 13:17:39 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 16:57:54 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*find_bin(char **cmd, char **paths, int i)
 		temp = ft_strjoin(paths[i], "/");
 		if (!temp)
 			return (perror("strjoin1 failed"), NULL);
-		temp1 = ft_strjoin(temp, cmd[0]); //
+		temp1 = ft_strjoin(temp, cmd[0]);
 		free(temp);
 		if (!temp1)
 			return (perror("strjoin2 failed"), NULL);
@@ -49,7 +49,6 @@ static char	*find_bin(char **cmd, char **paths, int i)
 		free(temp1);
 		i++;
 	}
-	//printf("test1\n");
 	return (ft_strdup(cmd[0]));
 }
 
@@ -100,4 +99,25 @@ int	empty_pipe(int *fd)
 	close(fd[0]);
 	close(fd[1]);
 	return (0);
+}
+
+// wait for each child to finish
+// if it is a valid pipe then update exit code of each pipe
+void	wait_pipes(t_token *token)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i < token->nmb_of_cmd && token->error[0] == 0)
+	{
+		if (token->cmds[i]->pid != 0)
+		{
+			waitpid(token->cmds[i]->pid, &status, 0);
+			token->cmds[i]->exit_code = WEXITSTATUS(status);
+		}
+		if (token->cmds[i]->fd[0] != -1)
+			token->exit_code[0] = token->cmds[i]->exit_code;
+		i++;
+	}
 }

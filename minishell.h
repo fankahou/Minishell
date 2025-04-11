@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 19:25:00 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/11 19:50:10 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,9 +208,13 @@ int		init_token(char **temp, t_token **token, t_data *data, int i);
 int		make_cmd_list(char **temp, t_token *token);
 char	**ft_cmd(char *temp, t_token *token, char **old);
 int		redir(char *temp, t_token *token, int k);
+int		ft_heredoc(t_token *token, char *eof, char *file);
 int		clean_and_expand(t_token *token);
 char	*clean_name(char *temp, t_token *token, int count, char *file);
-char	*clean_name_no_expand(char *temp, t_token *token, int count, char *file);
+int		get_rid_of_extra_space(char *temp);
+void	init_clean(t_clean *clean, int count, char *file);
+char	*clean_name_no_expand(char *temp, t_token *token, int count,
+			char *file);
 char	*expand_envp(char *temp, t_token *token, char *new, int quote);
 int		check_envp_count(char *temp);
 char	*wildcards(char *temp, t_token *token, t_clean *clean);
@@ -228,6 +232,7 @@ char	*get_path(char **cmd, char **envp);
 int		input(t_cmds *cmds, t_token *token);
 int		last_input(t_cmds *cmds, t_token *token);
 int		empty_pipe(int *fd);
+void	wait_pipes(t_token *token); // new: for execve()
 
 // all utils
 char	*ft_charjoin(char *s1, char *s2);
@@ -252,6 +257,7 @@ char	**ft_split_pipe(char *s);
 void	ft_free(char **array, int i);
 void	ft_free_split(char **array);
 void	ft_free_token(t_token **token);
+void	free_heredoc(char *suffix, char *prefix, char *temp);
 void	small_free(t_token **token, int i);
 int		is_delimiter(char c1, char c2);
 int		is_sym(char c1, char c2);

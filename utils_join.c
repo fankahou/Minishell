@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_join.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/10 16:16:01 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:08:10 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /**
  * @brief Concatenating logic of join_split()
- * 
+ *
  * Concatenates to arrays of strings.
  *
  * @param dest Array to concantenate on
@@ -54,12 +54,12 @@ static void	join_split2(char **dest, char **src, char **temp, int strlen)
  * Concatenates two string arrays and frees the originals.
  * The result will be allocated with malloc().
  * The main logic for the concatenation is in join_split2().
- * 
+ *
  * @param old Array to concatenate on
  * @param cmd Array to concatenate with
  * @param i Counter variable, ALWAYS SET TO 0!
  * @param j Counter variable, ALWAYS SET TO 0!
- * @return char** 
+ * @return char**
  * @retval new Concatenated array
  *
  * @ref join_split2
@@ -80,7 +80,7 @@ char	**join_split(char ***old, char ***cmd, int i, int j)
 		j++;
 	temp = malloc(sizeof(char *) * (i + j + 1));
 	if (!temp)
-		perror("malloc failed");
+		return (free(src), free(dest), perror("malloc failed"), NULL);
 	else
 		temp[i + j] = NULL;
 	join_split2(dest, src, temp, i + j);
@@ -96,8 +96,6 @@ int	join_cmd_1(t_token *token, int i, int j, char *file)
 	int		k;
 	char	**temp;
 
-	// print_array(token->data->cmd_temp);
-	// printf("file = %s\n", file);
 	free(file);
 	temp = NULL;
 	k = 0;
@@ -109,8 +107,12 @@ int	join_cmd_1(t_token *token, int i, int j, char *file)
 	if (!temp)
 		return (perror("copy_array failed"), token->error[0] = 1, 0);
 	token->data->cmd_temp = join_split(&token->data->cmd_temp, &temp, 0, 0);
+	if (!token->data->cmd_temp)
+		return (token->error[0] = 1, 0);
 	token->cmds[i]->cmd = join_split(&token->cmds[i]->cmd,
-			&token->data->cmd_temp, 0, 0); // protection??
+			&token->data->cmd_temp, 0, 0);
+	if (!token->cmds[i]->cmd)
+		return (token->error[0] = 1, 0);
 	return (k - 1);
 }
 
@@ -133,6 +135,7 @@ int	join_cmd_2(t_token *token, int i, int j, char *file)
 	if (!temp)
 		return (perror("copy_array failed"), token->error[0] = 1, 0);
 	token->cmds[i]->cmd = join_split(&token->cmds[i]->cmd, &temp, 0, 0);
-		// protection??
+	if (!token->cmds[i]->cmd)
+		return (token->error[0] = 1, 0);
 	return (-1);
 }

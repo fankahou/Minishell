@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_count.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/10 16:03:49 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:07:37 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	name_count(int count, char *pin)
 			break ;
 		count++;
 	}
-	while (pin[count] == ' ') // new: skip space after syntax
+	while (pin[count] == ' ')
 		count++;
 	return (count);
 }
@@ -41,12 +41,12 @@ int	sym_count(char c1, char c2, char *pin)
 	if (c1 == '|')
 	{
 		while (pin[i] == ' ')
-			i++; // new: skip space after syntax
+			i++;
 		return (i);
 	}
 	if (c1 == '<')
 	{
-		if (c2 == '<' /*  || c2 == '>' */)
+		if (c2 == '<')
 			return (name_count(2, pin));
 		else
 			return (name_count(1, pin));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse8_wildcards.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 18:05:21 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 16:39:45 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ static int	find_star(char *temp)
 }
 
 // filter out if prefix is present
+// 1.case > last prefix
+// 2.case > first prefix
+// 3.case > for updating the next pin of input
 // debugging set:
 /*         printf("index = %d\n", index);
 		printf("prefix = %s\n", prefix);
@@ -58,12 +61,12 @@ static int	filter_prefix(char *temp, char *input, int i, int index)
 		return (perror("ft_substr failed"), 1);
 	if (prefix[0] != '\0' && index == (int)ft_strlen(input)
 		&& ft_strncmp(&input[index - ft_strlen(prefix)], prefix,
-			ft_strlen(prefix))) // last prefix
+			ft_strlen(prefix)))
 		return (free(prefix), 1);
 	else if (prefix[0] != '\0' && i == 0 && ft_strncmp(input, prefix,
-			ft_strlen(prefix))) // first prefix
+			ft_strlen(prefix)))
 		return (free(prefix), 1);
-	else if (prefix[0] != '\0') // for updating the next pin of input
+	else if (prefix[0] != '\0')
 	{
 		pin = ft_strnstr(pin, prefix, ft_strlen(pin));
 		if (!pin)
@@ -150,12 +153,9 @@ char	*wildcards(char *temp, t_token *token, t_clean *clean)
 	if (!file)
 		return (NULL);
 	array = get_files(file, NULL);
-	// printf("temp = %s\n", temp);
 	if (array)
 	{
 		sort_array_wildcards(array);
-		// print_array(array);
-		// ft_free_split(array);
 		clean->temp = array;
 		free(token->wildcards);
 		token->wildcards = ft_strdup("found");

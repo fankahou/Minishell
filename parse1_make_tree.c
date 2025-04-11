@@ -6,14 +6,12 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 19:42:08 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/11 16:58:27 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// echo 123 >out1 | echo 456 >>out 2 | echo 789 >> out3 | >out4 | echo 678 ; <out1 cat | cat > out; << EOF cat | cat >> out4
-// echo 123 >out1 | echo 456 >>out 2 | echo 789 >> out3 | >out4 | echo 678 ; <out1 cat | cat > out; << EOF cat | cat >> out4
 /**
  * @brief Check for errors and count the amount of token arrays needed
  *
@@ -93,28 +91,6 @@ static t_token	**make_token(char **temp, t_token **token, t_data *data)
 	return (token);
 }
 
-void wait_pipes(t_token *token)
-{
-	int i;
-	int status;
-	
-	i = 0;
-	while (i < token->nmb_of_cmd && token->error[0] == 0) // new wait!!!
-	{
-		if (token->cmds[i]->pid != 0)
-		{
-			waitpid(token->cmds[i]->pid, &status, 0);
-			token->cmds[i]->exit_code = WEXITSTATUS(status);
-			// how about builtins??? move them into the child before execve?
-			// cant move to child because of export and shits of the forked memory!
-		}
-		// printf("pid = %d\n", token->cmds[i]->pid);
-		if (token->cmds[i]->fd[0] != -1) // new : if it is a valid pipe
-			token->exit_code[0] = token->cmds[i]->exit_code; // new update exit code of each pipe!
-		i++;
-	}
-}
-
 // update envp after each pipex
 /**
  * @brief Executes tokens.
@@ -122,10 +98,13 @@ void wait_pipes(t_token *token)
  * This function executes a list of tokens. This function
  * is also a breaking point for execution, should something
  * go wrong inside it.
+ * new: reset fd after all pipe, technically force update fd
+ * new: wait here instead of in pipex parent
  *
  * @param token Array of tokens to execute
  * @param data Data struct containing needed information
  * @param fd Array od duplicated file descriptors
+ * @param i Just a counter starting with 0
  * @return int
  * @retval success always returns 0
  *
@@ -134,11 +113,8 @@ void wait_pipes(t_token *token)
  *
  * @author kfan
  */
-static int	execute(t_token **token, t_data *data, int *fd)
+static int	execute(t_token **token, t_data *data, int *fd, int i)
 {
-	int	i;
-
-	i = 0;
 	signal_init_execve();
 	while (token[i])
 	{
@@ -148,8 +124,8 @@ static int	execute(t_token **token, t_data *data, int *fd)
 			return (data->error = 1, 1);
 		if (token[i]->nmb_of_cmd > 0)
 			pipex(token[i]);
-		restore_fd(data, fd); // reset after each pipe???
-		wait_pipes(token[i]); // new: wait here instead of in pipex parent
+		restore_fd(data, fd);
+		wait_pipes(token[i]);
 		if (token[i]->delimiter == 2 && token[i]->exit_code[0] != 0)
 			break ;
 		if (token[i]->delimiter == 3 && token[i]->exit_code[0] == 0)
@@ -162,7 +138,6 @@ static int	execute(t_token **token, t_data *data, int *fd)
 		signal_init();
 	else
 		signal_init1();
-	// update envp "echo $_"???
 	return (0);
 }
 
@@ -190,7 +165,7 @@ static int	init_tree(t_data *data, int *fd)
 		return (close(fd[0]), perror("dup failed"), 1);
 	data->fd_in = fd[0];
 	data->fd_out = fd[1];
-	data->error = 0; // fresh restart
+	data->error = 0;
 	data->cmd_temp = NULL;
 	return (0);
 }
@@ -223,9 +198,9 @@ void	make_tree(t_data *data)
 {
 	char	**temp;
 	t_token	**token;
-    int		fd[2]; // for restoring STD_IN and STD_OUT
-	
-    if (init_tree(data, fd))
+	int		fd[2];
+
+	if (init_tree(data, fd))
 		return ;
 	token = NULL;
 	temp = ft_split_delimiter(data->str);
@@ -235,9 +210,8 @@ void	make_tree(t_data *data)
 	{
 		token = make_token(temp, token, data);
 		ft_free_split(temp);
-		// print_token(token);
 		if (token && data->error == 0)
-			execute(token, data, fd);
+			execute(token, data, fd, 0);
 		if (token)
 			close_unused_fd(token, 0);
 		if (token)

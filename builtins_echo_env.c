@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 14:01:04 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/11 14:51:22 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int	builtins_echo(char **cmd)
  */
 int	builtins_env(char **envp)
 {
-	//"_=./minishell" > "_=env" or "/usr/bin/env"?
 	print_array(envp);
 	return (0);
 }

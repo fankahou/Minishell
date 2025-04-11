@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 14:52:14 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 14:50:38 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,6 @@ int	builtins_cd(char **cmd, char **envp, t_token *token)
 		dir = opendir(cmd[0]);
 		if (!dir)
 			return (perror("No such file or directory"), 1);
-		// readdir() for Permission?
 		closedir(dir);
 	}
 	if (!cmd[0] && token->nmb_of_cmd == 1)

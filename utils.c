@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/10 16:21:15 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:07:14 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,13 +120,12 @@ void	restore_fd(t_data *data, int *fd)
 	if (data->fd[0] != fd[0])
 	{
 		if (dup2(fd[0], data->fd[0]) == -1)
-			ft_printf("dup2 failed\n"); // exit_code?
+			ft_printf("dup2 failed\n");
 	}
 	if (data->fd[1] != fd[1])
 	{
 		if (dup2(fd[1], data->fd[1]) == -1)
 			ft_printf("dup2 failed\n");
-		// exit_code?
 	}
 }
 

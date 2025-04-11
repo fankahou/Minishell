@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit_pwd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/10 12:43:53 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 20:10:20 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ static int	pre_check_long_overflow(const char *nptr)
 	}
 	while (nptr[i] == '0')
 		i++;
-	if (!nptr[i])
-		digit_cmd++;
 	while (nptr[i] && ft_isdigit(nptr[i++]))
 		digit_cmd++;
 	return (digit_cmd);
@@ -88,7 +86,7 @@ static int	check_long_overflow(const char *nptr, long temp, int digit_cmd,
 
 /**
  * @brief Evaluates the arguments of the exit command
- * 
+ *
  * Checks for errors in the arguments of exit.
  * If more than one argument is given it throws an error.
  * If a non-numeric argument is given it throws an error.
@@ -98,7 +96,7 @@ static int	check_long_overflow(const char *nptr, long temp, int digit_cmd,
  * @param token token to change the exit code in
  * @param temp converted number (ignored)
  * @param i character index. Always set to 0!
- * @return int 
+ * @return int
  * @retval success Always returns 0
  *
  * @author kfan
@@ -112,18 +110,18 @@ static int	exit_arg(char **cmd, t_token *token, long temp, int i)
 		token->exit_code[0] = (int)temp;
 	temp = ft_atol(cmd[0]);
 	if (check_long_overflow(cmd[0], temp, 0, 1))
-		return (token->exit_code[0] = 2,
-			perror("minishell: exit: numeric argument required"), 0);
+		return (token->exit_code[0] = 2, write(2,
+				"minishell: exit: numeric argument required\n", 43), 0);
 	if (cmd[0][i] == '+' || cmd[0][i] == '-' || is_space(cmd[0][i]))
 		i++;
 	if (!cmd[0][i])
-		return (token->exit_code[0] = 2,
-			perror("minishell: exit: numeric argument required"), 0);
+		return (token->exit_code[0] = 2, write(2,
+				"minishell: exit: numeric argument required\n", 43), 0);
 	while (cmd[0][i])
 	{
 		if (cmd[0][i] && !is_space(cmd[0][i]) && !ft_isdigit(cmd[0][i]))
-			return (token->exit_code[0] = 2,
-				perror("minishell: exit: numeric argument required"), 0);
+			return (token->exit_code[0] = 2, write(2,
+					"minishell: exit: numeric argument required\n", 43), 0);
 		i++;
 	}
 	return (0);
@@ -155,7 +153,7 @@ int	builtins_exit(char **cmd, t_token *token)
 	else if (token->nmb_of_cmd == 1)
 	{
 		token->error[0] = 2;
-		// ft_printf("exit\n"); // no need to print?
+		write (2, "exit\n", 5);
 		token->exit_code[0] = 0;
 	}
 	if (cmd[0])
@@ -171,7 +169,8 @@ it was the other shell failing to match the device
 and i-node number of its working directory to the second directory
 now named by the contents of the PWD environment variable that it inherited,
 thus deciding not to trust the contents of PWD, and then failing in the getcwd()
-library function because the working directory does not have any names any longer,
+library function because the working directory
+does not have any names any longer,
 it having been unlinked. */
 
 // need to check!!!!
@@ -201,7 +200,7 @@ int	builtins_pwd(char **envp)
 
 	(void)envp;
 	if (!getcwd(path, 1024))
-		return (perror("minishell: pwd: getcwd: cannot access parent directories: "),
+		return (perror("minishell: pwd: cannot access parent directories: "),
 			0);
 	ft_printf("%s\n", path);
 	return (0);

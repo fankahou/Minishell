@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 18:12:58 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 20:05:52 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	ft_free_struct(t_cmds **cmds, int n)
 		if (cmds[i]->cmd)
 			ft_free_split(cmds[i]->cmd);
 		if (cmds[i]->infile)
-			free(cmds[i]->infile); // close?
+			free(cmds[i]->infile);
 		if (cmds[i]->outfile)
 			free(cmds[i]->outfile);
 		free(cmds[i]);
@@ -140,4 +140,15 @@ void	small_free(t_token **token, int i)
 		token[i] = NULL;
 		i++;
 	}
+}
+
+// free things in expand_heredoc
+void	free_heredoc(char *suffix, char *prefix, char *temp)
+{
+	if (suffix)
+		free(suffix);
+	if (prefix)
+		free(prefix);
+	if (temp)
+		free(temp);
 }

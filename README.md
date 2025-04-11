@@ -151,8 +151,15 @@ function where the program exits.
 TODO:
 - Documentation
 - Implement "-c" flag for minishell (ex: minishell -c "echo 123")
+- Norm and clean up main.c \ pipex_input.c \ signals1.c
 - Run tester (and fix anything that comes up)
-- exit -00000000000000000000000000000000000000000000000 doesn't work probably we broke sth today with the long overflow thing
+- (fixed )exit -00000000000000000000000000000000000000000000000 doesn't work probably we broke sth today with the long overflow thing
+
+10.4.2025: (Ka Hou)
+- I removed the if (!nptr[i]) digit_cmd++; line in the pre long int overflow checker as it will be incremented in the main checker anyway, now everything works
+- updated the perror() for exit() to write()
+- Norm cleanup
+- Koloman: could you clean up the if statements in pipex_input file, check_builtins() with your new str equals() for me? lines are too long there
 
 10.4.2025:
 - Rewrote long int overflow checker (needs review for implementation)

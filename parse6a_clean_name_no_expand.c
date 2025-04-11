@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 17:52:25 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/11 18:02:42 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // if the next one is also space it will check if it's the last space
 // and return 2 to stop copying that space
 // otherwise return 1 for copy the space
-static int	get_rid_of_extra_space(char *temp)
+int	get_rid_of_extra_space(char *temp)
 {
 	int	i;
 
@@ -41,7 +41,7 @@ static int	clean_name_char(char *temp, t_clean *clean)
 			|| clean->quote > 2))
 		clean->new = ft_charjoin(clean->file, &temp[clean->count]);
 	else
-		clean->new = ft_strdup(clean->file); //
+		clean->new = ft_strdup(clean->file);
 	free(clean->file);
 	clean->file = NULL;
 	if (!clean->new)
@@ -49,17 +49,19 @@ static int	clean_name_char(char *temp, t_clean *clean)
 	return (0);
 }
 
-static void	init_clean(t_clean *clean, int count, char *file)
+void	init_clean(t_clean *clean, int count, char *file)
 {
 	clean->quote = 0;
 	clean->space = 0;
 	clean->count = count;
+	clean->envp_temp = NULL;
 	clean->new = NULL;
 	clean->file = file;
+	clean->temp = NULL;
 }
 
-//clean only quotes and not expand * and $
-//only used for eof for here_doc
+// clean only quotes and not expand * and $
+// only used for eof for here_doc
 char	*clean_name_no_expand(char *temp, t_token *token, int count, char *file)
 {
 	t_clean	clean;
@@ -81,7 +83,7 @@ char	*clean_name_no_expand(char *temp, t_token *token, int count, char *file)
 	}
 	if (!clean.new && clean.file)
 		free(clean.file);
-	if (clean.quote > 0) // not nessecary? just pass it to execve?
+	if (clean.quote > 0)
 		return (syntax_error("unexpected EOF while looking for matching quote",
 				token), clean.new);
 	return (clean.new);

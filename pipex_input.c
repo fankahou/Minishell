@@ -6,15 +6,15 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 19:49:13 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/11 16:57:40 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 // exit code will not change if exit() is not executed
 static int check_builtins(t_cmds *cmds, t_token *token, int *fd)
 {
-	//printf("cmd = %s----\n", cmds->cmd[0]);
 	if (builtins_pipe_fd_out(cmds, fd))
 		return (1);
 	if ((!ft_strncmp(cmds->cmd[0], "echo", 4) && ft_strlen(cmds->cmd[0]) == 4))
@@ -60,27 +60,8 @@ static void	child(int *fd, t_cmds *cmds, t_token *token, char *path)
 	execve_error(cmds->cmd[0], path, token, NULL);
 }
 
-static void	parent(int *fd, t_cmds *cmds, t_token *token, char *path)
+static void	parent(int *fd)
 {
-	int	status;
-
-	status = 0;
-	(void)path;
-	(void)cmds;
-	(void)token;
-	//dont wait here!
-	//waitpid(cmds->pid, &status, 0); // protection?
-/* 	if (cmds->cmd[0] && cmds->cmd[1])
-		path = cmds->cmd[1];
-	if (ft_strncmp(cmds->infile, "/dev/urandom", 12)
-		&& ft_strncmp(cmds->infile, "/dev/random", 11)
-		&& ft_strncmp(path, "/dev/urandom", 12) 
-		&& ft_strncmp(path, "/dev/random", 11))// wait for signal?
-	{
-		waitpid(cmds->pid, &status, 0); // protection?
-	}
-	else
-		kill(cmds->pid, 1); // usleep or kill later? */
 	if (fd)
 	{
 		close(fd[1]);
@@ -92,8 +73,6 @@ static void	parent(int *fd, t_cmds *cmds, t_token *token, char *path)
 		}
 		close(fd[0]);
 	}
-	//token->exit_code[0] = WEXITSTATUS(status);
-		// if statement for the one terminated by signal also?
 }
 
 int	input(t_cmds *cmds, t_token *token)
@@ -120,7 +99,7 @@ int	input(t_cmds *cmds, t_token *token)
 	if (cmds->pid == 0)
 		child(fd, cmds, token, path);
 	else
-		parent(fd, cmds, token, path);
+		parent(fd);
 	if (path)
 		free(path);
 	return (0);
@@ -133,8 +112,6 @@ int	last_input(t_cmds *cmds, t_token *token)
 	path = NULL;
 	if (check_builtins(cmds, token, NULL))
 		return (0);
-/* 	if (temp[1] && temp[1][0] != '\0' && replace_arg(cmd, temp)) // only for echo??? echo    "test        321"
-		return (1); */
 	if (cmds->cmd[0])
 		path = get_path(cmds->cmd, token->envp);
 	cmds->pid = fork();
@@ -143,7 +120,7 @@ int	last_input(t_cmds *cmds, t_token *token)
 	if (cmds->pid == 0)
 		child(NULL, cmds, token, path);
 	else
-		parent(NULL, cmds, token, path);
+		parent(NULL);
 	if (path)
 		free(path);
 	return (0);

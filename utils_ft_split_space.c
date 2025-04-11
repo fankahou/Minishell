@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ft_split_space.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 13:14:21 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 16:47:43 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static size_t	ft_count(char *s)
 	while (s[i])
 	{
 		quote = inside_quote(s[i], quote);
-		if (is_space(s[i]) && quote == 0) //
+		if (is_space(s[i]) && quote == 0)
 		{
 			while (is_space(s[i]))
 				i++;

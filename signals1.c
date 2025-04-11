@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 13:49:39 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/10 16:25:17 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:04:04 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
 	g_sigrecv = signal;
 	if (g_sigrecv == SIGINT)
 	{
-		write(2, "\n", 1); // why the fuck is there an extra line after here_doc ends with ctrl???
-		rl_replace_line("", 0); // replace the buffer
-		rl_on_new_line(); // new prompt on the next line but not shown
-		rl_redisplay(); // flush the buffer
+		write(2, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 	}
 }
 
@@ -80,14 +80,14 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
 int	signal_init(void)
 {
 	struct sigaction	act;
-	struct sigaction	ignore; // KA HOU: new: set SIGQUIT to ignore
-
+	struct sigaction	ignore;
+	
 	ft_bzero(&act, sizeof(act));
 	act.sa_sigaction = &signal_handler;
-	act.sa_flags = SA_SIGINFO; // | SA_RESTART;
+	act.sa_flags = SA_SIGINFO;
 	ignore.sa_handler = SIG_IGN;
 	ignore.sa_flags = 0;
-	sigemptyset(&ignore.sa_mask); // no other signal to block, valgrind will complaim this if not set
+	sigemptyset(&ignore.sa_mask);
 	if (sigaction(SIGINT, &act, NULL))
 		return (error("Error setting sigaction for SIGINT"));
 	if (sigaction(SIGTERM, &act, NULL))
@@ -117,11 +117,8 @@ void	signal_handler1(int signal, siginfo_t *info, void *context)
 	(void)context;
 	(void)info;
 	g_sigrecv = signal;
-	if (g_sigrecv == SIGINT) // need to quit here_doc!!!
+	if (g_sigrecv == SIGINT)
 	{
-		// printf("hello\n");
-		//close(0); // really?? KA HOU: I close the STD_IN, works like eof, but I dont know whether it's correct...
-		// write(2, "\n", 1); // how about execve??
 				rl_replace_line("", 0);
 				rl_on_new_line();
 				rl_redisplay();
@@ -144,11 +141,11 @@ void	signal_handler1(int signal, siginfo_t *info, void *context)
 int	signal_init1(void)
 {
 	struct sigaction	act;
-	struct sigaction	ignore; // KA HOU: new: set SIGQUIT to ignore
+	struct sigaction	ignore;
 	
 	ft_bzero(&act, sizeof(act));
 	act.sa_sigaction = &signal_handler1;
-	act.sa_flags = SA_SIGINFO; // | SA_RESTART;
+	act.sa_flags = SA_SIGINFO;
 	ignore.sa_handler = SIG_IGN;
 	ignore.sa_flags = 0;
 	sigemptyset(&ignore.sa_mask);

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 18:56:14 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/11 16:57:16 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	outfile(t_token *token, int k)
 	{
 		if (access(token->cmds[k]->outfile, W_OK) != 0)
 			return (perror("minishell: Permission denied"),
-					token->exit_code[0] = 13, -1); // exitcode = 13???
+				token->exit_code[0] = 13, -1);
 	}
 	if (token->cmds[k]->redir[1] == 6)
 		fd = open(token->cmds[k]->outfile, O_WRONLY | O_CREAT | O_APPEND, 0664);
@@ -46,17 +46,7 @@ static int	infile(t_token *token, int k)
 	if (token->cmds[k]->redir[0] == 3)
 		return (token->cmds[k]->fd[0]);
 	else
-	{
-		/* 		if (access(token->cmds[k]->infile, F_OK) == 0
-					&& access(token->cmds[k]->infile, R_OK) != 0)
-				{
-					perror("minishell: Permission denied\n");
-					token->exit_code[0] = 13; // test it?
-					token->error[0] = 1;
-					return(-1);
-				} */
 		fd_in = open(token->cmds[k]->infile, O_RDONLY);
-	}
 	if (fd_in < 0)
 		open_error(token->cmds[k]->infile, token, token->cmds[k]->fd);
 	return (fd_in);
@@ -65,43 +55,28 @@ static int	infile(t_token *token, int k)
 static int	open_fd(t_token *token, int i)
 {
 	if (token->cmds[i]->fd[1] != -1 && token->cmds[i]->outfile)
-	{
 		token->cmds[i]->fd[1] = outfile(token, i);
-		/* 		if (token->cmds[i]->fd[0] == -1)
-					return(1); */
-	}
 	if (token->cmds[i]->fd[1] != -1 && token->cmds[i]->infile)
-	{
 		token->cmds[i]->fd[0] = infile(token, i);
-		/* 		if (token->cmds[i]->fd[0] == -1)
-					return(1); */
-	}
 	return (0);
 }
 
 static int	replace_fd(t_token *token, int i)
 {
-	if (token->cmds[i]->infile && token->cmds[i]->fd[0] != -1) // replace fd
+	if (token->cmds[i]->infile && token->cmds[i]->fd[0] != -1)
 	{
 		if (dup2(token->cmds[i]->fd[0], 0) == -1)
 			return (close(token->cmds[i]->fd[0]), 1);
 		close(token->cmds[i]->fd[0]);
 	}
-/* 	else if (i > 0 && token->cmds[i - 1]->fd[0] != -1 && token->cmds[i - 1]->outfile
-		&& dup2(token->fd_in, 0) == -1)
-		// restore st_in to 0 again if the pipe was already in previous outfile
-		return (1);
-	else if (i > 0 && token->cmds[i - 1]->fd[0] != -1 && i != token->nmb_of_cmd && dup2(token->cmds[i - 1]->fd[1],
-			0) == -1) // !!!new: pipes in between
-		return (1); */
-	if (token->cmds[i]->outfile && token->cmds[i]->fd[1] != -1 )
+	if (token->cmds[i]->outfile && token->cmds[i]->fd[1] != -1)
 	{
 		if (dup2(token->cmds[i]->fd[1], 1) == -1)
 			return (close(token->cmds[i]->fd[1]), 1);
 		close(token->cmds[i]->fd[1]);
 	}
-	else if (token->cmds[i]->fd[1] != -1 && i == token->nmb_of_cmd - 1 && dup2(token->fd_out, 1) == -1)
-		// copy LAST st_out to 1 again (i == token->nmb_of_cmd  is new!!!)
+	else if (token->cmds[i]->fd[1] != -1 && i == token->nmb_of_cmd - 1
+		&& dup2(token->fd_out, 1) == -1)
 		return (1);
 	return (0);
 }

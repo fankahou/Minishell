@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_mini.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 16:37:18 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 17:00:07 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void	execve_error(char *cmd, char *path, t_token *token, DIR *dir)
 {
 	token->error[0] = 2;
 	token->exit_code[0] = 127;
-	dir = NULL;
 	if (cmd)
 		dir = opendir(cmd);
 	if (!dir)
@@ -97,10 +96,6 @@ void	execve_error(char *cmd, char *path, t_token *token, DIR *dir)
 			mini_error("Permission denied", cmd, NULL, NULL);
 			token->exit_code[0] = 126;
 		}
-		/* 		else if (access(cmd, F_OK) == 0 && access(cmd, R_OK) == 0)
-					printf("file exists"); */
-						// recursion make tree for cmd? open and gnl? implement
-						// -c for minishell and pass to it!
 		else
 			command_not_found(cmd);
 	}

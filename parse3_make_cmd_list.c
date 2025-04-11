@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse3_make_cmd_list.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/08 17:52:11 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/11 15:07:38 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	**ft_cmd(char *temp, t_token *token, char **old)
 {
 	char	**cmd;
 
-	cmd = ft_split_space(temp); // need custom split! need to check?
+	cmd = ft_split_space(temp);
 	if (!cmd)
 		return (perror("ft_split failed"), token->error[0] = 1, NULL);
 	if (old)
@@ -98,13 +98,8 @@ static int	scan_pipe(char **temp, t_token *token, int k, char **cmd)
 		if (j == -1)
 			return (token->error[0] = 1, 1);
 	}
-	if (is_sym(token->cmds[k]->cmd[0][0], token->cmds[k]->cmd[0][1])
-		&& cmd == NULL)
-		return (ft_free_split(token->cmds[k]->cmd), token->cmds[k]->cmd = NULL,
-			0);
 	ft_free_split(token->cmds[k]->cmd);
 	token->cmds[k]->cmd = cmd;
-	// print_array(cmd);
 	return (0);
 }
 
