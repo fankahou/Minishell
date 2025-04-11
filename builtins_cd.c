@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 14:50:38 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/11 20:46:48 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,12 +184,12 @@ int	builtins_cd(char **cmd, char **envp, t_token *token)
 	DIR	*dir;
 
 	if (cmd[0] && cmd[1])
-		return (perror("bash: cd: too many arguments"), 1);
+		return (write(2, "minishell: cd: too many arguments\n", 34), 1);
 	if (cmd[0])
 	{
 		dir = opendir(cmd[0]);
 		if (!dir)
-			return (perror("No such file or directory"), 1);
+			return (write(2, "minishell: No such file or directory\n", 37), 1);
 		closedir(dir);
 	}
 	if (!cmd[0] && token->nmb_of_cmd == 1)

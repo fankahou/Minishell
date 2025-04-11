@@ -150,6 +150,8 @@ function where the program exits.
 
 TODO:
 - Documentation
+- Signal handlings: dont ignore ctrl + \ before execve
+- Signal handlings: minishell withn minishell > ignore all signals in parent while waitpid
 - Implement "-c" flag for minishell (ex: minishell -c "echo 123")
 - Norm and clean up main.c \ pipex_input.c \ signals1.c
 - Run tester (and fix anything that comes up)

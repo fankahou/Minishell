@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 20:10:20 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/11 20:55:15 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,12 +148,12 @@ static int	exit_arg(char **cmd, t_token *token, long temp, int i)
 int	builtins_exit(char **cmd, t_token *token)
 {
 	if (cmd[0] && cmd[1] && ft_isdigit(cmd[0][0]))
-		return (token->exit_code[0] = 1,
-			perror("minishell: exit: too many arguments"), 1);
+		return (token->exit_code[0] = 1, write(2,
+				"minishell: exit: too many arguments\n", 36), 1);
 	else if (token->nmb_of_cmd == 1)
 	{
+		write (2, "exit\n", 5); // make sure Koloman check!!!
 		token->error[0] = 2;
-		write (2, "exit\n", 5);
 		token->exit_code[0] = 0;
 	}
 	if (cmd[0])
