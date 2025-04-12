@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 19:50:10 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 19:23:43 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ int		init_token(char **temp, t_token **token, t_data *data, int i);
 int		make_cmd_list(char **temp, t_token *token);
 char	**ft_cmd(char *temp, t_token *token, char **old);
 int		redir(char *temp, t_token *token, int k);
-int		ft_heredoc(t_token *token, char *eof, char *file);
+int		ft_heredoc(t_token *token, char *eof, char *file, int k);
 int		clean_and_expand(t_token *token);
 char	*clean_name(char *temp, t_token *token, int count, char *file);
 int		get_rid_of_extra_space(char *temp);
@@ -221,7 +221,7 @@ char	*wildcards(char *temp, t_token *token, t_clean *clean);
 
 // error
 void	syntax_error(char *str, t_token *token);
-void	open_error(char *str, t_token *token, int *fd);
+void	open_error(char *str, t_token *token, int *fd, int k);
 void	mini_error(char *str, char *arg, t_token *token, int *fd);
 void	execve_error(char *cmd, char *path, t_token *token, DIR *dir);
 

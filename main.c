@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 20:54:57 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 18:01:05 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int main(int argc, char **argv, char**envp)
         }
         if (!temp)
         {   
-            write (2, "exit\n", 5); // make sure Koloman check!!!
+            write (2, "exit\n", 5); // not really printing to STDERR??
             break;
         }
         signal_init(); // new!

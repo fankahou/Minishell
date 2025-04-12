@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 16:57:54 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 19:28:32 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,8 @@ void	wait_pipes(t_token *token)
 			waitpid(token->cmds[i]->pid, &status, 0);
 			token->cmds[i]->exit_code = WEXITSTATUS(status);
 		}
-		if (token->cmds[i]->fd[0] != -1)
-			token->exit_code[0] = token->cmds[i]->exit_code;
+		//if (token->cmds[i]->fd[0] != -1)
+		token->exit_code[0] = token->cmds[i]->exit_code;
 		i++;
 	}
 }

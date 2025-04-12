@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 17:00:07 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 19:20:54 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	execve_error(char *cmd, char *path, t_token *token, DIR *dir)
  *
  * @author kfan
  */
-void	open_error(char *str, t_token *token, int *fd)
+void	open_error(char *str, t_token *token, int *fd, int k)
 {
 	write(2, "minishell: ", 11);
 	if (str)
@@ -134,7 +134,8 @@ void	open_error(char *str, t_token *token, int *fd)
 	}
 	perror(NULL);
 	if (token)
-		token->exit_code[0] = 1;
+		token->cmds[k]->exit_code = 1;
+		//token->exit_code[0] = 1;
 	if (fd)
 	{
 		fd[0] = -1;

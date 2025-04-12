@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 20:04:54 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 19:23:13 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ static int	write_heredoc(t_token *token, int fd, char *eof, int quote)
  *
  * @author kfan
  */
-int	ft_heredoc(t_token *token, char *eof, char *file)
+int	ft_heredoc(t_token *token, char *eof, char *file, int k)
 {
 	int	fd;
 	int	i;
@@ -141,7 +141,7 @@ int	ft_heredoc(t_token *token, char *eof, char *file)
 		unlink("temp");
 	fd = open("temp", O_WRONLY | O_CREAT, 0644);
 	if (fd < 0)
-		return (open_error("here_doc", token, NULL), -1);
+		return (open_error("here_doc", token, NULL, k), -1);
 	signal_init_here_doc();
 	i = 0;
 	while (file[i] && is_quote(file[i]))
@@ -154,6 +154,6 @@ int	ft_heredoc(t_token *token, char *eof, char *file)
 	if (access("temp", F_OK) == 0)
 		unlink("temp");
 	if (fd < 0)
-		return (open_error("here_doc", token, NULL), -1);
+		return (open_error("here_doc", token, NULL, k), -1);
 	return (fd);
 }

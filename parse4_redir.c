@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 20:00:14 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 19:22:45 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	ft_redir_in1(t_token *token, int type, char *new, int k)
 		if (!new)
 			return (1);
 		token->cmds[k]->redir[0] = 3;
-		token->cmds[k]->fd[0] = ft_heredoc(token, new, token->cmds[k]->infile);
+		token->cmds[k]->fd[0] = ft_heredoc(token, new, token->cmds[k]->infile, k);
 		if (token->cmds[k]->fd[0] == -1)
 			token->cmds[k]->fd[1] = -1;
 	}
@@ -36,7 +36,7 @@ static int	ft_redir_in1(t_token *token, int type, char *new, int k)
 		token->cmds[k]->redir[0] = 4;
 		token->cmds[k]->fd[0] = open(new, O_RDONLY);
 		if (token->cmds[k]->fd[0] == -1)
-			open_error(new, token, token->cmds[k]->fd);
+			open_error(new, token, token->cmds[k]->fd, k);
 		else
 			close(token->cmds[k]->fd[0]);
 	}

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 16:37:39 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 17:40:28 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 // check if there is valid space with split after envp is expanded
 // eg. export STH="echo 123"; $STH
-static void	check_split_envp(t_token *token, t_clean *clean)
+// if i == 1, just dup check[0] replace 
+static int	check_split_envp(t_token *token, t_clean *clean)
 {
 	int		i;
 	char	**check;
 
 	check = ft_split_space(clean->envp_temp);
 	if (!check)
-		perror("ft_split_space failed");
+		return (perror("ft_split_space failed"), 1);
 	else
 	{
 		i = 0;
@@ -30,8 +31,16 @@ static void	check_split_envp(t_token *token, t_clean *clean)
 		if ((i == 0 && ((clean->envp_temp[0] != '\0') || clean->quote != 2)
 				&& clean->new[0] == '\0') || i > 1)
 			clean->temp = ft_cmd(clean->new, token, NULL);
+		else if (i == 1)
+		{
+			free(clean->new);
+			clean->new = ft_strjoin(clean->file, check[0]);
+			if (!clean->new)
+				return (ft_free_split(check), perror("ft_strjoin failed\n"), 1);
+		}
 		ft_free_split(check);
 	}
+	return (0);
 }
 
 // expand envp
@@ -58,12 +67,13 @@ static int	clean_name_envp(char *temp, t_token *token, t_clean *clean)
 	if (ft_strlen(clean->envp_temp) > 0)
 		clean->space = 0;
 	clean->new = ft_strjoin(clean->file, clean->envp_temp);
+	if (!clean->new)
+		return (free(clean->file), free(clean->envp_temp), perror("ft_strjoin failed\n"), -1);
+	if (check_split_envp(token, clean))
+		return (free(clean->envp_temp), free(clean->file), -1);
+	free(clean->envp_temp);
 	free(clean->file);
 	clean->file = NULL;
-	if (!clean->new)
-		return (free(clean->envp_temp), perror("ft_strjoin failed\n"), -1);
-	check_split_envp(token, clean);
-	free(clean->envp_temp);
 	return (0);
 }
 

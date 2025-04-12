@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 18:08:10 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 16:06:34 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,13 @@ int	join_cmd_1(t_token *token, int i, int j, char *file)
 }
 
 // skip a cmd if !file or copy it
+// free things if it is an empty envp eg. echo 123 | $STH | echo 321
 int	join_cmd_2(t_token *token, int i, int j, char *file)
 {
 	char	**temp;
 
 	ft_free_split(token->data->cmd_temp);
+	token->data->cmd_temp = NULL;
 	if (file && file[0] != '\0')
 	{
 		token->cmds[i]->cmd[j] = file;
@@ -131,11 +133,15 @@ int	join_cmd_2(t_token *token, int i, int j, char *file)
 	temp = copy_array(&token->cmds[i]->cmd[j + 1]);
 	while (token->cmds[i]->cmd[++j])
 		free(token->cmds[i]->cmd[j]);
-	token->data->cmd_temp = NULL;
 	if (!temp)
 		return (perror("copy_array failed"), token->error[0] = 1, 0);
 	token->cmds[i]->cmd = join_split(&token->cmds[i]->cmd, &temp, 0, 0);
 	if (!token->cmds[i]->cmd)
 		return (token->error[0] = 1, 0);
+	j = 0;
+	while (token->cmds[i]->cmd[j])
+		j++;
+	if (j == 0)
+		return (free(token->cmds[i]->cmd[j]), free(token->cmds[i]->cmd), token->cmds[i]->cmd = NULL, -1);
 	return (-1);
 }

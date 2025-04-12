@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 16:57:16 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 19:24:14 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	outfile(t_token *token, int k)
 		fd = open(token->cmds[k]->outfile, O_WRONLY | O_CREAT, 0664);
 	}
 	if (fd < 0)
-		open_error(token->cmds[k]->outfile, token, token->cmds[k]->fd);
+		open_error(token->cmds[k]->outfile, token, token->cmds[k]->fd, k);
 	return (fd);
 }
 
@@ -48,7 +48,7 @@ static int	infile(t_token *token, int k)
 	else
 		fd_in = open(token->cmds[k]->infile, O_RDONLY);
 	if (fd_in < 0)
-		open_error(token->cmds[k]->infile, token, token->cmds[k]->fd);
+		open_error(token->cmds[k]->infile, token, token->cmds[k]->fd, k);
 	return (fd_in);
 }
 

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 20:55:15 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 18:00:46 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static int	exit_arg(char **cmd, t_token *token, long temp, int i)
 {
 	temp = ft_atoi(cmd[0]);
 	if (temp > 255)
-		token->exit_code[0] = 255;
+		token->exit_code[0] = temp % 256;
 	else
 		token->exit_code[0] = (int)temp;
 	temp = ft_atol(cmd[0]);
@@ -152,7 +152,7 @@ int	builtins_exit(char **cmd, t_token *token)
 				"minishell: exit: too many arguments\n", 36), 1);
 	else if (token->nmb_of_cmd == 1)
 	{
-		write (2, "exit\n", 5); // make sure Koloman check!!!
+		write (2, "exit\n", 5); // not really printing to STDERR??
 		token->error[0] = 2;
 		token->exit_code[0] = 0;
 	}

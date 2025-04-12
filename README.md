@@ -155,13 +155,23 @@ TODO:
 - Implement "-c" flag for minishell (ex: minishell -c "echo 123")
 - Norm and clean up main.c \ pipex_input.c \ signals1.c
 - Run tester (and fix anything that comes up)
-- (fixed )exit -00000000000000000000000000000000000000000000000 doesn't work probably we broke sth today with the long overflow thing
+- env should throw error if there is an arg? (except --?)
+- implement --?
+- Koloman: could you clean up the if statements in pipex_input file, check_builtins() with your new str equals() for me? lines are too long there
 
-10.4.2025: (Ka Hou)
+12.4.2025: (Ka Hou)
+- fixed minor bug in cd
+- fixed export T="l"; $Ts eg. $STH, at the end utils_join to check if the $STH is empty
+- fixed evnp_expand eg. echo $A$]23
+- fixed empty space in envp split eg. export T=-nnnnnnnn"nnnnnnn "; echo $T
+- fixed if exit code > 255, temp % 256;
+- fixed cd - (print OLDPWD before chdir) and cd -- (works like cd alone)
+
+11.4.2025: (Ka Hou)
 - I removed the if (!nptr[i]) digit_cmd++; line in the pre long int overflow checker as it will be incremented in the main checker anyway, now everything works
 - updated the perror() for exit() to write()
 - Norm cleanup
-- Koloman: could you clean up the if statements in pipex_input file, check_builtins() with your new str equals() for me? lines are too long there
+- exit -00000000000000000000000000000000000000000000000 doesn't work probably we broke sth today with the long overflow thing
 
 10.4.2025:
 - Rewrote long int overflow checker (needs review for implementation)
