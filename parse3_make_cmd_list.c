@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 15:07:38 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 20:12:19 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int	scan_pipe(char **temp, t_token *token, int k, char **cmd)
 				return (token->error[0] = 1, 1);
 		}
 		if (j == -1)
-			return (token->error[0] = 1, 1);
+			return (ft_free_split(cmd), token->error[0] = 1, 1);
 	}
 	ft_free_split(token->cmds[k]->cmd);
 	token->cmds[k]->cmd = cmd;

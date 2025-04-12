@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 17:40:28 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 21:12:18 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	check_split_envp(t_token *token, t_clean *clean)
 			i++;
 		if ((i == 0 && ((clean->envp_temp[0] != '\0') || clean->quote != 2)
 				&& clean->new[0] == '\0') || i > 1)
-			clean->temp = ft_cmd(clean->new, token, NULL);
+			clean->temp = ft_cmd(clean->new, token, NULL); // need more work!
 		else if (i == 1)
 		{
 			free(clean->new);

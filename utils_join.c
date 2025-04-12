@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 16:06:34 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/12 21:25:04 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,10 @@ int	join_cmd_1(t_token *token, int i, int j, char *file)
 	int		k;
 	char	**temp;
 
+	ft_free_split(token->data->cmd_temp);
+	token->data->cmd_temp = ft_cmd(file, token, NULL);
+	if (!token->data->cmd_temp)
+		return (perror("ft_cmd failed"), token->error[0] = 1, 0);
 	free(file);
 	temp = NULL;
 	k = 0;

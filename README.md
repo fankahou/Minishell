@@ -166,6 +166,8 @@ TODO:
 - fixed empty space in envp split eg. export T=-nnnnnnnn"nnnnnnn "; echo $T
 - fixed if exit code > 255, temp % 256;
 - fixed cd - (print OLDPWD before chdir) and cd -- (works like cd alone)
+- fixed potential leak in scan pipe
+- fixed envp split bug eg. export X="  A  B  "; echo "1"$X'2'
 
 11.4.2025: (Ka Hou)
 - I removed the if (!nptr[i]) digit_cmd++; line in the pre long int overflow checker as it will be incremented in the main checker anyway, now everything works
