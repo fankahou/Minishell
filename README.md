@@ -149,8 +149,9 @@ function where the program exits.
 
 
 TODO:
+- updated log, those are errors in tester, warning: most of them are things that we didnt implement or shits that I don't think it's neccesary to fix, we need to discuss.
 - Documentation
-- Signal handlings: dont ignore ctrl + \ before execve
+- Signal handlings: ignore ctrl + \ only before execve, in exeve you need it!
 - Signal handlings: minishell withn minishell > ignore all signals in parent while waitpid
 - Implement "-c" flag for minishell (ex: minishell -c "echo 123")
 - Norm and clean up main.c \ pipex_input.c \ signals1.c
@@ -158,6 +159,7 @@ TODO:
 - env should throw error if there is an arg? (except --?)
 - unset check is_alpha? or flag -?
 - implement --?
+- implement cd ~? easy it's just like cd or cd --
 - Koloman: could you clean up the if statements in pipex_input file, check_builtins() with your new str equals() for me? lines are too long there
 
 14.4.2025: (Ka Hou)

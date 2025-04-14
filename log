@@ -1,0 +1,132 @@
+/bin/echo \$USER
+--------------------------
+echo ?
+--------------------------
+>| echo sure
+--------------------------
+echo cd ~
+--------------------------
+cd '/////' 2>/dev/null
+--------------------------
+cd ~
+--------------------------
+env what
+--------------------------
+export
+--------------------------
+export --TEST=123
+--------------------------
+export TEST+=100
+--------------------------
+unset -TEST
+--------------------------
+/bin/env | grep "_="
+--------------------------
+/bin/env | grep "SHLVL"
+--------------------------
+ls | cat << stop | ls -la | cat << stop1 | ls | cat << stop2 | ls -la > > out | cat << stop3
+--------------------------
+cat Makefile | ls > out
+--------------------------
+cat <"./test_files/file name with spaces"
+---EXIT_:BASH: 1
+---EXIT_:MINI: 2
+--------------------------
+ls >"./outfiles/outfile with spaces"
+---EXIT_:BASH: 1
+---EXIT_:MINI: 2
+--------------------------
+cat << lim
+ "lim"
+HELLO
+42
+ lim
+testing your minishell
+limm
+lim
+--------------------------
+mkdir " "
+/bin/rm -rf " "
+--------------------------
+ls >"./ with spaces"
+rm -rf " with spaces"
+--------------------------
+"."
+---EXIT_:BASH: 127
+---EXIT_:MINI: 126
+--------------------------
+/ls
+--------------------------
+/ls
+--------------------------
+/ls
+---EXIT_:BASH: 127
+---EXIT_:MINI: 0
+--------------------------
+export X="  A  B  "
+/bin/echo ?$X'2'
+--------------------------
+export X="  A  B  "
+/bin/echo "1"$X?
+--------------------------
+cd ~/Desktop/
+pwd
+--------------------------
+env -i ./minishell
+cd /bin/
+ls
+--------------------------
+touch tmp_x_file1
+tmp_x_file1
+echo $?
+./tmp_x_file1
+echo $?
+export PATH=$HOME
+echo $PATH
+tmp_x_file1
+echo $?
+./tmp_x_file1
+echo $?
+unset PATH
+tmp_x_file1
+echo $?
+./tmp_x_file1
+echo $?
+echo 42
+/bin/rm -f tmp_x_file1
+--------------------------
+~
+---EXIT_:BASH: 126
+---EXIT_:MINI: 127
+--------------------------
+.
+---EXIT_:BASH: 127
+---EXIT_:MINI: 126
+--------------------------
+>echo>
+/bin/rm -f echo
+---EXIT_:BASH: 2
+---EXIT_:MINI: 0
+--------------------------
+<echo<
+/bin/rm -f echo
+---EXIT_:BASH: 2
+---EXIT_:MINI: 0
+--------------------------
+>>echo>>
+/bin/rm -f echo
+---EXIT_:BASH: 2
+---EXIT_:MINI: 0
+--------------------------
+echo "env | /usr/bin/wc -l" | env -i $MINISHELL_PATH"/"$EXECUTABLE
+echo $?
+--------------------------
+echo "ls" | env -i $MINISHELL_PATH"/"$EXECUTABLE
+echo $?
+--------------------------
+echo "ls" | env -i $MINISHELL_PATH"/"$EXECUTABLE
+echo $?
+--------------------------
+echo "unset PATH" | env -i $MINISHELL_PATH"/"$EXECUTABLE
+echo $?
+--------------------------
