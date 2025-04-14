@@ -10,6 +10,7 @@ SRC = main.c \
 	parse5_clean_and_expand.c \
 	parse6_clean_name.c \
 	parse6a_clean_name_no_expand.c \
+	parse6b_clean_name_join_envp.c \
 	parse7_expand_envp.c \
 	parse8_wildcards.c \
 	pipex.c \

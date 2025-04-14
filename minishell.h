@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 19:23:43 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/14 16:22:51 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_clean
 	char	*new;
 	char	*file;
 	char	**temp; // to check split_space() for envp
+	int		new_array; // check if needed to open a new array for charjoin
 }			t_clean;
 
 /**
@@ -215,6 +216,10 @@ int		get_rid_of_extra_space(char *temp);
 void	init_clean(t_clean *clean, int count, char *file);
 char	*clean_name_no_expand(char *temp, t_token *token, int count,
 			char *file);
+int		join_envp_char(t_token *token, t_clean *clean, char *str);
+int		join_envp_str(t_token *token, t_clean *clean, char *str);
+int		join_envp(t_token *token, t_clean *clean, char **temp, int i);
+void	check_new_array(t_clean *clean);
 char	*expand_envp(char *temp, t_token *token, char *new, int quote);
 int		check_envp_count(char *temp);
 char	*wildcards(char *temp, t_token *token, t_clean *clean);

@@ -156,8 +156,12 @@ TODO:
 - Norm and clean up main.c \ pipex_input.c \ signals1.c
 - Run tester (and fix anything that comes up)
 - env should throw error if there is an arg? (except --?)
+- unset check is_alpha? or flag -?
 - implement --?
 - Koloman: could you clean up the if statements in pipex_input file, check_builtins() with your new str equals() for me? lines are too long there
+
+14.4.2025: (Ka Hou)
+- fixed envp expansion...this is crazy
 
 12.4.2025: (Ka Hou)
 - fixed minor bug in cd

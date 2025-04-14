@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 21:12:18 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/14 16:22:23 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 // check if there is valid space with split after envp is expanded
 // eg. export STH="echo 123"; $STH
 // if i == 1, just dup check[0] replace 
-static int	check_split_envp(t_token *token, t_clean *clean)
+static int	check_split_envp(t_token *token, t_clean *clean, int i)
 {
-	int		i;
 	char	**check;
 
 	check = ft_split_space(clean->envp_temp);
@@ -25,18 +24,20 @@ static int	check_split_envp(t_token *token, t_clean *clean)
 		return (perror("ft_split_space failed"), 1);
 	else
 	{
-		i = 0;
 		while (check[i])
 			i++;
+		check_new_array(clean);
 		if ((i == 0 && ((clean->envp_temp[0] != '\0') || clean->quote != 2)
-				&& clean->new[0] == '\0') || i > 1)
-			clean->temp = ft_cmd(clean->new, token, NULL); // need more work!
+				&& clean->new[0] == '\0') || i > 1 || clean->new_array > 0)
+			join_envp(token, clean, check, i);
 		else if (i == 1)
 		{
 			free(clean->new);
 			clean->new = ft_strjoin(clean->file, check[0]);
 			if (!clean->new)
-				return (ft_free_split(check), perror("ft_strjoin failed\n"), 1);
+				return (perror("ft_strjoin failed\n"), 1);
+			if (clean->temp)
+				join_envp_str(token, clean, check[0]);
 		}
 		ft_free_split(check);
 	}
@@ -69,7 +70,7 @@ static int	clean_name_envp(char *temp, t_token *token, t_clean *clean)
 	clean->new = ft_strjoin(clean->file, clean->envp_temp);
 	if (!clean->new)
 		return (free(clean->file), free(clean->envp_temp), perror("ft_strjoin failed\n"), -1);
-	if (check_split_envp(token, clean))
+	if (check_split_envp(token, clean, 0))
 		return (free(clean->envp_temp), free(clean->file), -1);
 	free(clean->envp_temp);
 	free(clean->file);
@@ -92,6 +93,7 @@ static int	clean_name_envp(char *temp, t_token *token, t_clean *clean)
 // if space <2
 // wild_switch == 0; jackpot not hit,
 // you only have one chance to verifly after you hit it
+// new: if (clean->envp_temp), join char at the end of the array
 static int	clean_name_char(char *temp, t_token *token, t_clean *clean)
 {
 	if (is_space(temp[clean->count]))
@@ -107,7 +109,11 @@ static int	clean_name_char(char *temp, t_token *token, t_clean *clean)
 	}
 	if ((clean->space < 2 || clean->quote > 0) && (!is_quote(temp[clean->count])
 			|| clean->quote > 2))
+		{
 		clean->new = ft_charjoin(clean->file, &temp[clean->count]);
+		if (clean->temp)
+			join_envp_char(token, clean, &temp[clean->count]);
+		}
 	else
 		clean->new = ft_strdup(clean->file);
 	free(clean->file);

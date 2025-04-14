@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 18:02:42 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/14 13:30:41 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	init_clean(t_clean *clean, int count, char *file)
 	clean->new = NULL;
 	clean->file = file;
 	clean->temp = NULL;
+	clean->new_array = 0;
 }
 
 // clean only quotes and not expand * and $

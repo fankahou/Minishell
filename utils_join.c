@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 21:25:04 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/14 13:53:13 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	join_split2(char **dest, char **src, char **temp, int strlen)
 	if (!temp)
 		return ;
 	k = 0;
-	while (dest[k])
+	while (dest && dest[k])
 	{
 		temp[k] = dest[k];
 		k++;
@@ -74,9 +74,9 @@ char	**join_split(char ***old, char ***cmd, int i, int j)
 
 	dest = *old;
 	src = *cmd;
-	while (src[i])
+	while (src && src[i])
 		i++;
-	while (dest[j])
+	while (dest && dest[j])
 		j++;
 	temp = malloc(sizeof(char *) * (i + j + 1));
 	if (!temp)
@@ -84,8 +84,10 @@ char	**join_split(char ***old, char ***cmd, int i, int j)
 	else
 		temp[i + j] = NULL;
 	join_split2(dest, src, temp, i + j);
-	free(src);
-	free(dest);
+	if (src)
+		free(src);
+	if (dest)
+		free(dest);
 	*old = NULL;
 	*cmd = NULL;
 	return (temp);
@@ -96,10 +98,6 @@ int	join_cmd_1(t_token *token, int i, int j, char *file)
 	int		k;
 	char	**temp;
 
-	ft_free_split(token->data->cmd_temp);
-	token->data->cmd_temp = ft_cmd(file, token, NULL);
-	if (!token->data->cmd_temp)
-		return (perror("ft_cmd failed"), token->error[0] = 1, 0);
 	free(file);
 	temp = NULL;
 	k = 0;
