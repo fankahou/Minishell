@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/14 16:22:23 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/15 10:29:51 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	check_split_envp(t_token *token, t_clean *clean, int i)
 			clean->new = ft_strjoin(clean->file, check[0]);
 			if (!clean->new)
 				return (perror("ft_strjoin failed\n"), 1);
-			if (clean->temp)
+			if (clean->temp && ft_strncmp(token->wildcards, "found", 5))
 				join_envp_str(token, clean, check[0]);
 		}
 		ft_free_split(check);
@@ -111,7 +111,7 @@ static int	clean_name_char(char *temp, t_token *token, t_clean *clean)
 			|| clean->quote > 2))
 		{
 		clean->new = ft_charjoin(clean->file, &temp[clean->count]);
-		if (clean->temp)
+		if (clean->temp && ft_strncmp(token->wildcards, "found", 5))
 			join_envp_char(token, clean, &temp[clean->count]);
 		}
 	else
