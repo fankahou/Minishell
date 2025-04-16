@@ -149,6 +149,7 @@ function where the program exits.
 
 
 TODO:
+- Makefile remove .history in fclean? 
 - updated log, those are errors in tester, warning: most of them are things that we didnt implement or shits that I don't think it's neccesary to fix, we need to discuss.
 - Documentation
 - Implement "-c" flag for minishell (ex: minishell -c "echo 123")
@@ -156,7 +157,7 @@ TODO:
 - Run tester (and fix anything that comes up)
 - implement cd ~? it's not so easy as it expands like envp or * but not from envp?? how?? probably like pwd if getcwd fails that the path is stored somewhere secretly
 
-15.4.2025: (Ka Hou)
+16.4.2025: (Ka Hou)
 - str_equals cleaned up in the if statements in pipex_input file, check_builtins()
 - env should throw error if there is an arg? (except --?)
 - pwd should throw error if there is an arg? (except --?)
