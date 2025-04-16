@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 18:00:46 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/16 12:54:52 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ static int	exit_arg(char **cmd, t_token *token, long temp, int i)
 				"minishell: exit: numeric argument required\n", 43), 0);
 	while (cmd[0][i])
 	{
-		if (cmd[0][i] && !is_space(cmd[0][i]) && !ft_isdigit(cmd[0][i]))
+		if (cmd[0][i] && !is_space(cmd[0][i]) && !ft_isdigit(cmd[0][i]) && !str_equals(cmd[0], "--"))
 			return (token->exit_code[0] = 2, write(2,
 					"minishell: exit: numeric argument required\n", 43), 0);
 		i++;
@@ -147,17 +147,22 @@ static int	exit_arg(char **cmd, t_token *token, long temp, int i)
  */
 int	builtins_exit(char **cmd, t_token *token)
 {
-	if (cmd[0] && cmd[1] && ft_isdigit(cmd[0][0]))
+	int	i;
+
+	i = 0;
+	if (cmd[0] && str_equals(cmd[0], "--"))
+		i++;
+	if (cmd[i + 0] && cmd[i + 1] && ft_isdigit(cmd[i + 0][0]))
 		return (token->exit_code[0] = 1, write(2,
 				"minishell: exit: too many arguments\n", 36), 1);
-	else if (token->nmb_of_cmd == 1)
+	else if (token->nmb_of_cmd == i + 1)
 	{
 		write (2, "exit\n", 5); // not really printing to STDERR??
 		token->error[0] = 2;
 		token->exit_code[0] = 0;
 	}
-	if (cmd[0])
-		exit_arg(cmd, token, 0, 0);
+	if (cmd[i + 0])
+		exit_arg(&cmd[i + 0], token, 0, 0);
 	return (0);
 }
 
@@ -183,25 +188,23 @@ it having been unlinked. */
  * Handles the behaviour of the pwd command,
  * printing the current working directory to
  * stdout.
- * If getcwd fails, it will return 0. We have
- * no idea why, but bash does it so we do it too.
+ * New: If getcwd fails, it will return 0. We have
+ * no idea why, but bash does it so we do it too
+ * Note: error return 2 if it has a flag
  *
- * Note: ignores arg?
- *
- * @param envp environment variables
+ * @param cmd command arguments
  * @return int
  * @retval success always returns 0
  *
  * @author kfan
  */
-int	builtins_pwd(char **envp)
+int	builtins_pwd(char **cmd)
 {
 	char	path[1024];
 
-	(void)envp;
-	if (!getcwd(path, 1024))
-		return (perror("minishell: pwd: cannot access parent directories: "),
-			0);
-	ft_printf("%s\n", path);
+	if (cmd[0] && cmd[0][0] == '-' && !str_equals(cmd[0], "--"))
+		return (write(2, "minishell: pwd: invalid option\n", 31), 2);
+	if (getcwd(path, 1024))
+		ft_printf("%s\n", path);
 	return (0);
 }

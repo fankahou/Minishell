@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 13:49:39 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/11 18:04:04 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/16 16:13:34 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,6 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
 {
 	(void)context;
 	(void)info;
-	// ft_printf("Received signal %i from process %i\n", signal, info->si_pid);
-	/* 	if (signal == SIGSEGV)
-			ft_printf("You fucking moron,
-				you caused a segmentation fault! >:(\n");
-			exit(0);
-		}
-		if (g_sigrecv != 0)
-			error("Unprocessed signal in sigrecv! This signal will be overwritten!"); */
 	g_sigrecv = signal;
 	if (g_sigrecv == SIGINT)
 	{
@@ -93,9 +85,7 @@ int	signal_init(void)
 	if (sigaction(SIGTERM, &act, NULL))
 		return (error("Error setting sigaction for SIGTERM"));
 	if (sigaction(SIGQUIT, &ignore, NULL))
-		return (error("Error setting sigaction for SIGTERM"));
-	if (sigaction(SIGSEGV, &act, NULL))
-		return (error("Error setting sigaction for SIGSEGV"));
+		return (error("Error setting sigaction for SIGQUIT"));
 	return (0);
 }
 
@@ -123,8 +113,6 @@ void	signal_handler1(int signal, siginfo_t *info, void *context)
 				rl_on_new_line();
 				rl_redisplay();
 	}
-	if (signal == SIGSEGV)
-		exit(0);
 }
 
 /**
@@ -154,8 +142,6 @@ int	signal_init1(void)
 	if (sigaction(SIGTERM, &act, NULL))
 		return (error("Error setting sigaction for SIGTERM"));
 	if (sigaction(SIGQUIT, &ignore, NULL))
-		return (error("Error setting sigaction for SIGTERM"));
-	if (sigaction(SIGSEGV, &act, NULL))
-		return (error("Error setting sigaction for SIGSEGV"));
+		return (error("Error setting sigaction for SIGQUIT"));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 20:25:32 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/16 12:40:07 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ int	add_envp(char *cmd, t_token *token, int i, int j)
  */
 int	builtins_export(char **cmd, t_token *token, int k, int i)
 {
+	if (cmd[0] && cmd[0][0] == '-' && !str_equals(cmd[0], "--"))
+		return (write(2, "minishell: export: invalid option\n", 34), 2);
 	while (cmd[k])
 	{
 		i = 0;
@@ -196,12 +198,12 @@ int	builtins_unset(char **cmd, char **envp, t_token *token, int k)
 {
 	int	i;
 
-	if (!envp)
-		return (0);
+	if (cmd[0] && cmd[0][0] == '-' && !str_equals(cmd[0], "--"))
+		return (write(2, "minishell: unset: invalid option\n", 33), 2);
 	while (cmd[k] && token->nmb_of_cmd == 1)
 	{
 		i = -1;
-		while (envp[++i])
+		while (envp && envp[++i])
 		{
 			if (!ft_strncmp(envp[i], cmd[k], ft_strlen(cmd[k]))
 				&& envp[i][ft_strlen(cmd[k])] == '=')
@@ -214,7 +216,7 @@ int	builtins_unset(char **cmd, char **envp, t_token *token, int k)
 				break ;
 			}
 		}
-		if (unset_export(token, cmd[k]))
+		if (envp && unset_export(token, cmd[k]))
 			return (1);
 		k++;
 	}

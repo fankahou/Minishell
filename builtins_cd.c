@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 18:59:16 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/16 12:37:53 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static int	check_and_change_path(char **envp, char *path, t_token *token)
 	int		i;
 	char	oldpath[4096];
 
-	if (path && path[0] == '-' && path[1] == '\0')
+	if (path && str_equals(path, "-"))
 	{
 		i = 0;
 		while (envp && envp[i])
@@ -185,8 +185,10 @@ int	builtins_cd(char **cmd, char **envp, t_token *token)
 
 	if (cmd[0] && cmd[1])
 		return (write(2, "minishell: cd: too many arguments\n", 34), 1);
-	if (cmd[0] && cmd[0][0] != '-')
+	if (cmd[0] && !str_equals(cmd[0], "-") && !str_equals(cmd[0], "--"))
 	{
+		if (cmd[0][0] == '-')
+			return (write(2, "minishell: cd: invalid option\n", 30), 125);
 		if (cmd[0][0] == '\0')
 			return (0);
 		dir = opendir(cmd[0]);
@@ -194,7 +196,7 @@ int	builtins_cd(char **cmd, char **envp, t_token *token)
 			return (write(2, "minishell: No such file or directory\n", 37), 1);
 		closedir(dir);
 	}
-	if ((!cmd[0] && token->nmb_of_cmd == 1) || (cmd[0] && cmd[0][0] == '-' && cmd[0][1] == '-' && cmd[0][2] == '\0' && token->nmb_of_cmd == 1))
+	if ((!cmd[0] || str_equals(cmd[0], "--")) && token->nmb_of_cmd == 1)
 		return (change_dir(NULL, envp, token));
 	else if (token->nmb_of_cmd == 1)
 		return (change_dir(cmd[0], envp, token));

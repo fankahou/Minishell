@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 14:51:22 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/16 17:58:02 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,17 +92,22 @@ int	builtins_echo(char **cmd)
  * @brief Builtin env command
  *
  * Prints out the list of environment variables.
+ * error and exit code 125 if arg exists just like env fails
  *
- * Note: arg?
  *
  * @param envp environment variables
+ * @param cmd args
  * @return int
  * @retval return always returns 0
  *
  * @author kfan
  */
-int	builtins_env(char **envp)
+int	builtins_env(char **envp, char **cmd)
 {
+	if (cmd[0] && cmd[0][0] != '-')
+		return (write(2, "minishell: env: too many arguments\n", 35), 127);
+	if (cmd[0] && cmd[0][0] == '-' && !str_equals(cmd[0], "--"))
+		return (write(2, "minishell: env: invalid option\n", 31), 125);
 	print_array(envp);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 16:57:40 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/16 16:31:39 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ static int check_builtins(t_cmds *cmds, t_token *token, int *fd)
 {
 	if (builtins_pipe_fd_out(cmds, fd))
 		return (1);
-	if ((!ft_strncmp(cmds->cmd[0], "echo", 4) && ft_strlen(cmds->cmd[0]) == 4))
+	if (str_equals(cmds->cmd[0], "echo"))
 		cmds->exit_code = builtins_echo(&cmds->cmd[1]);
-	else if ((!ft_strncmp(cmds->cmd[0], "cd", 2) && ft_strlen(cmds->cmd[0]) == 2))
+	else if (str_equals(cmds->cmd[0], "cd"))
 		cmds->exit_code = builtins_cd(&cmds->cmd[1], token->envp, token);
-	else if ((!ft_strncmp(cmds->cmd[0], "pwd", 3) && ft_strlen(cmds->cmd[0]) == 3))
-		cmds->exit_code = builtins_pwd(token->envp);
-	else if ((!ft_strncmp(cmds->cmd[0], "export", 6) && ft_strlen(cmds->cmd[0]) == 6))
+	else if (str_equals(cmds->cmd[0], "pwd"))
+		cmds->exit_code = builtins_pwd(&cmds->cmd[1]);
+	else if (str_equals(cmds->cmd[0], "export"))
 		cmds->exit_code = builtins_export(&cmds->cmd[1], token, 0, 0);
-	else if ((!ft_strncmp(cmds->cmd[0], "unset", 5) && ft_strlen(cmds->cmd[0]) == 5))
+	else if (str_equals(cmds->cmd[0], "unset"))
 		cmds->exit_code = builtins_unset(&cmds->cmd[1], token->envp, token, 0);
-	else if ((!ft_strncmp(cmds->cmd[0], "env", 3) && ft_strlen(cmds->cmd[0]) == 3))
-		cmds->exit_code = builtins_env(token->envp);
-	else if ((!ft_strncmp(cmds->cmd[0], "exit", 4) && ft_strlen(cmds->cmd[0]) == 4))
+	else if (str_equals(cmds->cmd[0], "env"))
+		cmds->exit_code = builtins_env(token->envp, &cmds->cmd[1]);
+	else if (str_equals(cmds->cmd[0], "exit"))
 	{
 		builtins_exit(&cmds->cmd[1], token);
 		cmds->exit_code = token->exit_code[0];

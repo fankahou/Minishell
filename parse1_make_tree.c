@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/15 11:29:31 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/16 18:34:51 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,23 +115,21 @@ static t_token	**make_token(char **temp, t_token **token, t_data *data)
  */
 static int	execute(t_token **token, t_data *data, int *fd, int i)
 {
-	signal_init_execve();
-	while (token[i])
+	while (token[i] && data->error == 0)
 	{
 		token[i]->envp = data->envp;
 		token[i]->envp_export = data->envp_export;
 		if (clean_and_expand(token[i]))
-			return (data->error = 1, 1);
+			break ;
+		signal_init_execve();
 		if (token[i]->nmb_of_cmd > 0)
 			pipex(token[i]);
 		restore_fd(data, fd);
-		wait_pipes(token[i]);
-		if (token[i]->delimiter == 2 && token[i]->exit_code[0] != 0)
+		wait_pipes(token[i], 0, 0);
+		while (token[i] && token[i]->delimiter == 2 && token[i]->exit_code[0] != 0)
 			i++;
-		if (token[i]->delimiter == 3 && token[i]->exit_code[0] == 0)
+		while (token[i] && token[i]->delimiter == 3 && token[i]->exit_code[0] == 0)
 			i++;
-		if (data->error != 0)
-			break ;
 		if (token[i])
 			i++;
 	}
@@ -211,7 +209,7 @@ void	make_tree(t_data *data)
 	{
 		token = make_token(temp, token, data);
 		ft_free_split(temp);
-		if (token && data->error == 0)
+		if (token)
 			execute(token, data, fd, 0);
 		if (token)
 			close_unused_fd(token, 0);

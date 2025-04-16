@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 19:28:32 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/16 18:06:22 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,22 +102,29 @@ int	empty_pipe(int *fd)
 }
 
 // wait for each child to finish
-// if it is a valid pipe then update exit code of each pipe
-void	wait_pipes(t_token *token)
+// if it is a valid pipe then update exit code of each pipe"
+void	wait_pipes(t_token *token, int i, int status)
 {
-	int	i;
-	int	status;
-
-	i = 0;
 	while (i < token->nmb_of_cmd && token->error[0] == 0)
 	{
 		if (token->cmds[i]->pid != 0)
 		{
+			signal_init_post_execve();
 			waitpid(token->cmds[i]->pid, &status, 0);
 			token->cmds[i]->exit_code = WEXITSTATUS(status);
+			if (WIFSIGNALED(status) && WCOREDUMP(status))
+				token->cmds[i]->exit_code = 131;
+			else if (WIFSIGNALED(status))
+				token->cmds[i]->exit_code = 130;
 		}
-		//if (token->cmds[i]->fd[0] != -1)
+		else
+			status = 0;
 		token->exit_code[0] = token->cmds[i]->exit_code;
 		i++;
 	}
+	if (token->exit_code[0] == 131)
+		write(2, "Quit (core dumped)\n", 19);
+	if (token->exit_code[0] == 130)
+		write(2, "\n", 1);
+	g_sigrecv = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/14 16:22:51 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/16 18:06:49 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ typedef struct s_data
 	int		error;
 	char	**envp;
 	char	**envp_export; // new!!!!!
-	char	**cmd_temp; // new!! for split_space envp  // causes seg fault???
+	char	**cmd_temp; // new!! for split_space envp
 	int		readline_switch;
 }			t_data;
 
@@ -237,7 +237,7 @@ char	*get_path(char **cmd, char **envp);
 int		input(t_cmds *cmds, t_token *token);
 int		last_input(t_cmds *cmds, t_token *token);
 int		empty_pipe(int *fd);
-void	wait_pipes(t_token *token); // new: for execve()
+void	wait_pipes(t_token *token, int i, int status); // new: for execve()
 
 // all utils
 char	*ft_charjoin(char *s1, char *s2);
@@ -276,10 +276,10 @@ char	**join_split(char ***old, char ***cmd, int i, int j);
 // builtins
 int		builtins_echo(char **cmd);
 int		builtins_cd(char **cmd, char **envp, t_token *token);
-int		builtins_pwd(char **envp);
+int		builtins_pwd(char **cmd);
 int		builtins_export(char **cmd, t_token *token, int k, int i);
 int		builtins_unset(char **cmd, char **envp, t_token *token, int k);
-int		builtins_env(char **envp);
+int		builtins_env(char **envp, char **cmd);
 int		builtins_exit(char **cmd, t_token *token);
 int		add_envp(char *cmd, t_token *token, int i, int j);
 int		builtins_pipe_fd_out(t_cmds *cmds, int *fd);
@@ -296,6 +296,7 @@ int		signal_init(void);
 int		signal_init1(void);
 int		signal_init_here_doc(void);
 int		signal_init_execve(void);
+int		signal_init_post_execve(void);
 
 // HISTORY.C
 int		history_add(t_history *history, char *command);

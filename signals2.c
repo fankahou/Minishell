@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 13:49:39 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/11 18:04:56 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/16 16:31:04 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void	signal_handler_here_doc(int signal, siginfo_t *info, void *context)
 		write(2, "\n", 1);
 		close(0);
 	}
-	if (signal == SIGSEGV)
-		exit(0);
 }
 
 /**
@@ -66,9 +64,7 @@ int	signal_init_here_doc(void)
 	if (sigaction(SIGTERM, &act, NULL))
 		return (error("Error setting sigaction for SIGTERM"));
 	if (sigaction(SIGQUIT, &ignore, NULL))
-		return (error("Error setting sigaction for SIGTERM"));
-	if (sigaction(SIGSEGV, &act, NULL))
-		return (error("Error setting sigaction for SIGSEGV"));
+		return (error("Error setting sigaction for SIGQUIT"));
 	return (0);
 }
 
@@ -90,10 +86,6 @@ void	signal_handler_execve(int signal, siginfo_t *info, void *context)
 	(void)context;
 	(void)info;
 	g_sigrecv = signal;
-	if (g_sigrecv == SIGINT)
-		write(2, "\n", 1);
-	if (signal == SIGSEGV)
-		exit(0);
 }
 
 /**
@@ -111,21 +103,39 @@ void	signal_handler_execve(int signal, siginfo_t *info, void *context)
 int	signal_init_execve(void)
 {
 	struct sigaction	act;
-	struct sigaction	ignore;
 
 	ft_bzero(&act, sizeof(act));
 	act.sa_sigaction = &signal_handler_execve;
 	act.sa_flags = SA_SIGINFO;
-	ignore.sa_handler = SIG_IGN;
-	ignore.sa_flags = 0;
-	sigemptyset(&ignore.sa_mask);
 	if (sigaction(SIGINT, &act, NULL))
 		return (error("Error setting sigaction for SIGINT"));
 	if (sigaction(SIGTERM, &act, NULL))
 		return (error("Error setting sigaction for SIGTERM"));
+	if (sigaction(SIGQUIT, &act, NULL))
+		return (error("Error setting sigaction for SIGQUIT"));
+	return (0);
+}
+
+/**
+ * @brief Initialiser for the modified signal handlers.
+ *
+ * For waitpid in parent to ignore all signals, eg. ./minishell
+ *
+ * @return int
+ * @retval success 0 on success, 1 otherwise.
+ *
+ * @author kfan
+ */
+int	signal_init_post_execve(void)
+{
+	struct sigaction	ignore;
+
+	ignore.sa_handler = SIG_IGN;
+	ignore.sa_flags = 0;
+	sigemptyset(&ignore.sa_mask);
+	if (sigaction(SIGINT, &ignore, NULL))
+		return (error("Error setting sigaction for SIGINT"));
 	if (sigaction(SIGQUIT, &ignore, NULL))
-		return (error("Error setting sigaction for SIGTERM"));
-	if (sigaction(SIGSEGV, &act, NULL))
-		return (error("Error setting sigaction for SIGSEGV"));
+		return (error("Error setting sigaction for SIGQUIT"));
 	return (0);
 }
