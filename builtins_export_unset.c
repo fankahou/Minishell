@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/16 12:40:07 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 14:16:33 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,12 +158,12 @@ int	builtins_export(char **cmd, t_token *token, int k, int i)
 	{
 		i = 0;
 		if (!ft_isalpha(cmd[k][i]) && cmd[k][i] != '_')
-			return (write(2, "minishell: export: not a valid identifier\n", 42), 1);
+			return (write(2, "minishell: not a valid identifier\n", 34), 1);
 		while (cmd[k][i])
 		{
 			if (!ft_isalpha(cmd[k][i]) && !ft_isalnum(cmd[k][i])
 				&& cmd[k][i] != '_' && cmd[k][i] != '=')
-				return (write(2, "minishell: export: not a valid identifier\n", 42), 1);
+				return (write(2, "minishell: not a valid identifier\n", 34), 1);
 			if (cmd[k][i] == '=')
 				break ;
 			i++;

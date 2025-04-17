@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 13:49:39 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/16 16:13:34 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 14:11:51 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	signal_init(void)
 {
 	struct sigaction	act;
 	struct sigaction	ignore;
-	
+
 	ft_bzero(&act, sizeof(act));
 	act.sa_sigaction = &signal_handler;
 	act.sa_flags = SA_SIGINFO;
@@ -109,9 +109,9 @@ void	signal_handler1(int signal, siginfo_t *info, void *context)
 	g_sigrecv = signal;
 	if (g_sigrecv == SIGINT)
 	{
-				rl_replace_line("", 0);
-				rl_on_new_line();
-				rl_redisplay();
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 	}
 }
 
@@ -130,7 +130,7 @@ int	signal_init1(void)
 {
 	struct sigaction	act;
 	struct sigaction	ignore;
-	
+
 	ft_bzero(&act, sizeof(act));
 	act.sa_sigaction = &signal_handler1;
 	act.sa_flags = SA_SIGINFO;

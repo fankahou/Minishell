@@ -6,14 +6,14 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/14 16:22:34 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 14:12:51 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //check if an new array is needed to expand envp
-void check_new_array(t_clean *clean)
+void	check_new_array(t_clean *clean)
 {
 	int	j;
 
@@ -29,11 +29,11 @@ void check_new_array(t_clean *clean)
 		clean->new_array = 2;
 }
 
-int join_envp_str(t_token *token, t_clean *clean, char *str)
+int	join_envp_str(t_token *token, t_clean *clean, char *str)
 {
-	int	i;
-	char *temp;
-	char **new;
+	int		i;
+	char	*temp;
+	char	**new;
 
 	i = 0;
 	while (clean->temp[i])
@@ -42,7 +42,7 @@ int join_envp_str(t_token *token, t_clean *clean, char *str)
 	{
 		new = add_array(clean->temp, "", 0);
 		if (!new)
-			return (perror("add_array failed"), token->error[0] = 1, 1);	
+			return (perror("add_array failed"), token->error[0] = 1, 1);
 		ft_free_split(clean->temp);
 		clean->temp = new;
 		clean->new_array = 0;
@@ -50,17 +50,17 @@ int join_envp_str(t_token *token, t_clean *clean, char *str)
 	}
 	temp = ft_strjoin(clean->temp[i - 1], str);
 	if (!temp)
-		return (perror("ft_charjoin failed"), token->error[0] = 1, 1);	
+		return (perror("ft_charjoin failed"), token->error[0] = 1, 1);
 	free(clean->temp[i - 1]);
 	clean->temp[i - 1] = temp;
 	return (0);
 }
 
-int join_envp_char(t_token *token, t_clean *clean, char *str)
+int	join_envp_char(t_token *token, t_clean *clean, char *str)
 {
-	int	i;
-	char *temp;
-	char **new;
+	int		i;
+	char	*temp;
+	char	**new;
 
 	i = 0;
 	while (clean->temp[i])
@@ -69,7 +69,7 @@ int join_envp_char(t_token *token, t_clean *clean, char *str)
 	{
 		new = add_array(clean->temp, "", 0);
 		if (!new)
-			return (perror("add_array failed"), token->error[0] = 1, 1);	
+			return (perror("add_array failed"), token->error[0] = 1, 1);
 		ft_free_split(clean->temp);
 		clean->temp = new;
 		clean->new_array = 0;
@@ -77,7 +77,7 @@ int join_envp_char(t_token *token, t_clean *clean, char *str)
 	}
 	temp = ft_charjoin(clean->temp[i - 1], str);
 	if (!temp)
-		return (perror("ft_charjoin failed"), token->error[0] = 1, 1);	
+		return (perror("ft_charjoin failed"), token->error[0] = 1, 1);
 	free(clean->temp[i - 1]);
 	clean->temp[i - 1] = temp;
 	return (0);
@@ -87,10 +87,10 @@ int join_envp_char(t_token *token, t_clean *clean, char *str)
 // join_split if envp begins with space
 // else join previous str for the first splited cmd
 // if nth before it just copy itself
-static void join_envp_1(t_clean *clean, char **temp, int j, char *str)
+static void	join_envp_1(t_clean *clean, char **temp, int j, char *str)
 {
-	char **new;
-	
+	char	**new;
+
 	if (j > 0)
 	{
 		new = copy_array(temp);
@@ -99,7 +99,7 @@ static void join_envp_1(t_clean *clean, char **temp, int j, char *str)
 	else
 	{
 		j = 0;
-		while(clean->temp[j])
+		while (clean->temp[j])
 			j++;
 		if (j > 0)
 		{
@@ -118,7 +118,7 @@ static void join_envp_1(t_clean *clean, char **temp, int j, char *str)
 
 // if (i == 0) eg. $NOT_A_VAR
 // else eg. export STH="    A   B    "; ls 'HEL    LO'$STH"WORLD"
-int join_envp(t_token *token, t_clean *clean, char **temp, int i)
+int	join_envp(t_token *token, t_clean *clean, char **temp, int i)
 {
 	int	j;
 
@@ -130,7 +130,7 @@ int join_envp(t_token *token, t_clean *clean, char **temp, int i)
 		{
 			clean->temp = malloc(sizeof(char *));
 			if (!clean->temp)
-				return (perror("malloc failed"), token->error[0] = 1, 1);	
+				return (perror("malloc failed"), token->error[0] = 1, 1);
 			clean->temp[0] = NULL;
 		}
 		else if (!clean->temp)
@@ -140,7 +140,7 @@ int join_envp(t_token *token, t_clean *clean, char **temp, int i)
 			j++;
 		join_envp_1(clean, temp, j, NULL);
 		if (!clean->temp)
-			return (perror("join_envp1 failed"), token->error[0] = 1, 1);	
+			return (perror("join_envp1 failed"), token->error[0] = 1, 1);
 	}
 	return (0);
 }

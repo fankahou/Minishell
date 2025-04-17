@@ -149,6 +149,9 @@ function where the program exits.
 
 
 TODO:
+- protect all signal_init()!
+- funcheck everything for protections?
+- debug(data->str); to be removed?
 - Makefile remove .history in fclean? 
 - updated log, those are errors in tester, warning: most of them are things that we didnt implement or shits that I don't think it's neccesary to fix, we need to discuss.
 - Documentation
@@ -156,6 +159,9 @@ TODO:
 - Norm and clean up main.c \ pipex_input.c \ signals1.c
 - Run tester (and fix anything that comes up)
 - implement cd ~? it's not so easy as it expands like envp or * but not from envp?? how?? probably like pwd if getcwd fails that the path is stored somewhere secretly
+
+16.4.2025: (Ka Hou)
+- fixed and clean all norm
 
 16.4.2025: (Ka Hou)
 - str_equals cleaned up in the if statements in pipex_input file, check_builtins()

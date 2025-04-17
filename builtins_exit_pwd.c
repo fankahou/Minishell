@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/16 12:54:52 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 14:10:23 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,8 @@ static int	exit_arg(char **cmd, t_token *token, long temp, int i)
 				"minishell: exit: numeric argument required\n", 43), 0);
 	while (cmd[0][i])
 	{
-		if (cmd[0][i] && !is_space(cmd[0][i]) && !ft_isdigit(cmd[0][i]) && !str_equals(cmd[0], "--"))
+		if (cmd[0][i] && !is_space(cmd[0][i]) && !ft_isdigit(cmd[0][i])
+			&& !str_equals(cmd[0], "--"))
 			return (token->exit_code[0] = 2, write(2,
 					"minishell: exit: numeric argument required\n", 43), 0);
 		i++;
@@ -127,6 +128,7 @@ static int	exit_arg(char **cmd, t_token *token, long temp, int i)
 	return (0);
 }
 
+// print exit not really needed?? print to STDERR or to terminal??
 // check arg > 2 ; bash: exit: too many arguments
 // exit 9223372036854775807 > ok
 // exit 9223372036854775808 > fail
@@ -157,7 +159,7 @@ int	builtins_exit(char **cmd, t_token *token)
 				"minishell: exit: too many arguments\n", 36), 1);
 	else if (token->nmb_of_cmd == i + 1)
 	{
-		write (2, "exit\n", 5); // not really printing to STDERR??
+		write(2, "exit\n", 5);
 		token->error[0] = 2;
 		token->exit_code[0] = 0;
 	}

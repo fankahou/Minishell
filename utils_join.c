@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/14 13:53:13 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 14:19:33 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ int	join_cmd_2(t_token *token, int i, int j, char *file)
 	while (token->cmds[i]->cmd[j])
 		j++;
 	if (j == 0)
-		return (free(token->cmds[i]->cmd[j]), free(token->cmds[i]->cmd), token->cmds[i]->cmd = NULL, -1);
+		return (free(token->cmds[i]->cmd[j]), free(token->cmds[i]->cmd),
+			token->cmds[i]->cmd = NULL, -1);
 	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 16:44:06 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 14:09:23 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ int	check_envp_count(char *temp)
 	int	i;
 
 	i = 0;
-/* 	while (temp[i] && temp[i] != '$' && !is_space(temp[i]) && !is_sym(temp[i],
-			0) && !is_quote(temp[i]) && !is_delimiter(temp[i], '&')
-		&& !is_delimiter(temp[i], '|')) */
 	while (temp[i] && (ft_isalnum(temp[i]) || temp[i] == '_'))
 		i++;
 	if (temp[0] == '?')

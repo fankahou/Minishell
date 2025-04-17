@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/16 18:34:51 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 14:17:46 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,11 @@ static int	execute(t_token **token, t_data *data, int *fd, int i)
 			pipex(token[i]);
 		restore_fd(data, fd);
 		wait_pipes(token[i], 0, 0);
-		while (token[i] && token[i]->delimiter == 2 && token[i]->exit_code[0] != 0)
+		while (token[i] && token[i]->delimiter == 2
+			&& token[i]->exit_code[0] != 0)
 			i++;
-		while (token[i] && token[i]->delimiter == 3 && token[i]->exit_code[0] == 0)
+		while (token[i] && token[i]->delimiter == 3
+			&& token[i]->exit_code[0] == 0)
 			i++;
 		if (token[i])
 			i++;
