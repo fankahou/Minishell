@@ -35,7 +35,6 @@ var NAVTREE =
       [ "Bonus part", "index.html#autotoc_md7", null ]
     ] ],
     [ "Development notes", "index.html#autotoc_md8", null ],
-    [ "TODO:", "index.html#autotoc_md9", null ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -60,7 +59,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "globals_n.html",
-"parse8__wildcards_8c.html#a99b9aa8396a88374057019f87dd281c7"
+"parse8__wildcards_8c.html#a7a43766848f8eb09c772e832cd3b2cb5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

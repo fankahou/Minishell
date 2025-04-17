@@ -103,14 +103,103 @@ $(function(){initNavTree('main_8c.html',''); initResizable(); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab81f08ea0fb5b25ab5ea9d3230d7ba7d" id="r_ab81f08ea0fb5b25ab5ea9d3230d7ba7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab81f08ea0fb5b25ab5ea9d3230d7ba7d">print_token</a> (<a class="el" href="structt__token.html">t_token</a> **token)</td></tr>
-<tr class="memdesc:ab81f08ea0fb5b25ab5ea9d3230d7ba7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Debug function to print tokens.  <br /></td></tr>
-<tr class="separator:ab81f08ea0fb5b25ab5ea9d3230d7ba7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47268a4a41e370ff0547f56d2fdec400" id="r_a47268a4a41e370ff0547f56d2fdec400"><td class="memItemLeft" align="right" valign="top">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD=======&gt; &gt; &gt; &gt; &gt; &gt; static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47268a4a41e370ff0547f56d2fdec400">init_main</a> (<a class="el" href="structt__data.html">t_data</a> *data, char **envp, <a class="el" href="structt__history.html">t_history</a> *history)</td></tr>
+<tr class="memdesc:a47268a4a41e370ff0547f56d2fdec400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Debug function to print tokens.  <br /></td></tr>
+<tr class="separator:a47268a4a41e370ff0547f56d2fdec400"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31bf55f02bfe48bf269eb6876444ecd1" id="r_a31bf55f02bfe48bf269eb6876444ecd1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31bf55f02bfe48bf269eb6876444ecd1">free_all</a> (<a class="el" href="structt__data.html">t_data</a> *data, <a class="el" href="structt__history.html">t_history</a> *history)</td></tr>
+<tr class="separator:a31bf55f02bfe48bf269eb6876444ecd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebd23b374b0c81252d51059163924a08" id="r_aebd23b374b0c81252d51059163924a08"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebd23b374b0c81252d51059163924a08">read_input</a> (<a class="el" href="structt__data.html">t_data</a> *data)</td></tr>
+<tr class="separator:aebd23b374b0c81252d51059163924a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a647f21a28344e1d9c643f4115516d7c9" id="r_a647f21a28344e1d9c643f4115516d7c9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a647f21a28344e1d9c643f4115516d7c9">main</a> (int argc, char **argv, char **envp)</td></tr>
 <tr class="memdesc:a647f21a28344e1d9c643f4115516d7c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main function of the program.  <br /></td></tr>
 <tr class="separator:a647f21a28344e1d9c643f4115516d7c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a31bf55f02bfe48bf269eb6876444ecd1" name="a31bf55f02bfe48bf269eb6876444ecd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31bf55f02bfe48bf269eb6876444ecd1">&#9670;&#160;</a></span>free_all()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void free_all </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structt__data.html">t_data</a> *</td>          <td class="paramname"><span class="paramname"><em>data</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structt__history.html">t_history</a> *</td>          <td class="paramname"><span class="paramname"><em>history</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00107">107</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+<p class="reference">References <a class="el" href="history_8c_source.html#l00167">destroy_history()</a>, <a class="el" href="minishell_8h_source.html#l00130">t_data::envp</a>, <a class="el" href="minishell_8h_source.html#l00131">t_data::envp_export</a>, <a class="el" href="minishell_8h_source.html#l00127">t_data::fd</a>, <a class="el" href="utils__free_8c_source.html#l00025">ft_free_split()</a>, and <a class="el" href="minishell_8h_source.html#l00124">t_data::str</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="main_8c_source.html#l00180">main()</a>.</p>
+
+</div>
+</div>
+<a id="a47268a4a41e370ff0547f56d2fdec400" name="a47268a4a41e370ff0547f56d2fdec400"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47268a4a41e370ff0547f56d2fdec400">&#9670;&#160;</a></span>init_main()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD======= &gt; &gt; &gt; &gt; &gt; &gt; static int init_main </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structt__data.html">t_data</a> *</td>          <td class="paramname"><span class="paramname"><em>data</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **</td>          <td class="paramname"><span class="paramname"><em>envp</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structt__history.html">t_history</a> *</td>          <td class="paramname"><span class="paramname"><em>history</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Debug function to print tokens. </p>
+<p>Debug funciton that prints the contents of each token in an array of tokens.</p>
+<dl class="section author"><dt>Author</dt><dd>kfan</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>token array to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00082">82</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+<p class="reference">References <a class="el" href="utils__array2_8c_source.html#l00092">copy_array()</a>, <a class="el" href="utils__array2_8c_source.html#l00050">copy_array_prefix()</a>, <a class="el" href="minishell_8h_source.html#l00130">t_data::envp</a>, <a class="el" href="minishell_8h_source.html#l00131">t_data::envp_export</a>, <a class="el" href="minishell_8h_source.html#l00129">t_data::error</a>, <a class="el" href="minishell_8h_source.html#l00128">t_data::exit_code</a>, <a class="el" href="minishell_8h_source.html#l00127">t_data::fd</a>, <a class="el" href="utils__free_8c_source.html#l00025">ft_free_split()</a>, <a class="el" href="history_8c_source.html#l00105">init_history()</a>, <a class="el" href="signals1_8c_source.html#l00072">signal_init()</a>, <a class="el" href="utils__array1_8c_source.html#l00026">sort_array()</a>, and <a class="el" href="minishell_8h_source.html#l00124">t_data::str</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="main_8c_source.html#l00180">main()</a>.</p>
+
+</div>
+</div>
 <a id="a647f21a28344e1d9c643f4115516d7c9" name="a647f21a28344e1d9c643f4115516d7c9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a647f21a28344e1d9c643f4115516d7c9">&#9670;&#160;</a></span>main()</h2>
 
@@ -154,40 +243,40 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00091">91</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00180">180</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
-<p class="reference">References <a class="el" href="utils__array2_8c_source.html#l00092">copy_array()</a>, <a class="el" href="utils__array2_8c_source.html#l00050">copy_array_prefix()</a>, <a class="el" href="error_8c_source.html#l00113">debug()</a>, <a class="el" href="history_8c_source.html#l00167">destroy_history()</a>, <a class="el" href="minishell_8h_source.html#l00130">t_data::envp</a>, <a class="el" href="minishell_8h_source.html#l00131">t_data::envp_export</a>, <a class="el" href="minishell_8h_source.html#l00129">t_data::error</a>, <a class="el" href="minishell_8h_source.html#l00128">t_data::exit_code</a>, <a class="el" href="minishell_8h_source.html#l00127">t_data::fd</a>, <a class="el" href="ft__calloc_8c_source.html#l00015">ft_calloc()</a>, <a class="el" href="utils__free_8c_source.html#l00025">ft_free_split()</a>, <a class="el" href="ft__strlcpy_8c_source.html#l00015">ft_strlcpy()</a>, <a class="el" href="ft__strlen_8c_source.html#l00016">ft_strlen()</a>, <a class="el" href="signals1_8c_source.html#l00026">g_sigrecv</a>, <a class="el" href="history_8c_source.html#l00029">history_add()</a>, <a class="el" href="history_8c_source.html#l00105">init_history()</a>, <a class="el" href="parse1__make__tree_8c_source.html#l00187">make_tree()</a>, <a class="el" href="minishell_8h_source.html#l00133">t_data::readline_switch</a>, <a class="el" href="signals1_8c_source.html#l00072">signal_init()</a>, <a class="el" href="utils__array1_8c_source.html#l00026">sort_array()</a>, and <a class="el" href="minishell_8h_source.html#l00124">t_data::str</a>.</p>
+<p class="reference">References <a class="el" href="minishell_8h_source.html#l00129">t_data::error</a>, <a class="el" href="minishell_8h_source.html#l00128">t_data::exit_code</a>, <a class="el" href="main_8c_source.html#l00107">free_all()</a>, <a class="el" href="history_8c_source.html#l00029">history_add()</a>, <a class="el" href="main_8c_source.html#l00082">init_main()</a>, <a class="el" href="parse1__make__tree_8c_source.html#l00193">make_tree()</a>, <a class="el" href="main_8c_source.html#l00126">read_input()</a>, and <a class="el" href="minishell_8h_source.html#l00124">t_data::str</a>.</p>
 
 </div>
 </div>
-<a id="ab81f08ea0fb5b25ab5ea9d3230d7ba7d" name="ab81f08ea0fb5b25ab5ea9d3230d7ba7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab81f08ea0fb5b25ab5ea9d3230d7ba7d">&#9670;&#160;</a></span>print_token()</h2>
+<a id="aebd23b374b0c81252d51059163924a08" name="aebd23b374b0c81252d51059163924a08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebd23b374b0c81252d51059163924a08">&#9670;&#160;</a></span>read_input()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void print_token </td>
+          <td class="memname">static int read_input </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structt__token.html">t_token</a> **</td>          <td class="paramname"><span class="paramname"><em>token</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="structt__data.html">t_data</a> *</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Debug function to print tokens. </p>
-<p>Debug funciton that prints the contents of each token in an array of tokens.</p>
-<dl class="section author"><dt>Author</dt><dd>kfan</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">token</td><td>token array to print </td></tr>
-  </table>
-  </dd>
-</dl>
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00126">126</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00038">38</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p class="reference">References <a class="el" href="error_8c_source.html#l00113">debug()</a>, <a class="el" href="minishell_8h_source.html#l00128">t_data::exit_code</a>, <a class="el" href="ft__calloc_8c_source.html#l00015">ft_calloc()</a>, <a class="el" href="ft__strlcpy_8c_source.html#l00015">ft_strlcpy()</a>, <a class="el" href="ft__strlen_8c_source.html#l00016">ft_strlen()</a>, <a class="el" href="signals1_8c_source.html#l00026">g_sigrecv</a>, <a class="el" href="minishell_8h_source.html#l00133">t_data::readline_switch</a>, <a class="el" href="signals1_8c_source.html#l00072">signal_init()</a>, and <a class="el" href="minishell_8h_source.html#l00124">t_data::str</a>.</p>
 
-<p class="reference">References <a class="el" href="ft__printf_8c_source.html#l00091">ft_printf()</a>, <a class="el" href="pipex_8c_source.html#l00042">infile()</a>, <a class="el" href="pipex_8c_source.html#l00017">outfile()</a>, <a class="el" href="utils__array1_8c_source.html#l00170">print_array()</a>, and <a class="el" href="parse4__redir_8c_source.html#l00156">redir()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="main_8c_source.html#l00180">main()</a>.</p>
 
 </div>
 </div>

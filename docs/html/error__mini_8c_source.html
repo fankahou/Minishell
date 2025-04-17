@@ -108,101 +108,104 @@ $(function(){initNavTree('error__mini_8c_source.html',''); initResizable(); });
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/*   By: endermenskill &lt;endermenskill@student.42    +#+  +:+       +#+        */</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">/*                                                +#+#+#+#+#+   +#+           */</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">/*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">/*   Updated: 2025/04/17 17:35:37 by endermenski      ###   ########.fr       */</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">/*                                                                            */</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/* ************************************************************************** */</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="minishell_8h.html">minishell.h</a>&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// new: all small errors that only stop the current pipe but continues</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">/*   Updated: 2025/04/17 17:35:37 by endermenski      ###   ########.fr       */</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>=======</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">/*   Updated: 2025/04/17 14:11:02 by kfan             ###   ########.fr       */</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>&gt;&gt;&gt;&gt;&gt;&gt;&gt; 8a3a6f9b8ac63eefcf2dad5f4f25f1f43f009173</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">/*                                                                            */</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">/* ************************************************************************** */</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="error__mini_8c.html#a4eaad80c47481249326fa9a4ff7754a0">   29</a></span><span class="keywordtype">void</span>    <a class="code hl_function" href="error__mini_8c.html#a4eaad80c47481249326fa9a4ff7754a0">mini_error</a>(<span class="keywordtype">char</span> *str, <span class="keywordtype">char</span> *arg, <a class="code hl_struct" href="structt__token.html">t_token</a> *token, <span class="keywordtype">int</span> *fd)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    write(2, <span class="stringliteral">&quot;minishell: &quot;</span>, 11);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">if</span> (arg)</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    {</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        write(2, arg, <a class="code hl_function" href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a>(arg));</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        write(2, <span class="stringliteral">&quot;: &quot;</span>, 2);</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    }</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">if</span> (str)</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        write(2, str, <a class="code hl_function" href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a>(str));</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    write(2, <span class="stringliteral">&quot;\n&quot;</span>, 1);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">if</span> (token)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        token-&gt;<a class="code hl_variable" href="structt__token.html#a579d5b0a1f2ba9ef9d520b64cd1c1663">exit_code</a>[0] = 1;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">if</span> (fd)</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    {</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        fd[0] = -1;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        fd[1] = -1;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="minishell_8h.html">minishell.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// new: all small errors that only stop the current pipe but continues</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="error__mini_8c.html#a8817d6af18822dcd0246f735bab4b323">   33</a></span><span class="keywordtype">void</span>    <a class="code hl_function" href="error__mini_8c.html#a8817d6af18822dcd0246f735bab4b323">mini_error</a>(<span class="keywordtype">char</span> *str, <span class="keywordtype">char</span> *arg, <a class="code hl_struct" href="structt__token.html">t_token</a> *token, <span class="keywordtype">int</span> *fd)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    write(2, <span class="stringliteral">&quot;minishell: &quot;</span>, 11);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">if</span> (arg)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        write(2, arg, <a class="code hl_function" href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a>(arg));</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        write(2, <span class="stringliteral">&quot;: &quot;</span>, 2);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    }</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">if</span> (str)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        write(2, str, <a class="code hl_function" href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a>(str));</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    write(2, <span class="stringliteral">&quot;\n&quot;</span>, 1);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">if</span> (token)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        token-&gt;<a class="code hl_variable" href="structt__token.html#a579d5b0a1f2ba9ef9d520b64cd1c1663">exit_code</a>[0] = 1;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">if</span> (fd)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        fd[0] = -1;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        fd[1] = -1;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>}</div>
 </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="error__mini_8c.html#a08a5a4ddaefee2cd8aceec07538bb943">   60</a></span><span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="error__mini_8c.html#a08a5a4ddaefee2cd8aceec07538bb943">command_not_found</a>(<span class="keywordtype">char</span> *cmd)</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>{</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">if</span> (cmd)</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        write(2, cmd, <a class="code hl_function" href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a>(cmd));</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    write(2, <span class="stringliteral">&quot;: &quot;</span>, 2);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    perror(<span class="stringliteral">&quot;command not found&quot;</span>);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="error__mini_8c.html#a08a5a4ddaefee2cd8aceec07538bb943">   64</a></span><span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="error__mini_8c.html#a08a5a4ddaefee2cd8aceec07538bb943">command_not_found</a>(<span class="keywordtype">char</span> *cmd)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>{</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">if</span> (cmd)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        write(2, cmd, <a class="code hl_function" href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a>(cmd));</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    write(2, <span class="stringliteral">&quot;: &quot;</span>, 2);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    perror(<span class="stringliteral">&quot;command not found&quot;</span>);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
 </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="error__mini_8c.html#af8e53e1e009b0569b1b890562cad58d6">   83</a></span><span class="keywordtype">void</span>    <a class="code hl_function" href="error__mini_8c.html#af8e53e1e009b0569b1b890562cad58d6">execve_error</a>(<span class="keywordtype">char</span> *cmd, <span class="keywordtype">char</span> *path, <a class="code hl_struct" href="structt__token.html">t_token</a> *token, DIR *dir)</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>{</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    token-&gt;<a class="code hl_variable" href="structt__token.html#a68b4cd297e874375249feede1453c32e">error</a>[0] = 2;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    token-&gt;<a class="code hl_variable" href="structt__token.html#a579d5b0a1f2ba9ef9d520b64cd1c1663">exit_code</a>[0] = 127;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">if</span> (cmd)</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        dir = opendir(cmd);</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordflow">if</span> (!dir)</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    {</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">if</span> (cmd &amp;&amp; access(cmd, F_OK) == 0 &amp;&amp; access(cmd, X_OK) != 0)</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        {</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            <a class="code hl_function" href="error__mini_8c.html#a4eaad80c47481249326fa9a4ff7754a0">mini_error</a>(<span class="stringliteral">&quot;Permission denied&quot;</span>, cmd, NULL, NULL);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            token-&gt;<a class="code hl_variable" href="structt__token.html#a579d5b0a1f2ba9ef9d520b64cd1c1663">exit_code</a>[0] = 126;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        }</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            <a class="code hl_function" href="error__mini_8c.html#a08a5a4ddaefee2cd8aceec07538bb943">command_not_found</a>(cmd);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    }</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    {</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        closedir(dir);</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="ft__strncmp_8c.html#a9d2fe792187aa4ed08e5864fb2c4d6dc">ft_strncmp</a>(cmd, <span class="stringliteral">&quot;..&quot;</span>, <a class="code hl_function" href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a>(path)) &amp;&amp; <a class="code hl_function" href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a>(path) &gt; 2)</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            <a class="code hl_function" href="error__mini_8c.html#a08a5a4ddaefee2cd8aceec07538bb943">command_not_found</a>(cmd);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        {</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            <a class="code hl_function" href="error__mini_8c.html#a4eaad80c47481249326fa9a4ff7754a0">mini_error</a>(<span class="stringliteral">&quot;Is a directory&quot;</span>, cmd, NULL, NULL);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            token-&gt;<a class="code hl_variable" href="structt__token.html#a579d5b0a1f2ba9ef9d520b64cd1c1663">exit_code</a>[0] = 126;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        }</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    }</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>}</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="foldopen" id="foldopen00087" data-start="{" data-end="}">
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="error__mini_8c.html#af8e53e1e009b0569b1b890562cad58d6">   87</a></span><span class="keywordtype">void</span>    <a class="code hl_function" href="error__mini_8c.html#af8e53e1e009b0569b1b890562cad58d6">execve_error</a>(<span class="keywordtype">char</span> *cmd, <span class="keywordtype">char</span> *path, <a class="code hl_struct" href="structt__token.html">t_token</a> *token, DIR *dir)</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>{</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    token-&gt;<a class="code hl_variable" href="structt__token.html#a68b4cd297e874375249feede1453c32e">error</a>[0] = 2;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    token-&gt;<a class="code hl_variable" href="structt__token.html#a579d5b0a1f2ba9ef9d520b64cd1c1663">exit_code</a>[0] = 127;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordflow">if</span> (cmd)</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        dir = opendir(cmd);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keywordflow">if</span> (!dir)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    {</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keywordflow">if</span> (cmd &amp;&amp; access(cmd, F_OK) == 0 &amp;&amp; access(cmd, X_OK) != 0)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            <a class="code hl_function" href="error__mini_8c.html#a8817d6af18822dcd0246f735bab4b323">mini_error</a>(<span class="stringliteral">&quot;Permission denied&quot;</span>, cmd, NULL, NULL);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            token-&gt;<a class="code hl_variable" href="structt__token.html#a579d5b0a1f2ba9ef9d520b64cd1c1663">exit_code</a>[0] = 126;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            <a class="code hl_function" href="error__mini_8c.html#a08a5a4ddaefee2cd8aceec07538bb943">command_not_found</a>(cmd);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        closedir(dir);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="ft__strncmp_8c.html#a9d2fe792187aa4ed08e5864fb2c4d6dc">ft_strncmp</a>(cmd, <span class="stringliteral">&quot;..&quot;</span>, <a class="code hl_function" href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a>(path)) &amp;&amp; <a class="code hl_function" href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a>(path) &gt; 2)</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            <a class="code hl_function" href="error__mini_8c.html#a08a5a4ddaefee2cd8aceec07538bb943">command_not_found</a>(cmd);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            <a class="code hl_function" href="error__mini_8c.html#a8817d6af18822dcd0246f735bab4b323">mini_error</a>(<span class="stringliteral">&quot;Is a directory&quot;</span>, cmd, NULL, NULL);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            token-&gt;<a class="code hl_variable" href="structt__token.html#a579d5b0a1f2ba9ef9d520b64cd1c1663">exit_code</a>[0] = 126;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        }</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    }</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>}</div>
 </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="foldopen" id="foldopen00124" data-start="{" data-end="}">
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="error__mini_8c.html#a420713eab0ec9c53b6fcf2a1b0dcb235">  124</a></span><span class="keywordtype">void</span>    <a class="code hl_function" href="error__mini_8c.html#a420713eab0ec9c53b6fcf2a1b0dcb235">open_error</a>(<span class="keywordtype">char</span> *str, <a class="code hl_struct" href="structt__token.html">t_token</a> *token, <span class="keywordtype">int</span> *fd, <span class="keywordtype">int</span> k)</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>{</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    write(2, <span class="stringliteral">&quot;minishell: &quot;</span>, 11);</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordflow">if</span> (str)</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    {</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        write(2, str, <a class="code hl_function" href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a>(str));</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        write(2, <span class="stringliteral">&quot;: &quot;</span>, 2);</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    }</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    perror(NULL);</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">if</span> (token)</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        token-&gt;<a class="code hl_variable" href="structt__token.html#a689ef708476c08a01f6d7d06d0c388cc">cmds</a>[k]-&gt;<a class="code hl_variable" href="structt__cmds.html#a6d97652b679fed9ebd2d5a2c5c72bfda">exit_code</a> = 1;</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        <span class="comment">//token-&gt;exit_code[0] = 1;</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">if</span> (fd)</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    {</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        fd[0] = -1;</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        fd[1] = -1;</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    }</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>}</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="foldopen" id="foldopen00128" data-start="{" data-end="}">
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="error__mini_8c.html#a420713eab0ec9c53b6fcf2a1b0dcb235">  128</a></span><span class="keywordtype">void</span>    <a class="code hl_function" href="error__mini_8c.html#a420713eab0ec9c53b6fcf2a1b0dcb235">open_error</a>(<span class="keywordtype">char</span> *str, <a class="code hl_struct" href="structt__token.html">t_token</a> *token, <span class="keywordtype">int</span> *fd, <span class="keywordtype">int</span> k)</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>{</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    write(2, <span class="stringliteral">&quot;minishell: &quot;</span>, 11);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordflow">if</span> (str)</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    {</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        write(2, str, <a class="code hl_function" href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a>(str));</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        write(2, <span class="stringliteral">&quot;: &quot;</span>, 2);</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    }</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    perror(NULL);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">if</span> (token)</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        token-&gt;<a class="code hl_variable" href="structt__token.html#a689ef708476c08a01f6d7d06d0c388cc">cmds</a>[k]-&gt;<a class="code hl_variable" href="structt__cmds.html#a6d97652b679fed9ebd2d5a2c5c72bfda">exit_code</a> = 1;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">if</span> (fd)</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    {</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        fd[0] = -1;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        fd[1] = -1;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    }</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>}</div>
 </div>
-<div class="ttc" id="aerror__mini_8c_html_a08a5a4ddaefee2cd8aceec07538bb943"><div class="ttname"><a href="error__mini_8c.html#a08a5a4ddaefee2cd8aceec07538bb943">command_not_found</a></div><div class="ttdeci">static void command_not_found(char *cmd)</div><div class="ttdoc">Raises a command not found error.</div><div class="ttdef"><b>Definition</b> <a href="#l00060">error_mini.c:60</a></div></div>
-<div class="ttc" id="aerror__mini_8c_html_a420713eab0ec9c53b6fcf2a1b0dcb235"><div class="ttname"><a href="error__mini_8c.html#a420713eab0ec9c53b6fcf2a1b0dcb235">open_error</a></div><div class="ttdeci">void open_error(char *str, t_token *token, int *fd, int k)</div><div class="ttdoc">Indicates an open error.</div><div class="ttdef"><b>Definition</b> <a href="#l00124">error_mini.c:124</a></div></div>
-<div class="ttc" id="aerror__mini_8c_html_a4eaad80c47481249326fa9a4ff7754a0"><div class="ttname"><a href="error__mini_8c.html#a4eaad80c47481249326fa9a4ff7754a0">mini_error</a></div><div class="ttdeci">void mini_error(char *str, char *arg, t_token *token, int *fd)</div><div class="ttdoc">Indicates a mini error.</div><div class="ttdef"><b>Definition</b> <a href="#l00029">error_mini.c:29</a></div></div>
-<div class="ttc" id="aerror__mini_8c_html_af8e53e1e009b0569b1b890562cad58d6"><div class="ttname"><a href="error__mini_8c.html#af8e53e1e009b0569b1b890562cad58d6">execve_error</a></div><div class="ttdeci">void execve_error(char *cmd, char *path, t_token *token, DIR *dir)</div><div class="ttdoc">Raises an execve error.</div><div class="ttdef"><b>Definition</b> <a href="#l00083">error_mini.c:83</a></div></div>
+<div class="ttc" id="aerror__mini_8c_html_a08a5a4ddaefee2cd8aceec07538bb943"><div class="ttname"><a href="error__mini_8c.html#a08a5a4ddaefee2cd8aceec07538bb943">command_not_found</a></div><div class="ttdeci">static void command_not_found(char *cmd)</div><div class="ttdoc">Raises a command not found error.</div><div class="ttdef"><b>Definition</b> <a href="#l00064">error_mini.c:64</a></div></div>
+<div class="ttc" id="aerror__mini_8c_html_a420713eab0ec9c53b6fcf2a1b0dcb235"><div class="ttname"><a href="error__mini_8c.html#a420713eab0ec9c53b6fcf2a1b0dcb235">open_error</a></div><div class="ttdeci">void open_error(char *str, t_token *token, int *fd, int k)</div><div class="ttdoc">Indicates an open error.</div><div class="ttdef"><b>Definition</b> <a href="#l00128">error_mini.c:128</a></div></div>
+<div class="ttc" id="aerror__mini_8c_html_a8817d6af18822dcd0246f735bab4b323"><div class="ttname"><a href="error__mini_8c.html#a8817d6af18822dcd0246f735bab4b323">mini_error</a></div><div class="ttdeci">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD=======&gt; &gt; &gt; &gt; &gt; &gt; void mini_error(char *str, char *arg, t_token *token, int *fd)</div><div class="ttdoc">Indicates a mini error.</div><div class="ttdef"><b>Definition</b> <a href="#l00033">error_mini.c:33</a></div></div>
+<div class="ttc" id="aerror__mini_8c_html_af8e53e1e009b0569b1b890562cad58d6"><div class="ttname"><a href="error__mini_8c.html#af8e53e1e009b0569b1b890562cad58d6">execve_error</a></div><div class="ttdeci">void execve_error(char *cmd, char *path, t_token *token, DIR *dir)</div><div class="ttdoc">Raises an execve error.</div><div class="ttdef"><b>Definition</b> <a href="#l00087">error_mini.c:87</a></div></div>
 <div class="ttc" id="aft__strlen_8c_html_abbb8c6c4ed85d892e7f1509f65f5768a"><div class="ttname"><a href="ft__strlen_8c.html#abbb8c6c4ed85d892e7f1509f65f5768a">ft_strlen</a></div><div class="ttdeci">size_t ft_strlen(const char *s)</div><div class="ttdef"><b>Definition</b> <a href="ft__strlen_8c_source.html#l00016">ft_strlen.c:16</a></div></div>
 <div class="ttc" id="aft__strncmp_8c_html_a9d2fe792187aa4ed08e5864fb2c4d6dc"><div class="ttname"><a href="ft__strncmp_8c.html#a9d2fe792187aa4ed08e5864fb2c4d6dc">ft_strncmp</a></div><div class="ttdeci">int ft_strncmp(const char *s1, const char *s2, size_t n)</div><div class="ttdef"><b>Definition</b> <a href="ft__strncmp_8c_source.html#l00017">ft_strncmp.c:17</a></div></div>
 <div class="ttc" id="aminishell_8h_html"><div class="ttname"><a href="minishell_8h.html">minishell.h</a></div></div>

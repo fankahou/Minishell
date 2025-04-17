@@ -240,7 +240,7 @@ function where the program exits.
 
 
 
-@section autotoc_md9 TODO:
+TODO:
 - updated log, those are errors in tester, warning: most of them are things that we didnt implement or shits that I don't think it's neccesary to fix, we need to discuss.
 - Documentation (currently at &lt;tt&gt;parse6_clean_name.c&lt;/tt&gt;)
 - Implement "-c" flag for minishell (ex: minishell -c "echo 123")
@@ -248,17 +248,13 @@ function where the program exits.
 - Run tester (and fix anything that comes up)
 - implement cd ~? it's not so easy as it expands like envp or * but not from envp?? how?? probably like pwd if getcwd fails that the path is stored somewhere secretly
 
-17.04.2025 (kmautner)
-- added &lt;tt&gt;rm .minishell_history&lt;/tt&gt; to &lt;tt&gt;make fclean&lt;/tt&gt;
-- Updated existing documentation with improved formatting
-- Added more documentation.
-    - Interactive documentation can now be found at &lt;tt&gt;docs/html/index.html&lt;/tt&gt;
-- Some files have incomplete/placeholder documentation:
-    - builtins_pipes.c
-    - parse5_clean_and_expand.c (clean_infile(), clean_outfile())
-    - parse6_clean_name.c (clean_name())
-The above list is not exhaustive (I might have missed some). Incomplete documentation
-is marked by placeholder text ("Lorem Ipsum...", "foo", "bar").
+17.04.2025: (kmautner)
+- Made the makefile remove the history file for &lt;tt&gt;make fclean&lt;/tt&gt;
+- Updated existing documentation with improved format
+- Added more documentation
+- Added interactive documentation in &lt;tt&gt;docs/&lt;/tt&gt;
+    - HTML documentation can be found at &lt;tt&gt;docs/html/index.html&lt;/tt&gt;
+    - Additional documentation formats can be added (see doxygen output formats)
 
 16.4.2025: (Ka Hou)
 - str_equals cleaned up in the if statements in pipex_input file, check_builtins()

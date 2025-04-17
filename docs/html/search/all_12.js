@@ -6,6 +6,5 @@ var searchData=
   ['t_5fhistory_3',['t_history',['../structt__history.html',1,'']]],
   ['t_5flist_4',['t_list',['../structt__list.html',1,'']]],
   ['t_5ftoken_5',['t_token',['../structt__token.html',1,'']]],
-  ['temp_6',['temp',['../structt__clean.html#a11979a4f5ea6f9d15732939e1ec62546',1,'t_clean']]],
-  ['todo_3a_7',['TODO:',['../index.html#autotoc_md9',1,'']]]
+  ['temp_6',['temp',['../structt__clean.html#a11979a4f5ea6f9d15732939e1ec62546',1,'t_clean']]]
 ];
