@@ -6,7 +6,7 @@
 /*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 15:39:25 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/17 21:49:51 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@
 # include "libft/libft.h"
 # include <dirent.h>
 # include <fcntl.h>
+# include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <stdio.h>
 # include <sys/wait.h>
 
 /**

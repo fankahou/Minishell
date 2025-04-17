@@ -6,17 +6,12 @@
 /*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/04/17 18:59:06 by endermenski      ###   ########.fr       */
-=======
-/*   Updated: 2025/04/17 14:26:49 by kfan             ###   ########.fr       */
->>>>>>> 8a3a6f9b8ac63eefcf2dad5f4f25f1f43f009173
+/*   Updated: 2025/04/17 21:52:21 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-<<<<<<< HEAD
 /**
  * @brief Check if a command is valid after expanding variables.
  *
@@ -32,11 +27,6 @@
  * @return int
  * @retval success Returns 0 on success, 1 otherwise.
  */
-=======
-// check if there is valid space with split after envp is expanded
-// eg. export STH="echo 123"; $STH
-// if i == 1, just dup check[0] replace
->>>>>>> 8a3a6f9b8ac63eefcf2dad5f4f25f1f43f009173
 static int	check_split_envp(t_token *token, t_clean *clean, int i)
 {
 	char	**check;
