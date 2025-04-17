@@ -104,6 +104,7 @@ fclean:
 	cd libft && make fclean
 	$(RM)r obj
 	$(RM) $(SUPRESSION_FILE)
+	$(RM) .minishell_history
 	$(RM) $(NAME) $(NAME_BONUS)
 
 re: fclean all
