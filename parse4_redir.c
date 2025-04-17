@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse4_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 19:22:45 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 17:39:54 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,22 @@
 // check if it is here_doc or normal infile
 // clean the name, no expand for here_doc
 // check if file can be opened
+/**
+ * @brief 2nd part of ft_redir_in()
+ *
+ * Check if the input is a heredoc or a regular infile.
+ * Clean the name, no expand for heredoc.
+ * Check if the file can be opened.
+ *
+ * @author kfan
+ *
+ * @param token command token
+ * @param type foo
+ * @param new path to the infile
+ * @param k foo
+ * @return int
+ * @retval success Returns 0 on success, 1 otherwise.
+ */
 static int	ft_redir_in1(t_token *token, int type, char *new, int k)
 {
 	if (type == 3)
@@ -44,10 +60,23 @@ static int	ft_redir_in1(t_token *token, int type, char *new, int k)
 	return (0);
 }
 
-// free previous filename if a new input file exists withn the same pipe
-// and close fd if the previous syntax is here_doc
-// calloc and clean the name later, no expand for here_doc
-// no expand of $USER for eof, only quotes and space at the end
+/**
+ * @brief Redirect input
+ *
+ * Free the previous filename if a new input file exists within the same pipe
+ * and close fd if the previous syntax is a heredoc.
+ * calloc and clean the name later, no expand for heredoc.
+ * No expansions of $USER for eof, only quites and space at the end.
+ *
+ * @author kfan
+ *
+ * @param token command token
+ * @param type foo
+ * @param file path to infile
+ * @param k foo
+ * @return int
+ * @retval success Returns 0 on success, -1 otherwise.
+ */
 static int	ft_redir_in(t_token *token, int type, char *file, int k)
 {
 	char	*new;
@@ -68,11 +97,22 @@ static int	ft_redir_in(t_token *token, int type, char *file, int k)
 	return (0);
 }
 
-// free previous filename if a new output file exists withn the same pipe
-// parsing the type to struct
-// calloc and clean the name, then create and wipe out file clean if neccessary
-// put the outfile name back to the raw name
-// for later processing before pipex (because of split and wildcards!)
+/**
+ * @brief redirect output
+ *
+ * Free the previous filename if a new output file exists within the same pipe,
+ * parsing the type into the token struct.
+ * calloc and clean the name, then create and truncate the file if necessary.
+ * Put the outfile name back to the raw name for later processing before
+ * pipex because of splitting and wildcards.
+ *
+ * @author kfan
+ *
+ * @param token command token
+ * @param type foo
+ * @param file path to output
+ * @param k foo
+ */
 static void	ft_redir_out(t_token *token, int type, char *file, int k)
 {
 	int		fd;
@@ -98,10 +138,21 @@ static void	ft_redir_out(t_token *token, int type, char *file, int k)
 	token->cmds[k]->outfile = file;
 }
 
-// check what kind of syntax it is
-// check if it is valid (file name followed by redir syntax)
-// strdup the raw file name
-// put them to process
+/**
+ * @brief Check token syntax for redirections.
+ *
+ * Check the kind of syntax in the token, check if it is valid
+ * (file name followed by a redirection operator), strdup the raw
+ * filename and put them to process.
+ *
+ * @author kfan
+ *
+ * @param temp foo
+ * @param token command token
+ * @param k foo
+ * @return int
+ * @retval success Returns 0 on success, -1 otherwise.
+ */
 int	redir(char *temp, t_token *token, int k)
 {
 	char	*file;

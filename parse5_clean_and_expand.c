@@ -3,18 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   parse5_clean_and_expand.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 20:48:21 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 18:07:56 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// clean and expand cmd list in a pipe
-// join_cmd_1 for envp split > 1 (or wildcards)
-// join_cmd_2 for envp i = 0 for wiping out the current array of str and skip
+/**
+ * @brief Clean and expand commands.
+ *
+ * Clean up and expand the command list inside of a pipe.
+ * join_cmd_1 for envp split > 1 (or wildcards)
+ * join_cmd_2 for envp i = 0 to wipe the current array fo strings and skip
+ *
+ * @author kfan
+ *
+ * @param token command token
+ * @param file NULL
+ * @param i start index
+ * @param j -1
+ * @return int
+ * @retval success Returns 0 on success, 1 otherwise.
+ */
 static int	clean_cmd(t_token *token, char *file, int i, int j)
 {
 	while (token->cmds[i]->cmd && token->cmds[i]->cmd[++j])
@@ -44,7 +57,18 @@ static int	clean_cmd(t_token *token, char *file, int i, int j)
 	return (0);
 }
 
-// clean and expand all cmd list in all the pipes
+/**
+ * @brief Clean and expand all commands
+ *
+ * Cleans and expands all the commands in all pipes inside
+ * the list of tokens.
+ *
+ * @author kfan
+ *
+ * @param token command token
+ * @return int
+ * @retval success Returns 0 on success, 1 otherwise.
+ */
 static int	clean_cmd_list(t_token *token)
 {
 	int	i;
@@ -59,6 +83,17 @@ static int	clean_cmd_list(t_token *token)
 	return (0);
 }
 
+/**
+ * @brief Lorem Ipsum
+ *
+ * Lorem Ipsum Dolor Si Amet
+ *
+ * @author kfan
+ *
+ * @param token command token
+ * @return int
+ * @retval success Returns 0 on success, 1 otherwise.
+ */
 static int	clean_outfile(t_token *token)
 {
 	char	*file;
@@ -88,6 +123,17 @@ static int	clean_outfile(t_token *token)
 	return (0);
 }
 
+/**
+ * @brief Lorem Ipsum
+ * 
+ * Lorem Ipsum Dolor Si Amet
+ *
+ * @author kfan
+ *
+ * @param token command token
+ * @return int
+ * @retval success Returns 0 on success, 1 otherwise.
+ */
 static int	clean_infile(t_token *token)
 {
 	char	*file;
@@ -117,6 +163,18 @@ static int	clean_infile(t_token *token)
 	return (0);
 }
 
+/**
+ * @brief Clean and expand all tokens
+ *
+ * Clean and expand all commands, infiles and outfiles inside of
+ * all pipes in the list of tokens.
+ *
+ * @author kfan
+ *
+ * @param token List of tokens
+ * @return int
+ * @retval success Returns 0 on success, 1 otherwise.
+ */
 int	clean_and_expand(t_token *token)
 {
 	if (clean_outfile(token))

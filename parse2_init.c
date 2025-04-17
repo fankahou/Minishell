@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse2_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 14:58:42 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 17:38:44 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,13 @@
  * starts with a pipe. Error_count resets to zero if it hits
  * anything other than a pipe and increment if it hits one
  *
+ * @author kfan
+ *
  * @param temp second split of pipe
  * @param token token struct
  * @param error_count error_count
  * @return int
- * @retval cmd Arrays need for the char **cmd aka token->nmb_of_cmd
- *
- * @ref t_token
- *
- * @author kfan
+ * @retval cmd Arrays need for the char **cmd aka token->nmb_of_cmd.
  */
 static int	check_cmd(char **temp, t_token *token, int error_count)
 {
@@ -65,13 +63,13 @@ static int	check_cmd(char **temp, t_token *token, int error_count)
  * Checks errors and arrays needed to malloc the cmds struct,
  * malloc it and initilize the struct.
  *
+ * @author kfan
+ *
  * @param temp initial split
  * @param token token struct
  * @param i just a count starting with 0 to save lines
- *
- * @ref t_token
- *
- * @author kfan
+ * @return int
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 static int	check_and_malloc(char **temp, t_token *token, int i)
 {
@@ -110,12 +108,12 @@ static int	check_and_malloc(char **temp, t_token *token, int i)
  * note that the modifidied split function also stores the '|'
  * in an individual array
  *
+ * @author kfan
+ *
  * @param cmds individual str of cmd after initial split
  * @param token token struct
- *
- * @ref t_token
- *
- * @author kfan
+ * @return int
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 static int	split_pipe(char *cmds, t_token *token)
 {
@@ -146,12 +144,10 @@ static int	split_pipe(char *cmds, t_token *token)
  * 2 = &&
  * 3 = ||
  *
+ * @author kfan
+ *
  * @param temp initial split
  * @param token token array
- *
- * @ref t_token
- *
- * @author kfan
  */
 static void	init_token1(char **temp, t_token **token)
 {
@@ -187,17 +183,14 @@ static void	init_token1(char **temp, t_token **token)
  * Sets the parameters taken from data
  * in every token of a token array.
  *
+ * @author kfan
+ *
  * @param temp command list
  * @param token array of t_token structs
  * @param data t_data struct
  * @param i length of the token array
  * @return int
- * @retval success 0 on success, 1 otherwise.
- *
- * @ref t_token
- * @ref t_data
- *
- * @author kfan
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 int	init_token(char **temp, t_token **token, t_data *data, int i)
 {

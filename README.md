@@ -145,17 +145,29 @@ init fail
 `readline()` fails, making `read_data()` print "unable to read data" in the terminal and return an error code, prompting `get_config_file()` to print its own error message, etc. all the way up to the main
 function where the program exits.
 
-\> kfan
 
 
-TODO:
-- Makefile remove .history in fclean? 
+# TODO:
 - updated log, those are errors in tester, warning: most of them are things that we didnt implement or shits that I don't think it's neccesary to fix, we need to discuss.
-- Documentation
+- Documentation (currently at `parse6_clean_name.c`)
 - Implement "-c" flag for minishell (ex: minishell -c "echo 123")
 - Norm and clean up main.c \ pipex_input.c \ signals1.c
 - Run tester (and fix anything that comes up)
 - implement cd ~? it's not so easy as it expands like envp or * but not from envp?? how?? probably like pwd if getcwd fails that the path is stored somewhere secretly
+
+17.04.2025 (kmautner)
+- added `rm .minishell_history` to `make fclean`
+- Updated existing documentation with improved formatting
+- Added more documentation.
+- Interactive documentation can now be found in the docs folder.
+    - HTML documentation is at `docs/html/indext.html`
+    - Other formats can be added (see Doxygen ouput formats)
+- Some files have incomplete/placeholder documentation:
+    - builtins_pipes.c
+    - parse5_clean_and_expand.c (clean_infile(), clean_outfile())
+    - parse6_clean_name.c (clean_name())
+The above list is not exhaustive (I might have missed some). Incomplete documentation
+is marked by placeholder text ("Lorem Ipsum...", "foo", "bar").
 
 16.4.2025: (Ka Hou)
 - str_equals cleaned up in the if statements in pipex_input file, check_builtins()

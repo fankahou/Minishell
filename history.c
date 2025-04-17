@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 13:09:49 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/09 16:40:34 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:36:56 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
  * If an equal string is already the latest entry in history,
  * it will get free'd and ignored.
  *
+ * @author kmautner
+ *
  * @param history history struct
  * @param command entry to add to history
  * @return int
- * @retval success 0 on success, 1 otherwise.
- *
- * @author kmautner
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 int	history_add(t_history *history, char *command)
 {
@@ -56,12 +56,12 @@ int	history_add(t_history *history, char *command)
  * of the file fail it will stop execution at that point. Any
  * entries after the fail will not get loaded into memory.
  *
+ * @author kmautner
+ *
  * @param history history struct
  * @param fd file descriptor of the opened history file
  * @return int
- * @retval success 0 on success, 1 on error.
- *
- * @author kmautner
+ * @retval success Returns 0 on success, 1 on error.
  */
 int	read_history_file(t_history *history, int fd)
 {
@@ -96,13 +96,11 @@ int	read_history_file(t_history *history, int fd)
  * its contents get read into the history using
  * read_history_file().
  *
+ * @author kmautner
+ *
  * @param history history struct pointer
  * @return int
- * @retval success 0 on success, 1 otherwise.
- *
- * @ref read_history_file
- *
- * @author kmautner
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 int	init_history(t_history *history)
 {
@@ -129,11 +127,11 @@ int	init_history(t_history *history)
  * the current history will get lost. Write fails are ignored and may
  * lead to a corrupted file.
  *
+ * @author kmautner
+ *
  * @param history history struct
  * @return int
- * @retval success 0 on success, 1 otherwise.
- *
- * @author kmautner
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 int	history_write(t_history history)
 {
@@ -162,11 +160,9 @@ int	history_write(t_history history)
  * All entries are written to the history file using
  * history_write() before the history is destroyed.
  *
- * @param history history struct
- *
- * @ref history_write
- *
  * @author kmautner
+ *
+ * @param history history struct
  */
 void	destroy_history(t_history *history)
 {

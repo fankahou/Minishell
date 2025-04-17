@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse3_make_cmd_list.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 20:12:19 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 17:39:28 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@
  * - 'hel   lo'
  * - world$USER
  *
+ * @author kfan
+ *
  * @param temp command to split
  * @param token token
  * @param old old split
  * @return char**
- * @retval cmd old or NULL on error
- *
- * @author kfan
+ * @retval cmd Returns old, or NULL on error.
  */
 char	**ft_cmd(char *temp, t_token *token, char **old)
 {
@@ -67,14 +67,14 @@ char	**ft_cmd(char *temp, t_token *token, char **old)
  * valid with the context of a pipe it just returns 0.
  * Frees and replaces token->cmds[k]->cmd with the parsed **cmd.
  *
+ * @author kfan
+ *
  * @param temp cmd list with redir syntax
  * @param token struct to parse command into
  * @param k mystery integer
  * @param cmd parsed command
  * @return int
- * @retval success 0 on success, 1 otherwise.
- *
- * @author kfan
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 static int	scan_pipe(char **temp, t_token *token, int k, char **cmd)
 {
@@ -112,12 +112,12 @@ static int	scan_pipe(char **temp, t_token *token, int k, char **cmd)
  * (<, <<, >>, >).
  * Also takes one array.
  *
+ * @author kfan
+ *
  * @param token token to split the commands of
  * @param temp mystery array
  * @return int
- * @retval success 0 on success, 1 otherwise.
- *
- * @author kfan
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 static int	split_cmd(t_token *token, char **temp)
 {
@@ -152,12 +152,12 @@ static int	split_cmd(t_token *token, char **temp)
  * (<, <<, >>, >) and scans all pipes.
  * Also takes one array.
  *
+ * @author kfan
+ *
  * @param temp mystery array
  * @param token token to split the commands of
  * @return int
- * @retval success 0 on success, 1 otherwise.
- *
- * @author kfan
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 int	make_cmd_list(char **temp, t_token *token)
 {

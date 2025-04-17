@@ -3,17 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   parse4a_redir_heredoc.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 19:23:13 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 17:40:10 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// stop heredoc if heredoc readline returns NULL
-// which means it receiveed a signal ctrl + d or ctrl + c
+/**
+ * @brief Stop the heredoc interpretation.
+ *
+ * Stop the heredoc if the heredoc readline returns NULL, which
+ * means it received either SIGINT (CTRL + C) or SIGQUIT (CTRL + D).
+ *
+ * If the heredoc in unexpectedly terminated (reached the end of file),
+ * a warning is printed to stdout (fd = 2).
+ *
+ * @author kfan
+ *
+ * @param token[in] command token
+ * @param fd[in] File descriptor to terminate
+ * @param fd_temp[in] Heredoc file dexcriptor
+ * @return int
+ * @retval success Returns 0 on success or 1 on error.
+ */
 static int	stop_heredoc(t_token *token, int fd, int fd_temp)
 {
 	token->data->readline_switch = 1;
@@ -23,21 +38,35 @@ static int	stop_heredoc(t_token *token, int fd, int fd_temp)
 	if (g_sigrecv == 0)
 	{
 		write(2, "minishell: warning: ", 20);
-		write(2, "here-document delimited by end-of-file (wanted `eof')\n", 54);
+		write(2, "here-document delimited by end-of-file (wanted 'eof')\n", 54);
 		return (0);
 	}
-	else
-	{
-		token->error[0] = 1;
-		token->exit_code[0] = 130;
-		dup2(fd_temp, 0);
-		g_sigrecv = 0;
-	}
+	token->error[0] = 1;
+	token->exit_code[0] = 130;
+	dup2(fd_temp, 0);
+	g_sigrecv = 0;
 	return (1);
 }
 
-// expand envp inside heredoc
-// loop through every char in temp to find $ for expand
+/**
+ * @brief Expand envp in heredocs.
+ *
+ * Expand environment variables inside of a heredoc by looping
+ * through every character in temp to find a $-prefixed identifier
+ * to expand with the environment variable of the same name.
+ *
+ * During execution, temp will be overwritten with the expanded heredoc
+ * data, which is also returned by the function.
+ *
+ * @author kfan
+ *
+ * @param temp[in,out] heredoc data
+ * @param token[in] command token
+ * @param temp_expanded expanded temp (Always set to NULL!)
+ * @param i counter variable (Always set to 0!)
+ * @return char*
+ * @retval temp Expanded version of temp.
+ */
 static char	*expand_heredoc(char *temp, t_token *token, char *temp_expanded,
 		int i)
 {
@@ -67,7 +96,17 @@ static char	*expand_heredoc(char *temp, t_token *token, char *temp_expanded,
 	return (temp);
 }
 
-// found eof
+/**
+ * @brief Found eof.
+ *
+ * Function to call when eof has been found in the heredoc to
+ * clean up after.
+ *
+ * @author kfan
+ *
+ * @param temp heredoc content
+ * @param fd_temp heredoc file descriptor
+ */
 static void	end_of_file(char *temp, int fd_temp)
 {
 	signal_init();
@@ -82,15 +121,17 @@ static void	end_of_file(char *temp, int fd_temp)
  * Handles the bulk of the heredoc funcitonality, allowing
  * the user to write into a temporary file to get more complex
  * input for a command.
+ * Environment variables referenced inside of the heredoc
+ * are expanded before passing it to execution.
+ *
+ * @author kfan
  *
  * @param token command token
  * @param temp buffer to read into (unused as argument)
  * @param fd file descriptor of the heredoc file
  * @param eof end of file character(s)
  * @return int
- * @retval success 0 on success, 1 otherwise.
- *
- * @author kfan
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 static int	write_heredoc(t_token *token, int fd, char *eof, int quote)
 {
@@ -125,12 +166,12 @@ static int	write_heredoc(t_token *token, int fd, char *eof, int quote)
  * Creates a temporary file for the user to write to
  * when using a heredoc and deletes it afterwards.
  *
+ * @author kfan
+ *
  * @param token Command token
  * @param eof End of file indicator
  * @return int
- * @retval fd file descriptor of the heredoc
- *
- * @author kfan
+ * @retval fd File descriptor of the heredoc.
  */
 int	ft_heredoc(t_token *token, char *eof, char *file, int k)
 {

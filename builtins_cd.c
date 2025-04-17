@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/16 12:37:53 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 17:28:47 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
  * Joins two paths using strjoin and updates the string
  * inside of temp accordingly (*temp == result).
  *
+ * @author kfan
+ *
  * @param path path to contatenate with
  * @param prefix Prefix to concatenate the path on
  * @param temp Adress to write the result to
  * @return int
- * @retval succes 0 on success, 1 otherwise.
- *
- * @author kfan
+ * @retval succes Returns 0 on success, 1 otherwise.
  */
 static int	make_path(char *path, char *prefix, char **temp)
 {
@@ -40,7 +40,6 @@ static int	make_path(char *path, char *prefix, char **temp)
 	return (0);
 }
 
-// path[4096] is max length of path in linux
 /**
  * @brief Replace PWD with a new path
  *
@@ -49,12 +48,15 @@ static int	make_path(char *path, char *prefix, char **temp)
  * Fetches the cwd using getcwd() and copies the old working
  * directory to the OLDPWD envronment variable.
  *
+ * The internal variable path is limited to 4096 characters
+ * since that is the maximum length of a path in linux.
+ *
+ * @author kfan
+ *
  * @param oldpath old working directory
  * @param token Token to export the variables with
  * @return int
- * @retval success 0 on success, 1 otherwise
- *
- * @author kfan
+ * @retval success Returns 0 on success, 1 otherwise
  */
 static int	replace_pwd(char *oldpath, t_token *token)
 {
@@ -86,15 +88,13 @@ static int	replace_pwd(char *oldpath, t_token *token)
  * Caches the current working directory before changing it and calling
  * replace_pwd() to update the environment variables.
  *
+ * @author kfan
+ *
  * @param envp environment variables
  * @param path path to the new working directory
  * @param token Token to change the variables with
  * @return int
- * @retval succes 0 on success, 1 otherwise.
- *
- * @ref replace_pwd
- *
- * @author kfan
+ * @retval succes Returns 0 on success, 1 otherwise.
  */
 static int	check_and_change_path(char **envp, char *path, t_token *token)
 {
@@ -128,15 +128,13 @@ static int	check_and_change_path(char **envp, char *path, t_token *token)
  * to the home directory. Otherwise it changes the directory to
  * path using check_and_change_path().
  *
+ * @author kfan
+ *
  * @param path path to new working directory
  * @param envp environment variables
  * @param token token to change the variables with
  * @return int
- * @retval success 0 on success, 1 otherwise.
- *
- * @ref check_and_change_path
- *
- * @author kfan
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 static int	change_dir(char *path, char **envp, t_token *token)
 {
@@ -169,15 +167,13 @@ static int	change_dir(char *path, char **envp, t_token *token)
  * If getcwd fails, it wil lreturn with 0. We don't know why,
  * but bash does it so we do it too. :P
  *
+ * @author kfan
+ *
  * @param cmd command arguments
  * @param envp environment variables
  * @param token command token
  * @return int
- * @retval success 0 on success, 1 otherwise
- *
- * @ref change_dir
- *
- * @author kfan
+ * @retval success Returns 0 on success, 1 otherwise
  */
 int	builtins_cd(char **cmd, char **envp, t_token *token)
 {

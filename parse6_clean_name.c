@@ -3,18 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   parse6_clean_name.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/15 10:29:51 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 18:59:06 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// check if there is valid space with split after envp is expanded
-// eg. export STH="echo 123"; $STH
-// if i == 1, just dup check[0] replace 
+/**
+ * @brief Check if a command is valid after expanding variables.
+ *
+ * Check if there is valid space with split after envp is expanded.
+ * Eg.: export STH="echo 123"; $STH.
+ * If i == 1, just dup check[0] replace.
+ *
+ * @author kfan
+ *
+ * @param token command token
+ * @param clean clean struct
+ * @param i counter variable (Always set to 0!)
+ * @return int
+ * @retval success Returns 0 on success, 1 otherwise.
+ */
 static int	check_split_envp(t_token *token, t_clean *clean, int i)
 {
 	char	**check;
@@ -44,19 +56,30 @@ static int	check_split_envp(t_token *token, t_clean *clean, int i)
 	return (0);
 }
 
-// expand envp
-// check char count of the envp for temp to skip index
-// reset space counter to 0
-// join the previous processed str with the new expanded envp
-// check envp with ft_split_space if the envp has space in between
-// if yes and i > 1 means there's space inbetween
-// and will allocate clean->temp for processing later
-//-----important: if i = 0 for later wiping out the current array of str
-//-----important: conditions: only applies if it's the first char
-// is valid or not inside "" quote
-//-----and together if there's sth in the previous process str
-// if clean->temp exists, it will later in clean_cmd being process with join_cmd
-// and wipe out the clean->new created string
+/**
+ * @brief Expand envp
+ *
+ * Check the character count of envp for temp to skip index.
+ * Reset space counter to 0.
+ * Join the previously processed string with the new, expanded envp.
+ * Check envp with ft_split_space if envp has spaces in between entries.
+ * If yes and i > 1 it means ther's spaces inbetween and it will
+ * allocate clean->temp for later proccessing.
+ * -----important: if i = 0 for later wiping out of the current array of str
+ * -----important: COnditions: only applies if it's the first char that's
+ * valid or not inside "" (double quotes).
+ * -----and together if there's sth in the previous process str.
+ * If clean->temp exists, it will later in clean_cmd being process with
+ * join_cmd and wipe the clean->new created string. 
+ *
+ * @author kfan
+ *
+ * @param temp
+ * @param token
+ * @param clean
+ * @return int
+ * @retval success Returns 0 on success, -1 on error.
+ */
 static int	clean_name_envp(char *temp, t_token *token, t_clean *clean)
 {
 	clean->envp_temp = expand_envp(&temp[clean->count + 1], token, NULL,
@@ -78,22 +101,35 @@ static int	clean_name_envp(char *temp, t_token *token, t_clean *clean)
 	return (0);
 }
 
-// new: wildcard!
-// wildcard only expand if not in a quote, aka quote == 0
-// temp[clean->count] = current char
-// get rid of extra space at the end
-// to check char by char and only joining the new char
-// if it is not an extra space
-// filter out the quotes and extra space by strdup
-// space inside quotes will not be filtered out, eg. for echo useful
-// clean->quote indicates the current status of being inside a quote or not
-// if quote > 0 means it is inside a quote
-// if quote > 2 means it is a quote within a quote,
-// which the quote will be copied eg. "'$USER'" or '"$USER"'
-// if space <2
-// wild_switch == 0; jackpot not hit,
-// you only have one chance to verifly after you hit it
-// new: if (clean->envp_temp), join char at the end of the array
+
+/**
+ * @brief Clean up a command.
+ *
+ * Clean up a command.
+ * New: WIldcards!
+ * Wildcards only expand if they're not in a quote (quote == 0).
+ * temp[clean->count] = current character.
+ * Get rid of excess space to check character by character and only
+ * join the new character if it is not an extra space.
+ * Filter out the quotes and extra space by strdup.
+ * Space inside quotes will not be filtered out.
+ * clean->quote indicates the current status of being inside a quote or not.
+ * If quote > 0 the current position is inside a quote.
+ * If quote > 2 the current position is inside a quote witin a quote,
+ * which the quote will be copied. Eg.: "'$USER'" or '"$USER"'.
+ * if space < 2
+ * wild_switch == 0; jackpot no hit, you only have one chance to verify
+ * after you hit it.
+ * New: if (clean->envp_temp) join the character at the end of the array.
+ *
+ * @author kfan
+ *
+ * @param temp
+ * @param token command token
+ * @param clean clean struct
+ * @return int
+ * @retval success Returns 0 on success, -1 on error.
+ */
 static int	clean_name_char(char *temp, t_token *token, t_clean *clean)
 {
 	if (is_space(temp[clean->count]))
@@ -123,7 +159,20 @@ static int	clean_name_char(char *temp, t_token *token, t_clean *clean)
 	return (0);
 }
 
-// loop through the temp str to remove quotes, expand envp and expand wildcards
+/**
+ * @brief Clean and expand a string.
+ *
+ * Loop through the string temp to remove quotes, expand environment variables
+ * and expand wildcards.
+ *
+ * @author kfan
+ *
+ * @param temp string to expand
+ * @param token command token
+ * @param clean clean struct
+ * @return int
+ * @retval success Returns 0 on success, 1 on error.
+ */
 static int	loop_str(char *temp, t_token *token, t_clean *clean)
 {
 	int	return_val;
@@ -147,10 +196,25 @@ static int	loop_str(char *temp, t_token *token, t_clean *clean)
 	return (0);
 }
 
-//  $USER inside ' ' shouldnt expand, otherwise always expand
-// get rid of extra space if not inside quote
-// count == 0 for cmd, otherwise for redir
-// only create new cmd array if token->pipe == 0???
+/**
+ * @brief Expand input.
+ *
+ * Expand environment variables in temp.
+ * Environment variables inside '' (single quotes) should not be expanded,
+ * otherwise they should always expand.
+ * Any extra space outside of quotes should be removed.
+ * count == 0 for cmd, otherwise for redir.
+ * Only create new cmd array if token->pipe == 0 ???
+ *
+ * @author kfan
+ *
+ * @param temp string to expand
+ * @param token command token
+ * @param count start index
+ * @param file foo
+ * @return char*
+ * @retval new clean.new on success, NULL otherwise.
+ */
 char	*clean_name(char *temp, t_token *token, int count, char *file)
 {
 	t_clean	clean;

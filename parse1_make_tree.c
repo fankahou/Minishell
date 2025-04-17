@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse1_make_tree.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/16 18:34:51 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 17:38:04 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
  * If it hits a non-delimiter it resets and it throws an error when it goes
  * over 1.
  *
+ * @author kfan
+ *
  * @param temp array of split of the initial str
  * @param error_count Counting variable (always set to 0!)
  * @return int
- * @retval number of arrays needed for malloc the **token
- *
- * @author kfan
+ * @retval amount Number of arrays needed for malloc the **token.
  */
 static int	check_temp(char **temp, int error_count, int k)
 {
@@ -64,16 +64,13 @@ static int	check_temp(char **temp, int error_count, int k)
  * initialises them with the commands inside
  * temp and the data inside data
  *
+ * @author kfan
+ *
  * @param temp command list
  * @param token Array of tokens
  * @param data data struct pointer
  * @return t_token**
- * @retval token new token or NULL on error
- *
- * @ref t_token
- * @ref t_data
- *
- * @author kfan
+ * @retval token New token or NULL on error.
  */
 static t_token	**make_token(char **temp, t_token **token, t_data *data)
 {
@@ -101,17 +98,14 @@ static t_token	**make_token(char **temp, t_token **token, t_data *data)
  * new: reset fd after all pipe, technically force update fd
  * new: wait here instead of in pipex parent
  *
+ * @author kfan
+ *
  * @param token Array of tokens to execute
  * @param data Data struct containing needed information
  * @param fd Array od duplicated file descriptors
  * @param i Just a counter starting with 0
  * @return int
- * @retval success always returns 0
- *
- * @ref t_token
- * @ref t_data
- *
- * @author kfan
+ * @retval success Always returns 0.
  */
 static int	execute(t_token **token, t_data *data, int *fd, int i)
 {
@@ -147,12 +141,12 @@ static int	execute(t_token **token, t_data *data, int *fd, int i)
  * It duplicates STDIN and STDOUT using dup() and writes
  * them into fd[0] and fd[1] respectively.
  *
+ * @author kfan
+ *
  * @param data pointer to data struct
  * @param fd pointer to duplicate file descriptors into
  * @return int
- * @retval success 0 on success, 1 otherwise.
- *
- * @author kfan
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 static int	init_tree(t_data *data, int *fd)
 {
@@ -186,12 +180,9 @@ static int	init_tree(t_data *data, int *fd)
  * call to pipex.
  * If data->error is not 0, it will not execute the token.
  *
- * @param data data to parse into the tokens
- *
- * @ref t_data token struct
- * @ref pipex pipex function
- *
  * @author kfan
+ *
+ * @param data data to parse into the tokens
  */
 void	make_tree(t_data *data)
 {

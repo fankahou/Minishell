@@ -3,16 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_pipes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/09 16:15:24 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:32:28 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // pipes for builtins
+/**
+ * @brief Lorem Ipsum
+ *
+ * Lorem Ipsum Dolor Si Amet
+ *
+ * @author kfan
+ *
+ * @param cmds foo
+ * @param fd foo
+ * @return int
+ * @retval foo bar
+ */
 int	builtins_pipe_fd_out(t_cmds *cmds, int *fd)
 {
 	if (fd && (str_equals(cmds->cmd[0], "echo")
@@ -34,6 +46,18 @@ int	builtins_pipe_fd_out(t_cmds *cmds, int *fd)
 	return (0);
 }
 
+/**
+ * @brief Lorem Ipsum
+ *
+ * Lorem Ipsum Dolor Si Amet
+ *
+ * @author kfan
+ *
+ * @param cmds foo
+ * @param fd foo
+ * @return int
+ * @retval foo bar
+ */
 int	builtins_pipe_fd_in(t_cmds *cmds, int *fd)
 {
 	if (fd && (str_equals(cmds->cmd[0], "echo")

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_echo_env.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/16 17:58:02 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 17:29:08 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
  *
  * Checks if the echo command was called with a flag.
  *
+ * @author kfan
+ *
  * @param cmd command arguments
  * @return int
  * @retval i Position of the first non-flag argument?
- *
- * @author kfan
  */
 static int	echo_flag(char **cmd)
 {
@@ -60,11 +60,11 @@ static int	echo_flag(char **cmd)
  * Writes a string to stdout that can be piped to other
  * commands.
  *
+ * @author kfan
+ *
  * @param cmd command arguments and flags of echo
  * @return int
- * @retval success 0 on success, 1 otherwise.
- *
- * @author kfan
+ * @retval success Returns 0 on success, 1 otherwise.
  */
 int	builtins_echo(char **cmd)
 {
@@ -94,13 +94,12 @@ int	builtins_echo(char **cmd)
  * Prints out the list of environment variables.
  * error and exit code 125 if arg exists just like env fails
  *
+ * @author kfan
  *
  * @param envp environment variables
  * @param cmd args
  * @return int
- * @retval return always returns 0
- *
- * @author kfan
+ * @retval return Always returns 0.
  */
 int	builtins_env(char **envp, char **cmd)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_mini.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 19:20:54 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 17:35:37 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
  * token that is currently being processed and
  * will not stop the processing of this token.
  *
+ * @author kfan
+ *
  * @param str message printed
  * @param token token in which the error occurred
- *
- * @author kfan
  */
 void	mini_error(char *str, char *arg, t_token *token, int *fd)
 {
@@ -52,10 +52,10 @@ void	mini_error(char *str, char *arg, t_token *token, int *fd)
  * Raises a command not found error, writing an error
  * message to stdout (fd = 2). The message is formatted as
  * follows "<cmd>: command not found".
- * 
- * @param cmd command that caused the error (may be NULL)
  *
  * @author kfan
+ * 
+ * @param cmd command that caused the error (may be NULL)
  */
 static void	command_not_found(char *cmd)
 {
@@ -72,16 +72,13 @@ static void	command_not_found(char *cmd)
  * to stdout (fd = 2). Depending on the type of
  * execve error (permission denied or command not found)
  * the printing is handled by mini_error() or command_not_found().
+ *
+ * @author kfan
  * 
  * @param cmd command that caused the error
  * @param path path to the faulty executable
  * @param token token in which the error occurred
  * @param dir directory in which the error occurred
- *
- * @ref mini_error
- * @ref command_not_found
- *
- * @author kfan
  */
 void	execve_error(char *cmd, char *path, t_token *token, DIR *dir)
 {
@@ -119,10 +116,10 @@ void	execve_error(char *cmd, char *path, t_token *token, DIR *dir)
  * token that is currently being processed and
  * stops the processing of this token.
  *
+ * @author kfan
+ *
  * @param str debug feature, unused
  * @param token token in which the error occurred.
- *
- * @author kfan
  */
 void	open_error(char *str, t_token *token, int *fd, int k)
 {

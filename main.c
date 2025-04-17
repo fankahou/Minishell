@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 18:01:05 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 15:51:18 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@
  * 
  * Debug funciton that prints the contents
  * of each token in an array of tokens.
- * 
- * @param token token array to print
  *
  * @author kfan
+ * 
+ * @param token token array to print
  */
 void print_token(t_token **token)
 {
@@ -79,14 +79,14 @@ void print_token(t_token **token)
  *
  * This is the main function and entry point of the program.
  * As a wise man once said: "This is where the magic happens!"
+ *
+ * @author kfan
  * 
  * @param argc Argument count
  * @param argv Argument vector
  * @param envp Environment
  * @return int
  * @retval exit_code Exit code of the program.
- *
- * @author kfan
  */
 int main(int argc, char **argv, char**envp)
 {

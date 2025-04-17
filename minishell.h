@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/16 18:06:49 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 15:39:25 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@
  * @def DEBUG
  * @brief Debug status
  *
+ * @author kmautner
+ *
  * Indicates if minishell is in debug mode.
  * By default (if not defined) this will be set to 0.
  * Use the debug rule in the make file to compile
  * minishell with debug mode enabled.
- *
- * @author kmautner
  */
 #  define DEBUG 0
 # endif // DEBUG
@@ -48,20 +48,20 @@
  * @def HISTORY_MAX_SIZE
  * @brief Max size for history.
  *
- * This macro defines the max size of the history. Default is 100 commands.
- *
  * @author kmautner
+ *
+ * This macro defines the max size of the history. Default is 100 commands.
  */
 # define HISTORY_MAX_SIZE 100
 /**
  * @def HISTORY_FILE
  * @brief Location and name of the history file.
  *
+ * @author kmautner
+ *
  * This macro defines the location and name of the file where the history
  * is saved inbetween sessions.
  * Default is ".minishell_history"
- *
- * @author kmautner
  */
 # define HISTORY_FILE ".minishell_history"
 
@@ -102,6 +102,8 @@ typedef struct s_clean
  * This struct contains all the necessary data to receive and process
  * user input.
  *
+ * @author kfan
+ *
  * @var t_data::str
  *		(Malloc'd) String input of the user
  * @var t_data::fd_in
@@ -116,8 +118,6 @@ typedef struct s_clean
  *		Errno? (will be init by kfan)
  * @var t_data::envp
  *		Array of environment variables
- *
- * @author kfan
  */
 typedef struct s_data
 {
@@ -142,6 +142,8 @@ typedef struct s_data
  * of what a token is for this description because I
  * don't quite understand his code (yet).
  *
+ * @author kfan
+ *
  * @var t_token::cmds
  *		(unknown)
  * @var t_token::fd_in
@@ -164,10 +166,6 @@ typedef struct s_data
  *		no clue what this is...
  * @var t_token::data
  *		data struct
- *
- * @ref t_data
- *
- * @author kfan
  */
 typedef struct s_token
 {
@@ -187,14 +185,16 @@ typedef struct s_token
 /**
  * @struct t_history
  * @brief Struct to save history data.
+ *
  * This struct saves all needed data for the history.
  * It's currently just a fancy array, but it may evolve in the future.
  *
+ * @author kmautner
+ * 
  * @var t_history::list
  *		List of all commands in the history.
  * @var t_history::length
  *		Amount of commands in history.
- * @author kmautner
  */
 typedef struct s_history
 {

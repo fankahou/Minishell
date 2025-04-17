@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/07 12:44:09 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:36:11 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@
  * token that is currently being processed and
  * stops the processing of this token.
  *
+ * @author kfan
+ *
  * @param str message printed
  * @param token token in which the error occurred
- *
- * @author kfan
  */
 void	syntax_error(char *str, t_token *token)
 {
@@ -49,11 +49,11 @@ void	syntax_error(char *str, t_token *token)
  * and returns 1. All messages are prepended with
  * "\033[1;41m ERROR \033[22;0m -> ". Uses perror to print the message.
  *
+ * @author kmautner
+ *
  * @param msg message to print, may be NULL
  * @return int
- * @retval return always returns 1
- *
- * @author kmautner
+ * @retval return Always returns 1.
  */
 int	error(char *msg)
 {
@@ -83,9 +83,9 @@ int	error(char *msg)
  * (fd = 1). All messages are prepended with "\033[1;43m WARNING \033[22;0m -> "
  * and terminated with a newline.
  *
- * @param msg message to print, may be NULL
- *
  * @author kmautner
+ *
+ * @param msg message to print, may be NULL
  */
 void	warn(char *msg)
 {
@@ -106,9 +106,9 @@ void	warn(char *msg)
  * DEBUG must be defined as 1 for this function to execute,
  * otherwise it will not do anything!
  *
- * @param msg message to print
- *
  * @author kmautner
+ *
+ * @param msg message to print
  */
 void	debug(char *msg)
 {

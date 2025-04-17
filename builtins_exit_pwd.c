@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit_pwd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/16 12:54:52 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 17:29:50 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
  * followed by a single '+' or '-' symbol, follwoed by digits.
  * The number may be prepended by any amount of zeroes and they
  * will not be counted towards the length of the number.
+ *
+ * @author kfan
  *
  * @param nptr string to check
  * @return int
@@ -54,12 +56,14 @@ static int	pre_check_long_overflow(const char *nptr)
  * Checks if a long overflowed by comparing its digits
  * to a string representation of the wanted number.
  *
+ * @author kfan
+ *
  * @param nptr string to compare the number to
  * @param temp number to check for overflows
  * @param digit_cmd number of digits in the string
  * @param digit_temp number of digits in the number
  * @return int
- * @retval success 0 if it did not overflow, 1 otherwise.
+ * @retval success Returns 0 if it did not overflow, 1 if it did.
  */
 static int	check_long_overflow(const char *nptr, long temp, int digit_cmd,
 		int digit_temp)
@@ -92,14 +96,14 @@ static int	check_long_overflow(const char *nptr, long temp, int digit_cmd,
  * If a non-numeric argument is given it throws an error.
  * If the number is too large (over LONG_MAX) it throws an error.
  *
+ * @author kfan
+ *
  * @param cmd command arguments
  * @param token token to change the exit code in
  * @param temp converted number (ignored)
  * @param i character index. Always set to 0!
  * @return int
- * @retval success Always returns 0
- *
- * @author kfan
+ * @retval success Always returns 0.
  */
 static int	exit_arg(char **cmd, t_token *token, long temp, int i)
 {
@@ -138,12 +142,12 @@ static int	exit_arg(char **cmd, t_token *token, long temp, int i)
  * Quits minishell, taking one optional argument
  * for the exit code.
  *
+ * @author kfan
+ *
  * @param cmd command arguments
  * @param token command token
  * @return int
- * @retval success 0 on success, 1 on error
- *
- * @author kfan
+ * @retval success Returns 0 on success, 1 on error.
  */
 int	builtins_exit(char **cmd, t_token *token)
 {
@@ -192,11 +196,11 @@ it having been unlinked. */
  * no idea why, but bash does it so we do it too
  * Note: error return 2 if it has a flag
  *
+ * @author kfan
+ *
  * @param cmd command arguments
  * @return int
- * @retval success always returns 0
- *
- * @author kfan
+ * @retval success Always returns 0.
  */
 int	builtins_pwd(char **cmd)
 {
