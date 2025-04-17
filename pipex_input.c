@@ -6,14 +6,14 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/16 16:31:39 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/17 14:21:42 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // exit code will not change if exit() is not executed
-static int check_builtins(t_cmds *cmds, t_token *token, int *fd)
+static int	check_builtins(t_cmds *cmds, t_token *token, int *fd)
 {
 	if (builtins_pipe_fd_out(cmds, fd))
 		return (1);
@@ -78,11 +78,10 @@ static void	parent(int *fd)
 int	input(t_cmds *cmds, t_token *token)
 {
 	int		fd[2];
-	char *path;
+	char	*path;
 
-	path = NULL;
 	if (pipe(fd) == -1)
-		return(perror("pipe failed"), 1);
+		return (perror("pipe failed"), 1);
 	if (cmds->fd[0] == -1)
 		return (empty_pipe(fd));
 	if (check_builtins(cmds, token, fd))
@@ -94,7 +93,7 @@ int	input(t_cmds *cmds, t_token *token)
 	{
 		close(fd[0]);
 		close(fd[1]);
-		return(perror("fork failed"), 1);
+		return (perror("fork failed"), 1);
 	}
 	if (cmds->pid == 0)
 		child(fd, cmds, token, path);
@@ -107,7 +106,7 @@ int	input(t_cmds *cmds, t_token *token)
 
 int	last_input(t_cmds *cmds, t_token *token)
 {
-	char *path;
+	char	*path;
 
 	path = NULL;
 	if (check_builtins(cmds, token, NULL))
@@ -116,7 +115,7 @@ int	last_input(t_cmds *cmds, t_token *token)
 		path = get_path(cmds->cmd, token->envp);
 	cmds->pid = fork();
 	if (cmds->pid == -1)
-		return(perror("fork failed"), 1);
+		return (perror("fork failed"), 1);
 	if (cmds->pid == 0)
 		child(NULL, cmds, token, path);
 	else

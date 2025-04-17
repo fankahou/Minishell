@@ -6,7 +6,11 @@
 /*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/17 17:39:54 by endermenski      ###   ########.fr       */
+=======
+/*   Updated: 2025/04/17 14:12:33 by kfan             ###   ########.fr       */
+>>>>>>> 8a3a6f9b8ac63eefcf2dad5f4f25f1f43f009173
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +44,8 @@ static int	ft_redir_in1(t_token *token, int type, char *new, int k)
 		if (!new)
 			return (1);
 		token->cmds[k]->redir[0] = 3;
-		token->cmds[k]->fd[0] = ft_heredoc(token, new, token->cmds[k]->infile, k);
+		token->cmds[k]->fd[0] = ft_heredoc(token, new, token->cmds[k]->infile,
+				k);
 		if (token->cmds[k]->fd[0] == -1)
 			token->cmds[k]->fd[1] = -1;
 	}

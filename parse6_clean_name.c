@@ -6,12 +6,17 @@
 /*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/17 18:59:06 by endermenski      ###   ########.fr       */
+=======
+/*   Updated: 2025/04/17 14:26:49 by kfan             ###   ########.fr       */
+>>>>>>> 8a3a6f9b8ac63eefcf2dad5f4f25f1f43f009173
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+<<<<<<< HEAD
 /**
  * @brief Check if a command is valid after expanding variables.
  *
@@ -27,6 +32,11 @@
  * @return int
  * @retval success Returns 0 on success, 1 otherwise.
  */
+=======
+// check if there is valid space with split after envp is expanded
+// eg. export STH="echo 123"; $STH
+// if i == 1, just dup check[0] replace
+>>>>>>> 8a3a6f9b8ac63eefcf2dad5f4f25f1f43f009173
 static int	check_split_envp(t_token *token, t_clean *clean, int i)
 {
 	char	**check;
@@ -92,7 +102,8 @@ static int	clean_name_envp(char *temp, t_token *token, t_clean *clean)
 		clean->space = 0;
 	clean->new = ft_strjoin(clean->file, clean->envp_temp);
 	if (!clean->new)
-		return (free(clean->file), free(clean->envp_temp), perror("ft_strjoin failed\n"), -1);
+		return (free(clean->file), free(clean->envp_temp),
+			perror("ft_strjoin failed\n"), -1);
 	if (check_split_envp(token, clean, 0))
 		return (free(clean->envp_temp), free(clean->file), -1);
 	free(clean->envp_temp);
@@ -145,11 +156,11 @@ static int	clean_name_char(char *temp, t_token *token, t_clean *clean)
 	}
 	if ((clean->space < 2 || clean->quote > 0) && (!is_quote(temp[clean->count])
 			|| clean->quote > 2))
-		{
+	{
 		clean->new = ft_charjoin(clean->file, &temp[clean->count]);
 		if (clean->temp && ft_strncmp(token->wildcards, "found", 5))
 			join_envp_char(token, clean, &temp[clean->count]);
-		}
+	}
 	else
 		clean->new = ft_strdup(clean->file);
 	free(clean->file);

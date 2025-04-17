@@ -6,7 +6,7 @@
 /*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 17:28:47 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/17 20:33:39 by endermenski      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,15 +107,14 @@ static int	check_and_change_path(char **envp, char *path, t_token *token)
 		while (envp && envp[i])
 		{
 			if (!ft_strncmp(envp[i], "OLDPWD=", 7))
-				return (ft_printf("%s\n", &envp[i][7]), check_and_change_path(envp, &envp[i][7], token));
+				return (ft_printf("%s\n", &envp[i][7]),
+						check_and_change_path(envp, &envp[i][7], token));
 			i++;
 		}
 		return (write(2, "minishell: cd: OLDPWD not set\n", 30), 1);
 	}
 	if (!getcwd(oldpath, 4096))
-		return (perror(
-				"minishell: cd: getcwd: cannot access parent directories: "),
-			0);
+		return (perror("minishell: cd: cannot access parent directories: "), 0);
 	if (chdir(path))
 		return (perror("minishell: cd: "), 1);
 	return (replace_pwd(oldpath, token));

@@ -6,7 +6,11 @@
 /*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/17 17:35:37 by endermenski      ###   ########.fr       */
+=======
+/*   Updated: 2025/04/17 14:11:02 by kfan             ###   ########.fr       */
+>>>>>>> 8a3a6f9b8ac63eefcf2dad5f4f25f1f43f009173
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +136,6 @@ void	open_error(char *str, t_token *token, int *fd, int k)
 	perror(NULL);
 	if (token)
 		token->cmds[k]->exit_code = 1;
-		//token->exit_code[0] = 1;
 	if (fd)
 	{
 		fd[0] = -1;
