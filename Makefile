@@ -44,7 +44,7 @@ NAME = minishell
 NAME_BONUS = minishell_bonus
 SUPRESSION_FILE = readline.supp
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 LIBS = $(SRCDIR)/libft/libft.a -lreadline
 RM = rm -f
 

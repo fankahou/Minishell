@@ -147,13 +147,17 @@ function where the program exits.
 
 
 
-TODO:
-- updated log, those are errors in tester, warning: most of them are things that we didnt implement or shits that I don't think it's neccesary to fix, we need to discuss.
+potential TODO:
 - Documentation (currently at `parse6_clean_name.c`)
 - Implement "-c" flag for minishell (ex: minishell -c "echo 123")
-- Norm and clean up main.c \ pipex_input.c \ signals1.c
 - Run tester (and fix anything that comes up)
 - implement cd ~? it's not so easy as it expands like envp or * but not from envp?? how?? probably like pwd if getcwd fails that the path is stored somewhere secretly
+
+18.04.2025: (Ka Hou)
+- checked with funcheck and fixed some leaks if malloc fails
+- nth we can do if the malloc fails in readline(), it will seg fault anyway
+- removed -g from Makefile
+- norm cleaned everything and ready for submit
 
 17.04.2025: (kmautner)
 - Made the makefile remove the history file for `make fclean`
