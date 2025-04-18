@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 21:51:00 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/18 17:19:29 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@
 } */
 static int	init_main(t_data *data, char **envp, t_history *history)
 {
+	if (signal_init())
+		return (1);
 	data->str = NULL;
 	data->exit_code = 0;
 	data->error = 0;
@@ -95,8 +97,6 @@ static int	init_main(t_data *data, char **envp, t_history *history)
 		sort_array(data->envp_export);
 	}
 	init_history(history);
-	if (signal_init())
-		return (1);
 	return (0);
 }
 
@@ -135,29 +135,16 @@ static int	read_input(t_data *data)
 		write(2, "exit\n", 5);
 		return (1);
 	}
-	signal_init();
+	if (signal_init())
+		return (free(temp), 1);
 	data->str = ft_calloc(ft_strlen(temp) + 2, 1);
 	if (!data->str)
-		return (1);
+		return (perror("ft_calloc failed"), free(temp), 1);
 	ft_strlcpy(data->str, temp, ft_strlen(temp) + 1);
 	free(temp);
 	debug(data->str);
 	return (0);
 }
-
-/* static int	take_arg(t_data *data, t_history *history, char *input)
-{
-	if (input && input[0] == '\0')
-		return (free_all(data, history), 0);
-	data->str = ft_calloc(ft_strlen(input) + 2, 1);
-	if (!data->str)
-		return (free_all(data, history), perror("calloc failed"), 1);
-	ft_strlcpy(data->str, input, ft_strlen(input) + 1);
-	make_tree(data);
-	free(data->str);
-	free_all(data, history);
-	return (data->exit_code);
-} */
 
 /**
  * @brief Main function of the program
@@ -178,12 +165,11 @@ int	main(int argc, char **argv, char **envp)
 	t_data		data;
 	t_history	history;
 
-    (void)argc;
-    (void)argv;
+	(void)argv;
+	if (argc != 1)
+		return (write(2, "minishell: no arg accepted\n", 27), 1);
 	if (init_main(&data, envp, &history))
 		return (1);
-/* 	if (argc == 3 && str_equals(argv[1], "-c") && argv[2])
-		return (take_arg(&data, &history, argv[2])); */
 	while (1)
 	{
 		if (read_input(&data))

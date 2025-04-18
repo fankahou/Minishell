@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse5_clean_and_expand.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 18:07:56 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/18 17:09:11 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,10 @@ static int	clean_cmd(t_token *token, char *file, int i, int j)
 	{
 		file = ft_calloc(1, 1);
 		if (!file)
-			return (ft_free_split(token->cmds[i]->cmd),
-				perror("ft_calloc failed"), token->error[0] = 1, 1);
+			return (perror("ft_calloc failed"), token->error[0] = 1, 1);
 		file = clean_name(token->cmds[i]->cmd[j], token, 0, file);
 		if (!file)
-			return (ft_free_split(token->cmds[i]->cmd), token->error[0] = 1, 1);
+			return (token->error[0] = 1, 1);
 		free(token->cmds[i]->cmd[j]);
 		token->cmds[i]->cmd[j] = NULL;
 		if (token->data->cmd_temp && token->data->cmd_temp[0]

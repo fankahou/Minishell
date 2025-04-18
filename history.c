@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 13:09:49 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/17 17:36:56 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/18 15:16:25 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,14 +107,14 @@ int	init_history(t_history *history)
 	int	fd;
 
 	if (!history)
-		return (warn("invalid history pointer!"), 0);
+		return (debug("invalid history pointer!"), 0);
 	debug("Initialising history...");
 	ft_bzero(history, sizeof(t_history));
 	fd = open(HISTORY_FILE, O_RDONLY);
 	if (fd < 0)
-		return (warn("Could not open history file!"), 0);
+		return (debug("Could not open history file!"), 0);
 	if (read_history_file(history, fd))
-		return (warn("Error reading history file!"), 0);
+		return (debug("Error reading history file!"), 0);
 	return (close(fd), 0);
 }
 

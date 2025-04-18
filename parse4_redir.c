@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse4_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 21:52:04 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/18 17:18:39 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,8 @@ int	redir(char *temp, t_token *token, int k)
 	if (token->cmds[k]->fd[0] == -1)
 		return (0);
 	file = ft_strdup(&temp[count]);
+	if (!file)
+		return (perror("ft_strdup failed"), -1);
 	if (type == 3 || type == 4)
 		return_val = ft_redir_in(token, type, file, k);
 	else if (type == 5 || type == 6)

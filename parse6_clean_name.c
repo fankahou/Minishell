@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse6_clean_name.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 21:52:21 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/18 17:18:55 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ static int	clean_name_envp(char *temp, t_token *token, t_clean *clean)
 	clean->file = NULL;
 	return (0);
 }
-
 
 /**
  * @brief Clean up a command.
