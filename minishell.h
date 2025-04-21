@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 21:49:51 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/21 21:12:13 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,8 @@ typedef struct s_token
 	int		fd_out;
 	int		delimiter;
 	int		nmb_of_cmd;
+	int		parenthesis;
+	int		parenthesis_flag;
 	int		*exit_code;
 	int		*error;
 	char	**envp;
@@ -206,6 +208,9 @@ void	print_token(t_token **token); // for debugging'
 
 void	make_tree(t_data *data);
 int		init_token(char **temp, t_token **token, t_data *data, int i);
+void	init_parenthesis(char **temp, t_token **token, int i, int k);
+int		copy_bracket(char *temp, t_clean *clean);
+int		check_parenthesis(t_token **token, int i);
 int		make_cmd_list(char **temp, t_token *token);
 char	**ft_cmd(char *temp, t_token *token, char **old);
 int		redir(char *temp, t_token *token, int k);

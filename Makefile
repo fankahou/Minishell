@@ -4,6 +4,7 @@ OBJDIR = obj
 SRC = main.c \
 	parse1_make_tree.c \
 	parse2_init.c \
+	parse2a_parenthesis.c \
 	parse3_make_cmd_list.c \
 	parse4_redir.c \
 	parse4a_redir_heredoc.c \

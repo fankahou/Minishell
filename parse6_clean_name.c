@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/18 17:18:55 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/21 20:35:57 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ static int	clean_name_char(char *temp, t_token *token, t_clean *clean)
 			return (perror("wildcards failed"), -1);
 	}
 	if ((clean->space < 2 || clean->quote > 0) && (!is_quote(temp[clean->count])
-			|| clean->quote > 2))
+			|| clean->quote > 2) && copy_bracket(temp, clean))
 	{
 		clean->new = ft_charjoin(clean->file, &temp[clean->count]);
 		if (clean->temp && ft_strncmp(token->wildcards, "found", 5))

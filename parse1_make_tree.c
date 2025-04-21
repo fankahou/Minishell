@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse1_make_tree.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 21:51:37 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/21 20:42:54 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,7 @@ static int	execute(t_token **token, t_data *data, int *fd, int i)
 			pipex(token[i]);
 		restore_fd(data, fd);
 		wait_pipes(token[i], 0, 0);
-		while (token[i] && token[i]->delimiter == 2
-			&& token[i]->exit_code[0] != 0)
-			i++;
-		while (token[i] && token[i]->delimiter == 3
-			&& token[i]->exit_code[0] == 0)
-			i++;
+		i = check_parenthesis(token, i);
 		if (token[i])
 			i++;
 	}

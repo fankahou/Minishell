@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse2_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 17:38:44 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/21 21:34:12 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,14 +149,10 @@ static int	split_pipe(char *cmds, t_token *token)
  * @param temp initial split
  * @param token token array
  */
-static void	init_token1(char **temp, t_token **token)
+static void	init_token1(char **temp, t_token **token, int i, int k)
 {
-	int	i;
 	int	j;
-	int	k;
 
-	i = 0;
-	k = 0;
 	while (temp[i])
 	{
 		if (temp[i + 1])
@@ -166,6 +162,9 @@ static void	init_token1(char **temp, t_token **token)
 				j++;
 			token[k]->delimiter = is_delimiter(temp[i + 1][j], temp[i + 1][j]);
 		}
+		init_parenthesis(temp, token, i, k);
+		if (token[k]->parenthesis < 0)
+			return ;
 		if (split_pipe(temp[i], token[k]))
 			return ;
 		i++;
@@ -211,7 +210,9 @@ int	init_token(char **temp, t_token **token, t_data *data, int i)
 		token[i]->nmb_of_cmd = 0;
 		token[i]->data = data;
 		token[i]->wildcards = NULL;
+		token[i]->parenthesis = 0;
+		token[i]->parenthesis_flag = 0;
 	}
-	init_token1(temp, token);
+	init_token1(temp, token, 0, 0);
 	return (0);
 }
