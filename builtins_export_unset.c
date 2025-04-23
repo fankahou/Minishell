@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export_unset.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 21:53:02 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/23 14:43:47 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ static int	add_envp_export(char *cmd, t_token *token)
 	char	*temp;
 	char	*quote;
 
+	if (cmd[0] == '\0')
+		return (0);
 	if (unset_export(token, cmd))
 		return (1);
 	quote = attach_quote(cmd);

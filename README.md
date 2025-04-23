@@ -156,7 +156,6 @@ TODO:
 - Run tester (and fix anything that comes up)
 - implement cd ~? it's not so easy as it expands like envp or * but not from envp?? how?? probably like pwd if getcwd fails that the path is stored somewhere secretly
 - spaces ot tabs in commant -> invalid read of size 1
-- export var (without = sign) shouldn't rewrite value
 - 2 error messages sometimes ambiguous redirect causes leak
 - empty command with | doesn't throw an error
 
@@ -166,6 +165,7 @@ TODO:
 - Fixed history file inconsistencies due to `cd`.
     - It will now always be created/read in pwd at the point of execution
 - Fixed stdin and stdout showing up in valgrind because of dup2()
+- `export VAR` (without = equals sign) no longer overwrites the value of VAR
 
 18.04.2025: (Ka Hou)
 - checked with funcheck and fixed some leaks if malloc fails
