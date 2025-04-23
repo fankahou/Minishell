@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 20:33:39 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/23 14:10:50 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ static int	change_dir(char *path, char **envp, t_token *token)
 				return (check_and_change_path(envp, &envp[i][5], token));
 			i++;
 		}
-		return (perror("minishell: cd: HOME not set"), 1);
+		return (write(2, "minishell: cd: HOME not set\n", 28), 1);
 	}
 	else
 		return (check_and_change_path(envp, path, token));

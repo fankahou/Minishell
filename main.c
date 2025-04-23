@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/18 17:19:29 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 14:23:12 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,8 +172,13 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	while (1)
 	{
+		if (data.str)
+			free(data.str);
+		data.str = NULL;
 		if (read_input(&data))
 			break ;
+		if (data.str[0] == '\0')
+			continue ;
 		make_tree(&data);
 		history_add(&history, data.str);
 		data.str = NULL;
