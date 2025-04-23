@@ -168,6 +168,7 @@ TODO:
 - fixed empty command with | pipe not throwing an error
 - fixed 2 error messages sometimes ambiguous redirect causes leak
 - fixed exit code for ambiguous redirect
+- fixed bonus parenthesis small bugs
 - fixed exit code 126, 127 after execve error, the problem is more complicated, related to the fix below
 - fixed running command in current dir eg. minishell should not run; ./minishell should run
 - if you unset PATH, the command "minishell" should run, it is weird
