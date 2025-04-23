@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 13:09:49 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/18 15:16:25 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 14:20:24 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,10 @@ int	init_history(t_history *history)
 		return (debug("invalid history pointer!"), 0);
 	debug("Initialising history...");
 	ft_bzero(history, sizeof(t_history));
-	fd = open(HISTORY_FILE, O_RDONLY);
+	history->location = get_history_path();
+	if (!history->location)
+		return (warn("Error getting history file location"), 1);
+	fd = open(history->location, O_RDONLY);
 	if (fd < 0)
 		return (debug("Could not open history file!"), 0);
 	if (read_history_file(history, fd))
@@ -138,7 +141,7 @@ int	history_write(t_history history)
 	int	fd;
 	int	c;
 
-	fd = open(HISTORY_FILE, O_CREAT | O_TRUNC | O_RDWR, 0777);
+	fd = open(history.location, O_CREAT | O_TRUNC | O_RDWR, 0777);
 	if (fd < 0)
 		return (error("Error opening history file!"));
 	c = 0;
@@ -177,4 +180,5 @@ void	destroy_history(t_history *history)
 		free(history->list[c]);
 		c++;
 	}
+	free(history->location);
 }

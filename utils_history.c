@@ -6,11 +6,12 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 13:06:39 by kmautner          #+#    #+#             */
-/*   Updated: 2025/04/23 13:24:28 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:24:04 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <unistd.h>
 
 /**
  * @brief Checks if two strings are equal.
@@ -65,4 +66,33 @@ void	shift_array(char **array, int length)
 		array[c - 1] = array[c];
 		c++;
 	}
+}
+
+/**
+ * @brief Gets the path to the history file.
+ *
+ * Gets the path to the history file.
+ *
+ * @author kmautner
+ *
+ * @return char*
+ * @retval path Path to the history file.
+ */
+char	*get_history_path(void)
+{
+	char	*path;
+	char	*temp;
+
+	path = getcwd(NULL, 0);
+	if (!path)
+		return (warn("Unable to getcwd for history"), NULL);
+	temp = ft_strjoin(path, "/");
+	free(path);
+	if (!temp)
+		return (warn("History path join fail (1)"), NULL);
+	path = ft_strjoin(temp, HISTORY_FILE);
+	free(temp);
+	if (!path)
+		return (warn("History path join fail (2)"), NULL);
+	return (path);
 }
