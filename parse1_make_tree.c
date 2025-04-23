@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/21 20:42:54 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 14:53:08 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,10 @@
  * @return int
  * @retval amount Number of arrays needed for malloc the **token.
  */
-static int	check_temp(char **temp, int error_count, int k)
+static int	check_temp(char **temp, int error_count, int k, int i)
 {
-	int	i;
 	int	j;
 
-	i = 0;
 	while (temp[i])
 	{
 		j = 0;
@@ -52,7 +50,8 @@ static int	check_temp(char **temp, int error_count, int k)
 			return (syntax_error(&temp[i][j], NULL), 0);
 		i++;
 	}
-	if (i > 0 && is_delimiter(temp[i - 1][j], temp[i - 1][j + 1]) > 1)
+	if (i > 0 && temp[i - 1][j] && is_delimiter(temp[i - 1][j], temp[i - 1][j
+			+ 1]) > 1)
 		return (syntax_error("unexpected end of file", NULL), 0);
 	return (k);
 }
@@ -76,7 +75,7 @@ static t_token	**make_token(char **temp, t_token **token, t_data *data)
 {
 	int	i;
 
-	i = check_temp(temp, 0, 0);
+	i = check_temp(temp, 0, 0, 0);
 	if (i == 0)
 		return (data->exit_code = 2, NULL);
 	token = malloc(sizeof(t_token *) * (i + 1));
