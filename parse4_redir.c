@@ -6,11 +6,21 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/18 17:18:39 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 16:56:01 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// just try to open it to see if the file exists
+static void	try_open(t_token *token, char *new, int k)
+{
+	token->cmds[k]->fd[0] = open(new, O_RDONLY);
+	if (token->cmds[k]->fd[0] == -1)
+		open_error(new, token, token->cmds[k]->fd, k);
+	else
+		close(token->cmds[k]->fd[0]);
+}
 
 // 2nd part of ft_redir_in()
 // check if it is here_doc or normal infile
@@ -48,17 +58,16 @@ static int	ft_redir_in1(t_token *token, int type, char *new, int k)
 	else
 	{
 		new = clean_name(token->cmds[k]->infile, token, 0, new);
+		ft_free_split(token->data->cmd_temp);
 		if (!new)
 			return (1);
+		if (new[0] == '\0')
+			return (free(new), mini_error("ambiguous redirect",
+					token->cmds[k]->infile, token, token->cmds[k]->fd), 0);
 		token->cmds[k]->redir[0] = 4;
-		token->cmds[k]->fd[0] = open(new, O_RDONLY);
-		if (token->cmds[k]->fd[0] == -1)
-			open_error(new, token, token->cmds[k]->fd, k);
-		else
-			close(token->cmds[k]->fd[0]);
+		try_open(token, new, k);
 	}
-	free(new);
-	return (0);
+	return (free(new), 0);
 }
 
 /**
@@ -130,7 +139,10 @@ static void	ft_redir_out(t_token *token, int type, char *file, int k)
 	else
 	{
 		new = clean_name(file, token, 0, new);
+		ft_free_split(token->data->cmd_temp);
 		token->cmds[k]->outfile = new;
+		if (new[0] == '\0')
+			mini_error("ambiguous redirect", file, token, token->cmds[k]->fd);
 		fd = outfile(token, k);
 		if (fd >= 0)
 			close(fd);

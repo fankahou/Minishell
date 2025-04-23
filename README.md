@@ -155,7 +155,6 @@ TODO:
 - Implement "-c" flag for minishell (ex: minishell -c "echo 123")
 - Run tester (and fix anything that comes up)
 - implement cd ~? it's not so easy as it expands like envp or * but not from envp?? how?? probably like pwd if getcwd fails that the path is stored somewhere secretly
-- 2 error messages sometimes ambiguous redirect causes leak
 
 23.04.2025:
 - Change error output from perror() to write()
@@ -167,6 +166,7 @@ TODO:
 - `export VAR` (without = equals sign) no longer overwrites the value of VAR
 - fixed spaces or tabs in command causing an invalid read of size 1
 - fixed empty command with | pipe not throwing an error
+- fixed 2 error messages sometimes ambiguous redirect causes leak
 
 18.04.2025: (Ka Hou)
 - checked with funcheck and fixed some leaks if malloc fails

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/18 17:09:11 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 16:44:17 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,6 @@ static int	clean_outfile(t_token *token)
 			file = clean_name(token->cmds[i]->outfile, token, 0, file);
 			if (!file)
 				return (syntax_error(token->cmds[i]->outfile, token), 1);
-			if (file[0] == '\0')
-				return (free(file), mini_error("ambiguous redirect",
-						token->cmds[i]->outfile, token, token->cmds[i]->fd), 0);
 			free(token->cmds[i]->outfile);
 			token->cmds[i]->outfile = file;
 			if (token->wildcards)
@@ -149,9 +146,6 @@ static int	clean_infile(t_token *token)
 			file = clean_name(token->cmds[i]->infile, token, 0, file);
 			if (!file)
 				return (syntax_error(token->cmds[i]->infile, token), 1);
-			if (file[0] == '\0')
-				return (free(file), mini_error("ambiguous redirect",
-						token->cmds[i]->infile, token, token->cmds[i]->fd), 0);
 			free(token->cmds[i]->infile);
 			token->cmds[i]->infile = file;
 			if (token->wildcards)

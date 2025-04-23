@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/12 19:24:14 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 16:42:02 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	outfile(t_token *token, int k)
 	if (access(token->cmds[k]->outfile, F_OK) == 0)
 	{
 		if (access(token->cmds[k]->outfile, W_OK) != 0)
-			return (perror("minishell: Permission denied"),
-				token->exit_code[0] = 13, -1);
+			return (open_error(token->cmds[k]->outfile, token,
+					token->cmds[k]->fd, k), token->exit_code[0] = 13, -1);
 	}
 	if (token->cmds[k]->redir[1] == 6)
 		fd = open(token->cmds[k]->outfile, O_WRONLY | O_CREAT | O_APPEND, 0664);
@@ -56,7 +56,7 @@ static int	open_fd(t_token *token, int i)
 {
 	if (token->cmds[i]->fd[1] != -1 && token->cmds[i]->outfile)
 		token->cmds[i]->fd[1] = outfile(token, i);
-	if (token->cmds[i]->fd[1] != -1 && token->cmds[i]->infile)
+	if (token->cmds[i]->fd[0] != -1 && token->cmds[i]->infile)
 		token->cmds[i]->fd[0] = infile(token, i);
 	return (0);
 }
