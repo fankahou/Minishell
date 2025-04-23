@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_mini.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 13:58:31 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/23 20:19:01 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,23 @@ void	mini_error(char *str, char *arg, t_token *token, int *fd)
  * follows "<cmd>: command not found".
  *
  * @author kfan
- * 
+ *
  * @param cmd command that caused the error (may be NULL)
  */
-static void	command_not_found(char *cmd)
+static void	command_not_found(char *cmd, t_cmds *cmds)
 {
+	int	i;
+
+	i = 0;
 	if (cmd)
 		write(2, cmd, ft_strlen(cmd));
 	write(2, ": ", 2);
-	write(2, "command not found\n", 18);
+	while (cmd[i] && cmd[i] != '/')
+		i++;
+	if (cmd[i] == '/' || cmds->path_flag == 1)
+		write(2, "No such file or directory\n", 26);
+	else
+		write(2, "command not found\n", 18);
 }
 
 /**
@@ -74,36 +82,36 @@ static void	command_not_found(char *cmd)
  * the printing is handled by mini_error() or command_not_found().
  *
  * @author kfan
- * 
+ *
  * @param cmd command that caused the error
  * @param path path to the faulty executable
  * @param token token in which the error occurred
  * @param dir directory in which the error occurred
  */
-void	execve_error(char *cmd, char *path, t_token *token, DIR *dir)
+void	execve_error(t_cmds *cmds, char *path, t_token *token, DIR *dir)
 {
-	token->error[0] = 2;
-	token->exit_code[0] = 127;
-	if (cmd)
-		dir = opendir(cmd);
+	if (cmds->cmd && cmds->cmd[0])
+		dir = opendir(cmds->cmd[0]);
 	if (!dir)
 	{
-		if (cmd && access(cmd, F_OK) == 0 && access(cmd, X_OK) != 0)
+		if (cmds->path_flag != 0 && access(cmds->cmd[0], F_OK) == 0
+			&& access(cmds->cmd[0], X_OK) != 0)
 		{
-			mini_error("Permission denied", cmd, NULL, NULL);
+			mini_error("Permission denied", cmds->cmd[0], NULL, NULL);
 			token->exit_code[0] = 126;
 		}
 		else
-			command_not_found(cmd);
+			command_not_found(cmds->cmd[0], cmds);
 	}
 	else
 	{
 		closedir(dir);
-		if (!ft_strncmp(cmd, "..", ft_strlen(path)) && ft_strlen(path) > 2)
-			command_not_found(cmd);
+		if (!ft_strncmp(cmds->cmd[0], "..", ft_strlen(path))
+			&& ft_strlen(path) > 2)
+			command_not_found(cmds->cmd[0], cmds);
 		else
 		{
-			mini_error("Is a directory", cmd, NULL, NULL);
+			mini_error("Is a directory", cmds->cmd[0], NULL, NULL);
 			token->exit_code[0] = 126;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 14:21:42 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 20:19:12 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,11 @@ static void	child(int *fd, t_cmds *cmds, t_token *token, char *path)
 		}
 		close(fd[1]);
 	}
-	if (path)
+	if (path && cmds->path_flag > 0)
 		execve(path, cmds->cmd, token->envp);
-	execve_error(cmds->cmd[0], path, token, NULL);
+	token->error[0] = 2;
+	token->exit_code[0] = 127;
+	execve_error(cmds, path, token, NULL);
 }
 
 static void	parent(int *fd)
@@ -87,7 +89,7 @@ int	input(t_cmds *cmds, t_token *token)
 	if (check_builtins(cmds, token, fd))
 		return (0);
 	if (cmds->cmd[0])
-		path = get_path(cmds->cmd, token->envp);
+		path = get_path(cmds->cmd, token, cmds);
 	cmds->pid = fork();
 	if (cmds->pid == -1)
 	{
@@ -112,7 +114,7 @@ int	last_input(t_cmds *cmds, t_token *token)
 	if (check_builtins(cmds, token, NULL))
 		return (0);
 	if (cmds->cmd[0])
-		path = get_path(cmds->cmd, token->envp);
+		path = get_path(cmds->cmd, token, cmds);
 	cmds->pid = fork();
 	if (cmds->pid == -1)
 		return (perror("fork failed"), 1);

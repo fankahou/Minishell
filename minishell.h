@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 16:30:02 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/23 19:17:23 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_cmds
 	int		fd[2];
 	char	*infile;
 	char	*outfile;
+	int		path_flag;
 	int		pid; // to wait for the last input to finish?
 	int		exit_code; // new: everything pipe has it's own exit code
 }			t_cmds;
@@ -236,12 +237,12 @@ char	*wildcards(char *temp, t_token *token, t_clean *clean);
 void	syntax_error(char *str, t_token *token);
 void	open_error(char *str, t_token *token, int *fd, int k);
 void	mini_error(char *str, char *arg, t_token *token, int *fd);
-void	execve_error(char *cmd, char *path, t_token *token, DIR *dir);
+void	execve_error(t_cmds *cmds, char *path, t_token *token, DIR *dir);
 
 // from pipex
 int		pipex(t_token *token);
 int		outfile(t_token *token, int k);
-char	*get_path(char **cmd, char **envp);
+char	*get_path(char **cmd, t_token *token, t_cmds *cmds);
 int		input(t_cmds *cmds, t_token *token);
 int		last_input(t_cmds *cmds, t_token *token);
 int		empty_pipe(int *fd);

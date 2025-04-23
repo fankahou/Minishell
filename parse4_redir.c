@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 16:56:01 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 18:35:57 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@ static int	ft_redir_in1(t_token *token, int type, char *new, int k)
 		if (!new)
 			return (1);
 		if (new[0] == '\0')
-			return (free(new), mini_error("ambiguous redirect",
-					token->cmds[k]->infile, token, token->cmds[k]->fd), 0);
+			return (free(new), token->cmds[k]->exit_code = 1,
+				mini_error("ambiguous redirect", token->cmds[k]->infile, token,
+					token->cmds[k]->fd), 0);
 		token->cmds[k]->redir[0] = 4;
 		try_open(token, new, k);
 	}

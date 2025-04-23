@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 14:25:47 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 16:42:02 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 18:36:07 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	outfile(t_token *token, int k)
 	int	fd;
 
 	if (token->cmds[k]->fd[1] == -1)
-		return (-1);
+		return (token->cmds[k]->exit_code = 1, -1);
 	if (access(token->cmds[k]->outfile, F_OK) == 0)
 	{
 		if (access(token->cmds[k]->outfile, W_OK) != 0)
