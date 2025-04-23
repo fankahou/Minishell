@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_mini.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 21:53:29 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/23 13:58:31 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	command_not_found(char *cmd)
 	if (cmd)
 		write(2, cmd, ft_strlen(cmd));
 	write(2, ": ", 2);
-	perror("command not found");
+	write(2, "command not found\n", 18);
 }
 
 /**

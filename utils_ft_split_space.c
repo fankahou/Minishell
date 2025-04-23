@@ -3,16 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ft_split_space.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 16:47:43 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 13:54:53 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// new: will not split if inside quotation
+/**
+ * @brief Counts the number of spaces in a string.
+ *
+ * Counts the number of spaces inside a string.
+ * Spaces inside quotation marks are ignored and
+ * therefore not counted.
+ *
+ * @author kfan
+ * 
+ * @param s string to analyze
+ * @return size_t 
+ * @retval count Number of spaces in s.
+ */
 static size_t	ft_count(char *s)
 {
 	size_t	i;
@@ -40,7 +52,19 @@ static size_t	ft_count(char *s)
 	return (count);
 }
 
-// new: will skip space if inside quotation
+/**
+ * @brief Returns a substring delimited by spaces.
+ *
+ * Takes a string s and returns a substring starting
+ * at s[0], ending at the first spae character that
+ * is not withing " double or ' single quotes.
+ *
+ * @author kfan
+ * 
+ * @param s string to get substing of
+ * @return char* 
+ * @retval str substring
+ */
 static char	*ft_newstring(char *s)
 {
 	size_t	i;
@@ -68,6 +92,19 @@ static char	*ft_newstring(char *s)
 	return (str);
 }
 
+/**
+ * @brief Splits a string on spaces.
+ * 
+ * Splits a string on spaces, unless they are inside
+ * quotation marks.
+ *
+ * Main logic for ft_split_space.
+ * 
+ * @param s String to split
+ * @param array Array to write result to
+ * @return char** 
+ * @retval array Resulting array
+ */
 static char	**ft_array(char *s, char **array)
 {
 	size_t	i;
@@ -91,6 +128,25 @@ static char	**ft_array(char *s, char **array)
 	return (array);
 }
 
+/**
+ * @brief Split a string on spaces.
+ *
+ * Splits a string into an array of strings on spaces.
+ * Does not split on spaces taht are between " double
+ * or ' single quotes.
+ *
+ * Example:
+ * The string "This is 'a fancy string' string!" will
+ * be split into "This", "is", "a fancy string", "string!".
+ *
+ * Bulk of the logic is in ft_array.
+ *
+ * @author kfan
+ * 
+ * @param s string to split
+ * @return char** 
+ * @retval array Array of substrings.
+ */
 char	**ft_split_space(char *s)
 {
 	char	**array;

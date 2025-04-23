@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 17:36:11 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/23 13:10:09 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	syntax_error(char *str, t_token *token)
  *
  * This function prints an error message to the standard error
  * and returns 1. All messages are prepended with
- * "\033[1;41m ERROR \033[22;0m -> ". Uses perror to print the message.
+ * "\033[1;41m ERROR \033[22;0m -> ".
+ * Uses write() to print the message.
  *
  * @author kmautner
  *
@@ -57,22 +58,41 @@ void	syntax_error(char *str, t_token *token)
  */
 int	error(char *msg)
 {
-	char	*prefix;
-	char	*combined;
-
-	prefix = "\033[1;41m ERROR \033[22;0m -> ";
-	combined = ft_strjoin(prefix, msg);
-	if (msg && combined)
-	{
-		perror(combined);
-		free(combined);
-	}
-	else if (msg && !combined)
-	{
-		perror(msg);
-	}
+	write(2, "\033[1;41m ERROR \033[22;0m -> ", 25);
+	if (msg)
+		write(2, msg, ft_strlen(msg));
 	else
-		perror("\033[1;41m ERROR \033[22;0m -> unknown error (no message)");
+		write(2, "unknown error (no message)", 26);
+	write(2, "\n", 1);
+	return (1);
+}
+
+/**
+ * @brief Prints an error to stderr and returns 1.
+ *
+ * This function prints an error message to the standard error
+ * (fd = 2) and returns 1. The message is prepended with
+ * "\033[1;41m ERROR \033[22;0m -> " and the arguments are separated
+ * by a ':' colon.
+ * Uses write() to print the messages.
+ *
+ * @author kmautner
+ * 
+ * @param msg 
+ * @param msg2 
+ * @return int
+ * @retval return Always returns 1.
+ */
+int error2(char *msg, char *msg2)
+{
+	write(2, "\033[1;41m ERROR \033[22;0m -> ", 25);
+	if (msg)
+		write(2, msg, ft_strlen(msg));
+	else
+		write(2, "unknown error (no message)", 26);
+	if (msg2)
+		write(2, msg, ft_strlen(msg));
+	write(2, "\n", 1);
 	return (1);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_join.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:54:40 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 14:19:33 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 13:20:52 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,12 @@
  *
  * Concatenates to arrays of strings.
  *
+ * @author kfan
+ *
  * @param dest Array to concantenate on
  * @param src Array to concatenate with
  * @param temp Destination for resulting array
  * @param strlen Expected length of result
- *
- * @ref join_split
- *
- * @author kfan
  */
 static void	join_split2(char **dest, char **src, char **temp, int strlen)
 {
@@ -55,16 +53,14 @@ static void	join_split2(char **dest, char **src, char **temp, int strlen)
  * The result will be allocated with malloc().
  * The main logic for the concatenation is in join_split2().
  *
+ * @author kfan
+ *
  * @param old Array to concatenate on
  * @param cmd Array to concatenate with
  * @param i Counter variable, ALWAYS SET TO 0!
  * @param j Counter variable, ALWAYS SET TO 0!
  * @return char**
  * @retval new Concatenated array
- *
- * @ref join_split2
- *
- * @author kfan
  */
 char	**join_split(char ***old, char ***cmd, int i, int j)
 {

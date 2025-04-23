@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_is.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 18:05:14 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 13:22:53 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// return value:
-// 1 = $ no needed
-// 2 = |
-// 3 = <<
-// 4 = <
-// 5 = >
-// 6 = >>
-// 7 = ;
-// 8 (||) and 9 (&&) for bonus
 
 /**
  * @brief Checks which type a symbol is.
@@ -39,13 +29,13 @@
  *
  * || and && are only needed for the bonus.
  * If no symbol is recognised, the function will return 0.
+ *
+ * @author kfan
  * 
  * @param c1 First character of the symbol
  * @param c2 Second character of the symbol
  * @return int 
  * @retval type Type of the symbol
- *
- * @author kfan
  */
 int	is_sym(char c1, char c2)
 {
@@ -72,18 +62,20 @@ int	is_sym(char c1, char c2)
  * Checks if a character is the delimiter of a command.
  * Some delimiters are made up of two characters and therefore
  * require both values to be set so to be recognised properly!
+ *
+ * The list of delimiters and their return values are:
+ * - ; = 1
+ * - && = 2
+ * - || = 3
+ * If none are detected, 0 is returned.
+ *
+ * @author kfan
  * 
  * 
  * @param c1 first character of the delimiter
  * @param c2 second character of the delimiter (may be NULL)
  * @return int 
  * @retval delim Integer describing the delimiter.
- * - ; = 1
- * - && = 2
- * - || = 3
- * if none of these are detected, 0 is returned.
- *
- * @author kfan
  */
 int	is_delimiter(char c1, char c2)
 {
@@ -103,11 +95,11 @@ int	is_delimiter(char c1, char c2)
  * if it is, what kind of quotation mark it is
  * (single or double).
  *
+ * @author kfan
+ *
  * @param c character to check
  * @return int 
  * @retval success 1 for single quotes, 2 for double quotes, 0 otherwise.
- *
- * @author kfan
  */
 int	is_quote(char c)
 {
@@ -124,12 +116,12 @@ int	is_quote(char c)
  * Checks if a given character is a space character.
  * This includes ASCII indexes 9 - 13 alongside the
  * ' ' space character.
+ *
+ * @author kfan
  * 
  * @param c character to check
  * @return int 
  * @retval success 1 if the character is a space, 0 otherwise.
- *
- * @author kfan
  */
 int	is_space(char c)
 {
@@ -143,11 +135,11 @@ int	is_space(char c)
  * 
  * Checks if a given character is a '|' pipe character.
  *
+ * @author kfan
+ *
  * @param c character to check
  * @return int 
  * @retval success 1 if the character is a pipe, 0 otherwise.
- *
- * @author kfan
  */
 int	is_pipe(char c)
 {

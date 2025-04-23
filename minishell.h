@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/21 21:12:13 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 13:09:20 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,6 +292,7 @@ int		builtins_pipe_fd_in(t_cmds *cmds, int *fd);
 
 // ERROR.C
 int		error(char *msg);
+int		error2(char *msg, char *msg2);
 void	warn(char *msg);
 void	debug(char *msg);
 

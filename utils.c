@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 18:07:14 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 13:20:22 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
  * This function joins a character to the end of a string.
  * The result is stored as a new malloc'd string and returned.
  *
+ * @author kfan
+ *
  * @param s1 String to join to
  * @param s2 Character to join
  * @return char *
  * @retval ptr Malloc'd result string
- *
- * @author kfan
  */
 char	*ft_charjoin(char *s1, char *s2)
 {
@@ -59,12 +59,12 @@ char	*ft_charjoin(char *s1, char *s2)
  * Returns 0 if the current position is not inside
  * a quotation marked block.
  *
+ * @author kfan
+ * 
  * @param c quote character
  * @param quote current quote state
  * @return int 
  * @retval state New quote state
- *
- * @author kfan
  */
 int	inside_quote(char c, int quote)
 {
@@ -129,6 +129,20 @@ void	restore_fd(t_data *data, int *fd)
 	}
 }
 
+/**
+ * @brief Joins two commands
+ *
+ * Joins two strings with ft_strjoin(), adding a space
+ * between them.
+ * Used for joining commands and command arguments.
+ *
+ * @author kfan
+ * 
+ * @param src first string
+ * @param new second string
+ * @return char* 
+ * @retval str Joined strings.
+ */
 char	*join_cmd(char *src, char *new)
 {
 	char	space[2];
