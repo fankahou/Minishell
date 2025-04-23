@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 13:09:20 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:18:07 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,11 +197,14 @@ typedef struct s_token
  *		List of all commands in the history.
  * @var t_history::length
  *		Amount of commands in history.
+ * @var t_history::location
+		Location of the history file.
  */
 typedef struct s_history
 {
 	char	*list[HISTORY_MAX_SIZE];
 	int		length;
+	char	*location;
 }			t_history;
 
 void	print_token(t_token **token); // for debugging'
@@ -312,5 +315,6 @@ void	destroy_history(t_history *history);
 // UTILS_HISTORY.C
 int		str_equals(char *str1, char *str2);
 void	shift_array(char **array, int length);
+char	*get_history_path();
 
 #endif
