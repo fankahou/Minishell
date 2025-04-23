@@ -45,7 +45,7 @@ NAME = minishell
 NAME_BONUS = minishell_bonus
 SUPRESSION_FILE = readline.supp
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 LIBS = $(SRCDIR)/libft/libft.a -lreadline
 RM = rm -f
 
@@ -91,7 +91,7 @@ obj:
 	mkdir -p $@
 
 vg: | $(SUPRESSION_FILE)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.supp ./minishell
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=all --suppressions=readline.supp ./minishell
 
 $(SUPRESSION_FILE):
 	printf "{\n\t<readline-stupidities>\n\tMemcheck:Leak\n\t...\n\tfun:readline\n}\n{\n\t<history-stupoidities>\n\tMemcheck:Leak\n\t...\n\tfun:add_history\n}" | cat > readline.supp

@@ -155,7 +155,6 @@ TODO:
 - Implement "-c" flag for minishell (ex: minishell -c "echo 123")
 - Run tester (and fix anything that comes up)
 - implement cd ~? it's not so easy as it expands like envp or * but not from envp?? how?? probably like pwd if getcwd fails that the path is stored somewhere secretly
-- Somehow make the history writing unaffected by `cd`
 - spaces ot tabs in commant -> invalid read of size 1 
 - opened fds?
 - export var (without = sign) shouldn't rewrite value
@@ -165,6 +164,8 @@ TODO:
 23.04.2025:
 - Change error output from perror() to write()
 - fixed empty command -> exit code is 2 instead of 0
+- Fixed history file inconsistencies due to `cd`.
+    - It will now always be created/read in pwd at the point of execution
 
 18.04.2025: (Ka Hou)
 - checked with funcheck and fixed some leaks if malloc fails
