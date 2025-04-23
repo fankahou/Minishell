@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 14:18:07 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:30:02 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,6 +315,6 @@ void	destroy_history(t_history *history);
 // UTILS_HISTORY.C
 int		str_equals(char *str1, char *str2);
 void	shift_array(char **array, int length);
-char	*get_history_path();
+char	*get_history_path(void);
 
 #endif

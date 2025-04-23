@@ -6,16 +6,16 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 14:37:04 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:29:39 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//to do list 7 April
-//ctrl + c then <<eof cat and ctrl + c/ or d then ctrl + c, why extra \n????
+// to do list 7 April
+// ctrl + c then <<eof cat and ctrl + c/ or d then ctrl + c, why extra \n????
 
-//to do list 3 April
+// to do list 3 April
 // mkdir a a/b; cd a/b; rm -rf ../../a; unset PWD; unset OLDPWD; pwd
 // cat /dev/random | head -c 100 | wc -c // waitpid ??? signal?
 // ls '" and ls "' // just leave it as it is?
@@ -29,52 +29,64 @@
 
 /**
  * @brief Debug function to print tokens.
- * 
+ *
  * Debug funciton that prints the contents
  * of each token in an array of tokens.
  *
  * @author kfan
- * 
+ *
  * @param token token array to print
  */
 /* void print_token(t_token **token)
 {
-    int i;
-    int j;
+	int	i;
+	int	j;
 
-    i = 0;
-    if (!token)
-        return ;
-    while (token[i])
-    {
-        j = 0;
-        if (token[i]->cmds)
-        {
-            while(token[i]->cmds[j])
-            {
-                if (token[i]->cmds[j]->cmd)
-                    print_array(token[i]->cmds[j]->cmd);
-                else
-                    printf("no cmd\n");
-                ft_printf("%d: redir[0] (in) = %d\n", i,
+	i = 0;
+	if (!token)
+		return ;
+	while (token[i])
+	{
+		j = 0;
+		if (token[i]->cmds)
+		{
+			while(token[i]->cmds[j])
+			{
+				if (token[i]->cmds[j]->cmd)
+					print_array(token[i]->cmds[j]->cmd);
+				else
+					printf("no cmd\n");
+				ft_printf("%d: redir[0] (in) = %d\n", i,
 		token[i]->cmds[j]->redir[0]);
-                ft_printf("%d: redir[1] (out) = %d\n", i,
+				ft_printf("%d: redir[1] (out) = %d\n", i,
 		token[i]->cmds[j]->redir[1]);
-                ft_printf("%d: fd[0] (in) = %d\n", i, token[i]->cmds[j]->fd[0]);
-                ft_printf("%d: fd[1] (out) = %d\n", i,
+				ft_printf("%d: fd[0] (in) = %d\n", i, token[i]->cmds[j]->fd[0]);
+				ft_printf("%d: fd[1] (out) = %d\n", i,
 		token[i]->cmds[j]->fd[1]);
-                ft_printf("%d: infile = %s$\n", i, token[i]->cmds[j]->infile);
-                ft_printf("%d: outfile = %s$\n\n", i,
+				ft_printf("%d: infile = %s$\n", i, token[i]->cmds[j]->infile);
+				ft_printf("%d: outfile = %s$\n\n", i,
 		token[i]->cmds[j]->outfile);
-                j++;
-            }
-        }
-        ft_printf("%d: delimiter = %d\n", i, token[i]->delimiter);
-        ft_printf("%d: nmb_of_cmd = %d\n", i, token[i]->nmb_of_cmd);
-        ft_printf("%d: exit_code = %d\n", i, token[i]->exit_code[0]);
-        i++;
-    }
+				j++;
+			}
+		}
+		ft_printf("%d: delimiter = %d\n", i, token[i]->delimiter);
+		ft_printf("%d: nmb_of_cmd = %d\n", i, token[i]->nmb_of_cmd);
+		ft_printf("%d: exit_code = %d\n", i, token[i]->exit_code[0]);
+		i++;
+	}
 } */
+
+/**
+ * @brief Initialises all needed data for execution
+ *
+ * Initialises all needed data for main execution
+ *
+ * @param data data struct
+ * @param envp envp
+ * @param history history struct
+ * @return int
+ * @retval success Returns 0 on success, 1 otherwise.
+ */
 static int	init_main(t_data *data, char **envp, t_history *history)
 {
 	if (signal_init())
@@ -100,6 +112,19 @@ static int	init_main(t_data *data, char **envp, t_history *history)
 	return (0);
 }
 
+/**
+ * @brief Frees all allocated data.
+ *
+ * Frees all allocated data so we can exit cleanly.
+ * Closes stdin and stdout since they show up in valgrind
+ * because we dup2() them.
+ * Also closes stderr (fd = 2) because funny.
+ *
+ * @author kfan
+ *
+ * @param data data struct
+ * @param history histroy struct
+ */
 static void	free_all(t_data *data, t_history *history)
 {
 	if (data->str)
@@ -109,6 +134,7 @@ static void	free_all(t_data *data, t_history *history)
 	destroy_history(history);
 	close(data->fd[0]);
 	close(data->fd[1]);
+	close(2);
 }
 
 // debug(data->str); to be removed?
@@ -151,7 +177,7 @@ static int	read_input(t_data *data)
  * As a wise man once said: "This is where the magic happens!"
  *
  * @author kfan
- * 
+ *
  * @param argc Argument count
  * @param argv Argument vector
  * @param envp Environment

@@ -6,7 +6,7 @@
 /*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 13:10:09 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:30:40 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,13 @@ int	error(char *msg)
  * Uses write() to print the messages.
  *
  * @author kmautner
- * 
- * @param msg 
- * @param msg2 
+ *
+ * @param msg
+ * @param msg2
  * @return int
  * @retval return Always returns 1.
  */
-int error2(char *msg, char *msg2)
+int	error2(char *msg, char *msg2)
 {
 	write(2, "\033[1;41m ERROR \033[22;0m -> ", 25);
 	if (msg)

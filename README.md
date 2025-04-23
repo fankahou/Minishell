@@ -159,13 +159,14 @@ TODO:
 
 23.04.2025:
 - Change error output from perror() to write()
-- fixed empty command -> exit code is 2 instead of 0
+- fixed empty command having an exit code of 2 instead of 0
 - Fixed history file inconsistencies due to `cd`.
     - It will now always be created/read in pwd at the point of execution
 - Fixed stdin and stdout showing up in valgrind because of dup2()
+    - Also added closing of stderr (fd = 2) for extra safety
 - `export VAR` (without = equals sign) no longer overwrites the value of VAR
-- fixed spaces ot tabs in commant -> invalid read of size 1
-- fixed empty command with | doesn't throw an error
+- fixed spaces or tabs in command causing an invalid read of size 1
+- fixed empty command with | pipe not throwing an error
 
 18.04.2025: (Ka Hou)
 - checked with funcheck and fixed some leaks if malloc fails
