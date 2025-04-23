@@ -146,12 +146,17 @@ init fail
 function where the program exits.
 
 
+EVAL ERRORS: (TBA)
 
-potential TODO:
+
+
+TODO:
 - Documentation (currently at `parse6_clean_name.c`)
 - Implement "-c" flag for minishell (ex: minishell -c "echo 123")
 - Run tester (and fix anything that comes up)
 - implement cd ~? it's not so easy as it expands like envp or * but not from envp?? how?? probably like pwd if getcwd fails that the path is stored somewhere secretly
+- Change error output from perror() to write()
+- Somehow make the history writing unaffected by `cd`
 
 18.04.2025: (Ka Hou)
 - checked with funcheck and fixed some leaks if malloc fails
