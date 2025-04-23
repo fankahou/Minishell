@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/21 21:56:49 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 17:47:27 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,19 @@ int	check_parenthesis(t_token **token, int i)
 	int	parenthesis;
 
 	flag = i;
-	parenthesis = token[i]->parenthesis;
 	while (token[i] && token[i]->delimiter == 2 && token[i]->exit_code[0] != 0)
 		i++;
 	while (token[i] && token[i]->delimiter == 3 && token[i]->exit_code[0] == 0)
 		i++;
-	if (token[i] && flag != i && token[i]->parenthesis != 0)
+	parenthesis = token[i]->parenthesis;
+	if (token[i] && flag != i && token[i]->parenthesis != 0
+		&& token[i]->parenthesis_flag != 0)
 	{
-		while (token[i + 1] && token[i + 1]->parenthesis != parenthesis
+		while (token[i + 1] && token[i + 1]->parenthesis == parenthesis
 			&& token[i + 1]->parenthesis_flag == 0)
 			i++;
 	}
+	if (flag != i)
+		i = check_parenthesis(token, i);
 	return (i);
 }
