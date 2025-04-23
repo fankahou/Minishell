@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/21 21:34:12 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 15:38:13 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,19 @@
  * @return int
  * @retval cmd Arrays need for the char **cmd aka token->nmb_of_cmd.
  */
-static int	check_cmd(char **temp, t_token *token, int error_count)
+static int	check_cmd(char **temp, t_token *token, int error_count, int k)
 {
 	int	i;
 	int	j;
-	int	k;
 
 	i = 0;
-	k = 0;
 	while (temp[i])
 	{
 		j = 0;
 		while (is_space(temp[i][j]))
 			j++;
-		if (is_pipe(temp[i][j]))
+		if (is_pipe(temp[i][j]) || (!temp[i][j] && temp[i + 1] && is_pipe(temp[i
+					+ 1][0])))
 			error_count++;
 		else
 		{
@@ -73,7 +72,7 @@ static int	check_cmd(char **temp, t_token *token, int error_count)
  */
 static int	check_and_malloc(char **temp, t_token *token, int i)
 {
-	token->nmb_of_cmd = check_cmd(temp, token, 1);
+	token->nmb_of_cmd = check_cmd(temp, token, 1, 0);
 	if (token->nmb_of_cmd == -1)
 		return (1);
 	token->cmds = malloc(sizeof(t_cmds *) * (token->nmb_of_cmd + 1));
