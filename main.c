@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 14:23:12 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/23 14:37:04 by kmautner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,11 @@ static void	free_all(t_data *data, t_history *history)
 {
 	if (data->str)
 		free(data->str);
-	if (data->fd[0] != 0)
-		close(data->fd[0]);
-	if (data->fd[1] != 1)
-		close(data->fd[1]);
 	ft_free_split(data->envp);
 	ft_free_split(data->envp_export);
 	destroy_history(history);
+	close(data->fd[0]);
+	close(data->fd[1]);
 }
 
 // debug(data->str); to be removed?

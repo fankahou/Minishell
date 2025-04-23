@@ -100,6 +100,7 @@ clean:
 	cd libft && make clean
 	$(RM)r obj
 	$(RM) $(SUPRESSION_FILE)
+	$(RM) .minishell_history
 
 fclean:
 	cd libft && make fclean
