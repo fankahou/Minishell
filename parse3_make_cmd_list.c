@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   parse3_make_cmd_list.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 17:39:28 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/24 15:46:57 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**remove_bracket(char **cmd, int i)
+{
+	char	**temp;
+
+	temp = remove_array(cmd, i, 0, 0);
+	ft_free_split(cmd);
+	if (!temp)
+		return (perror("remove_array failed"), NULL);
+	return (temp);
+}
 
 /**
  * @brief Splits the command and separates them with spaces.
@@ -38,10 +49,21 @@
 char	**ft_cmd(char *temp, t_token *token, char **old)
 {
 	char	**cmd;
+	int		i;
 
 	cmd = ft_split_space(temp);
 	if (!cmd)
 		return (perror("ft_split failed"), token->error[0] = 1, NULL);
+	i = 0;
+	while (cmd[i])
+	{
+		if ((cmd[i][0] == '(' || cmd[i][0] == ')') && cmd[i][1] == '\0')
+			cmd = remove_bracket(cmd, i);
+		else
+			i++;
+	}
+	if (!cmd)
+		return (token->error[0] = 1, NULL);
 	if (old)
 		old = join_split(&old, &cmd, 0, 0);
 	else
