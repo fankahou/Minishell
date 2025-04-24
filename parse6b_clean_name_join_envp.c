@@ -6,28 +6,11 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 14:12:51 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/24 17:52:07 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//check if an new array is needed to expand envp
-void	check_new_array(t_clean *clean)
-{
-	int	j;
-
-	clean->new_array = 0;
-	j = 0;
-	while (clean->envp_temp[j] && is_space(clean->envp_temp[j]))
-		j++;
-	if (j > 0)
-		clean->new_array = 1;
-	while (clean->envp_temp[j])
-		j++;
-	if (j > 0 && is_space(clean->envp_temp[j - 1]))
-		clean->new_array = 2;
-}
 
 int	join_envp_str(t_token *token, t_clean *clean, char *str)
 {
@@ -83,6 +66,14 @@ int	join_envp_char(t_token *token, t_clean *clean, char *str)
 	return (0);
 }
 
+// 3rd part of join_envp...
+static void	join_envp_2(t_clean *clean, char **temp)
+{
+	if (clean->temp)
+		free(clean->temp);
+	clean->temp = copy_array(temp);
+}
+
 // 2nd part of join_envp to get clean->temp
 // join_split if envp begins with space
 // else join previous str for the first splited cmd
@@ -112,7 +103,7 @@ static void	join_envp_1(t_clean *clean, char **temp, int j, char *str)
 			clean->temp = join_split(&clean->temp, &new, 0, 0);
 		}
 		else
-			clean->temp = copy_array(temp);
+			join_envp_2(clean, temp);
 	}
 }
 

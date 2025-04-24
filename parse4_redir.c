@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 18:35:57 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/24 19:01:19 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,11 @@ static int	ft_redir_in1(t_token *token, int type, char *new, int k)
 	else
 	{
 		new = clean_name(token->cmds[k]->infile, token, 0, new);
-		ft_free_split(token->data->cmd_temp);
 		if (!new)
 			return (1);
-		if (new[0] == '\0')
-			return (free(new), token->cmds[k]->exit_code = 1,
-				mini_error("ambiguous redirect", token->cmds[k]->infile, token,
-					token->cmds[k]->fd), 0);
+		if (check_amb(token) || new[0] == '\0')
+			return (free(new), amb_error(token->cmds[k]->infile, token,
+					token->cmds[k]->fd, k), 0);
 		token->cmds[k]->redir[0] = 4;
 		try_open(token, new, k);
 	}
@@ -140,10 +138,9 @@ static void	ft_redir_out(t_token *token, int type, char *file, int k)
 	else
 	{
 		new = clean_name(file, token, 0, new);
-		ft_free_split(token->data->cmd_temp);
 		token->cmds[k]->outfile = new;
-		if (new[0] == '\0')
-			mini_error("ambiguous redirect", file, token, token->cmds[k]->fd);
+		if (check_amb(token) || new[0] == '\0')
+			amb_error(file, token, token->cmds[k]->fd, k);
 		fd = outfile(token, k);
 		if (fd >= 0)
 			close(fd);

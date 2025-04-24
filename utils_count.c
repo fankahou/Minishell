@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/11 18:07:37 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/24 19:33:52 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	name_count(int count, char *pin)
 	quote = 0;
 	while (pin[count] == ' ')
 		count++;
-	while (pin[count] && pin[count] != ' ')
+	while (pin[count] && (pin[count] != ' ' || quote != 0))
 	{
 		quote = inside_quote(pin[count], quote);
 		if (is_sym(pin[count], pin[count + 1]) && quote == 0)

@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:01:06 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 19:17:23 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/24 18:26:58 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ int		init_token(char **temp, t_token **token, t_data *data, int i);
 void	init_parenthesis(char **temp, t_token **token, int i, int k);
 int		copy_bracket(char *temp, t_clean *clean);
 int		check_parenthesis(t_token **token, int i);
+int		check_amb(t_token *token);
 int		make_cmd_list(char **temp, t_token *token);
 char	**ft_cmd(char *temp, t_token *token, char **old);
 int		redir(char *temp, t_token *token, int k);
@@ -238,6 +239,7 @@ void	syntax_error(char *str, t_token *token);
 void	open_error(char *str, t_token *token, int *fd, int k);
 void	mini_error(char *str, char *arg, t_token *token, int *fd);
 void	execve_error(t_cmds *cmds, char *path, t_token *token, DIR *dir);
+void	amb_error(char *str, t_token *token, int *fd, int k);
 
 // from pipex
 int		pipex(t_token *token);

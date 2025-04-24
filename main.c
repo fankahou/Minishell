@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 16:29:39 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:15:51 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ static void	free_all(t_data *data, t_history *history)
 		free(data->str);
 	ft_free_split(data->envp);
 	ft_free_split(data->envp_export);
+	ft_free_split(data->cmd_temp);
 	destroy_history(history);
 	close(data->fd[0]);
 	close(data->fd[1]);

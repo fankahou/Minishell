@@ -157,7 +157,10 @@ TODO:
 - implement cd ~? it's not so easy as it expands like envp or * but not from envp?? how?? probably like pwd if getcwd fails that the path is stored somewhere secretly
 
 24.04.2025:
-fixed small bug if space is followed or preceed by a bracket
+- fixed small bug if space is followed or preceed by a bracket
+- fixed seg fault wildcard/split after envp_expand, just need to free stuff correctly
+- fixed ft_split_cmd not spliting quotes correctly for eg. > "a    b"
+- fixed here_doc eof to str_equal to avoid delimiter eg. eoff closing input too soon
 
 23.04.2025:
 - Change error output from perror() to write()

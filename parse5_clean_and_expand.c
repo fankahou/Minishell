@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 16:44:17 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/24 18:57:58 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,9 @@ static int	clean_outfile(t_token *token)
 				return (syntax_error(token->cmds[i]->outfile, token), 1);
 			free(token->cmds[i]->outfile);
 			token->cmds[i]->outfile = file;
+			if (token->data->cmd_temp)
+				ft_free_split(token->data->cmd_temp);
+			token->data->cmd_temp = NULL;
 			if (token->wildcards)
 				free(token->wildcards);
 			token->wildcards = NULL;
@@ -148,6 +151,9 @@ static int	clean_infile(t_token *token)
 				return (syntax_error(token->cmds[i]->infile, token), 1);
 			free(token->cmds[i]->infile);
 			token->cmds[i]->infile = file;
+			if (token->data->cmd_temp)
+				ft_free_split(token->data->cmd_temp);
+			token->data->cmd_temp = NULL;
 			if (token->wildcards)
 				free(token->wildcards);
 			token->wildcards = NULL;

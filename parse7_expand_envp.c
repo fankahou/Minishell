@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   parse7_expand_envp.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmautner <kmautner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 13:57:39 by kmautner         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:53:20 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	check_new_array(t_clean *clean)
+{
+	int	j;
+
+	clean->new_array = 0;
+	j = 0;
+	while (clean->envp_temp[j] && is_space(clean->envp_temp[j]))
+		j++;
+	if (j > 0)
+		clean->new_array = 1;
+	while (clean->envp_temp[j])
+		j++;
+	if (j > 0 && is_space(clean->envp_temp[j - 1]))
+		clean->new_array = 2;
+}
 
 // expand_envp() and handle " and ';
 int	check_envp_count(char *temp)

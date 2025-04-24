@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse4a_redir_heredoc.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endermenskill <endermenskill@student.42    +#+  +:+       +#+        */
+/*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/17 17:40:10 by endermenski      ###   ########.fr       */
+/*   Updated: 2025/04/24 19:40:04 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ static int	write_heredoc(t_token *token, int fd, char *eof, int quote)
 		temp = readline("> ");
 		if (!temp)
 			return (stop_heredoc(token, fd, fd_temp));
-		if (!ft_strncmp(eof, temp, ft_strlen(eof)))
+		if (str_equals(eof, temp))
 			return (end_of_file(temp, fd_temp), 0);
 		if (quote == 0)
 			temp = expand_heredoc(temp, token, NULL, -1);

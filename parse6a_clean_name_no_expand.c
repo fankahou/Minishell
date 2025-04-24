@@ -6,11 +6,30 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/14 13:30:41 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/24 19:00:23 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// check for ambiguous redirect error in parse4
+// only put it here because of space issue
+int	check_amb(t_token *token)
+{
+	int	i;
+
+	if (token->data->cmd_temp)
+	{
+		i = 0;
+		while (token->data->cmd_temp[i])
+			i++;
+		ft_free_split(token->data->cmd_temp);
+		token->data->cmd_temp = NULL;
+		if (i > 1)
+			return (1);
+	}
+	return (0);
+}
 
 // if the next one is also space it will check if it's the last space
 // and return 2 to stop copying that space

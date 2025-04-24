@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:05:24 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/23 20:19:01 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/24 18:24:14 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,25 @@ void	open_error(char *str, t_token *token, int *fd, int k)
 		write(2, ": ", 2);
 	}
 	perror(NULL);
+	if (token)
+		token->cmds[k]->exit_code = 1;
+	if (fd)
+	{
+		fd[0] = -1;
+		fd[1] = -1;
+	}
+}
+
+// ambiguous redirect error
+void	amb_error(char *str, t_token *token, int *fd, int k)
+{
+	write(2, "minishell: ", 11);
+	if (str)
+	{
+		write(2, str, ft_strlen(str));
+		write(2, ": ", 2);
+	}
+	write(2, "ambiguous redirect\n", 19);
 	if (token)
 		token->cmds[k]->exit_code = 1;
 	if (fd)
