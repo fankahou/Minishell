@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/24 18:55:44 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/25 16:16:42 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,12 @@ static int	clean_name_envp(char *temp, t_token *token, t_clean *clean)
 	if (!clean->new)
 		return (free(clean->file), free(clean->envp_temp),
 			perror("ft_strjoin failed\n"), -1);
+	if (ft_strchr(clean->new, '*') && clean->quote == 0 && !token->wildcards)
+	{
+		token->wildcards = wildcards(clean->new, token, clean);
+		if (!token->wildcards)
+			return (perror("wildcards failed"), -1);
+	}
 	if (check_split_envp(token, clean, 0))
 		return (free(clean->envp_temp), free(clean->file), -1);
 	free(clean->envp_temp);

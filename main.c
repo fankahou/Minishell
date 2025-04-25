@@ -6,7 +6,7 @@
 /*   By: kfan <kfan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:02:39 by kfan              #+#    #+#             */
-/*   Updated: 2025/04/24 18:15:51 by kfan             ###   ########.fr       */
+/*   Updated: 2025/04/25 15:28:22 by kfan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ static int	init_main(t_data *data, char **envp, t_history *history)
 	data->fd[1] = 1;
 	data->envp = NULL;
 	data->envp_export = NULL;
+	data->cmd_temp = NULL;
 	if (envp && envp[0])
 	{
 		data->envp = copy_array(envp);
