@@ -49,7 +49,6 @@ CFLAGS = -Wall -Wextra -Werror -g
 LIBS = $(SRCDIR)/libft/libft.a -lreadline
 RM = rm -f
 
-HOSTNAME = $(shell "hostname")
 DEBUG = 0
 
 .DEFAULT_GOAL = all
@@ -68,7 +67,6 @@ $(NAME): obj $(OBJ)
 $(NAME_BONUS): obj $(OBJ)
 	cd $(SRCDIR)/libft && make
 	cc $(CFLAGS) $(OBJ) $(LIBS) -D DEBUG=1 -o $(NAME_BONUS)
-	export HOSTNAME=$(HOSTNAME)
 
 $(OBJ): $(OBJDIR)/%.o : $(SRCDIR)/%.c
 	cc $(CFLAGS) -c $< -D DEBUG=1 -o $@
@@ -81,7 +79,6 @@ $(NAME): obj $(OBJ)
 $(NAME_BONUS): obj $(OBJ)
 	cd $(SRCDIR)/libft && make
 	cc $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME_BONUS)
-	export HOSTNAME=$(HOSTNAME)
 
 $(OBJ): $(OBJDIR)/%.o : $(SRCDIR)/%.c
 	cc $(CFLAGS) -c $< -o $@
